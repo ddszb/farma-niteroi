@@ -14,7 +14,9 @@ export default props => (
         right: 10, 
         justifyContent:'center'
         }}>
-        <TouchableHighlight onPress={ () => props.onClick()}>
+        <TouchableHighlight 
+            onPress={ () => props.onClick()}
+            underlayColor="#4440">
             <Icon 
                 name='add'
                 size={25}

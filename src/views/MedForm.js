@@ -4,7 +4,8 @@ import {
     StyleSheet,
     TextInput,
     View,
-    Switch
+    Switch,
+    TouchableOpacity
 } from "react-native"
 
 import AppContext from '../context/context'
@@ -12,6 +13,7 @@ import TreatmentSpinner from '../components/TreatmentSpinner'
 import DatePicker from '../components/DatePicker'
 import doseTimes from '../constants/doseTimes'
 import doseUnits from '../constants/doseUnits'
+import DoseHourDialog from '../components/DoseHourDialog'
 
 export default ({navigation, route}) => {
 
@@ -19,6 +21,7 @@ export default ({navigation, route}) => {
     
     const [med, setMed] = useState(route.params ? route.params : {})
     const [doseHoursItems, setDoseHoursItems] = useState([{ hour: 8, minute: 0, amount: 1, unit: doseUnits.COMPRIMIDO}])
+    const [doseDialogVisibility, setDoseDialogVisibility] = useState(false)
     const { dispatch } = useContext(AppContext)
 
     console.log(Object.keys(med))
@@ -54,23 +57,35 @@ export default ({navigation, route}) => {
             </>
         )
     }
+
+    const toggleDoseDialog = (d) =>{
+        setDoseDialogVisibility(!doseDialogVisibility)
+    }
+
+    const onCloseDialog = () =>{
+        setDoseDialogVisibility(!doseDialogVisibility)
+    }
     
     const listDoseHoursItems = () => {
         return doseHoursItems.map( d =>{
             return (
-                <View style={{flexDirection : 'row', justifyContent: 'space-between'}}>
-                    <View style={{flexDirection : 'row'}}>
-                        <Text style={style.doseHourText}>
-                            {d.hour.toString().padStart(2, '0')}:
-                        </Text>
-                        <Text style={style.doseHourText}>
-                            {d.minute.toString().padStart(2, '0')}
-                        </Text>
+                <TouchableOpacity
+                    onPress={toggleDoseDialog}
+                    >
+                    <View style={{flexDirection : 'row', justifyContent: 'space-between', padding: 4}}>
+                        <View style={{flexDirection : 'row'}}>
+                            <Text style={style.doseHourText}>
+                                {d.hour.toString().padStart(2, '0')}:
+                            </Text>
+                            <Text style={style.doseHourText}>
+                                {d.minute.toString().padStart(2, '0')}
+                            </Text>
+                        </View>
+                        <View>
+                            <Text style={style.doseHourAmount}>{d.amount + " " +  d.unit + "(s)"}</Text>
+                        </View>
                     </View>
-                    <View>
-                        <Text style={style.doseHourAmount}>{d.amount + " " +  d.unit + "(s)"}</Text>
-                    </View>
-                </View>
+                </TouchableOpacity>
             )
         })
     }
@@ -94,7 +109,7 @@ export default ({navigation, route}) => {
                     {med.scheduledDoses 
                     ?   <View>
                             <TreatmentSpinner items={doseTimes} onChangeValue={createDoseTimes}/> 
-                            {listDoseHoursItems()} 
+                                {listDoseHoursItems()}
                         </View>
                     : <Text>Tomar quando necessário</Text>
                     } 
@@ -175,6 +190,9 @@ export default ({navigation, route}) => {
                     {scheduleField()}
                 </View>
             </View>
+            <DoseHourDialog 
+                visible={doseDialogVisibility}
+                onClose={onCloseDialog}/>
         </View>
     )
 
