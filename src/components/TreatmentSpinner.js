@@ -16,7 +16,7 @@ export default props =>{
     return (
           <Picker
             selectedValue={selectedValue}
-            style={{ height: 50, width: 150 }}
+            style={{ height: 50, width: 190 }}
             onValueChange={(itemValue, itemIndex) =>{ 
               setSelectedValue(itemValue)
               props.onChangeValue(itemValue)
