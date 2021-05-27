@@ -9,23 +9,18 @@ import {
 } from "react-native"
 
 import AppContext from '../context/context'
-import TreatmentSpinner from '../components/TreatmentSpinner'
 import DatePicker from '../components/DatePicker'
-import doseTimes from '../constants/doseTimes'
 import doseUnits from '../constants/doseUnits'
 import DoseHourDialog from '../components/DoseHourDialog'
+import DoseHourItems from '../components/DoseHourItems'
 
 export default ({navigation, route}) => {
 
     // console.warn(Object.keys(route))
     
     const [med, setMed] = useState(route.params ? route.params : {})
-    const [doseHoursItems, setDoseHoursItems] = useState([{ hour: 8, minute: 0, amount: 1, unit: doseUnits.COMPRIMIDO}])
-    const [doseDialogVisibility, setDoseDialogVisibility] = useState(false)
-    const { dispatch } = useContext(AppContext)
 
-    console.log(Object.keys(med))
-    // const toggleSwitch = () => setMed({...med, med.scheduledDoses})
+    const { dispatch } = useContext(AppContext)
 
     const medNameField = () => {
         return (
@@ -58,39 +53,6 @@ export default ({navigation, route}) => {
         )
     }
 
-    const toggleDoseDialog = (d) =>{
-        setDoseDialogVisibility(!doseDialogVisibility)
-    }
-
-    const onCloseDialog = () =>{
-        setDoseDialogVisibility(!doseDialogVisibility)
-    }
-    
-    const listDoseHoursItems = () => {
-        return doseHoursItems.map( d =>{
-            return (
-                <TouchableOpacity
-                    onPress={toggleDoseDialog}
-                    >
-                    <View style={{flexDirection : 'row', justifyContent: 'space-between', padding: 4}}>
-                        <View style={{flexDirection : 'row'}}>
-                            <Text style={style.doseHourText}>
-                                {d.hour.toString().padStart(2, '0')}:
-                            </Text>
-                            <Text style={style.doseHourText}>
-                                {d.minute.toString().padStart(2, '0')}
-                            </Text>
-                        </View>
-                        <View>
-                            <Text style={style.doseHourAmount}>{d.amount + " " +  d.unit + "(s)"}</Text>
-                        </View>
-                    </View>
-                </TouchableOpacity>
-            )
-        })
-    }
-
-
     const medDosesField = () => {
 
         return(
@@ -108,8 +70,7 @@ export default ({navigation, route}) => {
                 <View>
                     {med.scheduledDoses 
                     ?   <View>
-                            <TreatmentSpinner items={doseTimes} onChangeValue={createDoseTimes}/> 
-                                {listDoseHoursItems()}
+                            <DoseHourItems/>
                         </View>
                     : <Text>Tomar quando necessário</Text>
                     } 
@@ -143,35 +104,6 @@ export default ({navigation, route}) => {
         )
     }
 
-    const createDoseTimes = (value) =>{
-        var defaultStartHour = 8
-        var defaultStartMinute = 0
-        var defaultAmount = 1 
-        var amountInADay = value;
-        var interval = 24 / amountInADay;
-        
-        doseHours = []
-        for( i = 0; i < amountInADay; i++){
-            let startTime = defaultStartHour + (i * interval)
-            let doseHour = {
-                hour : startTime,
-                minute : defaultStartMinute,
-                amount: 1,
-                unit: doseUnits.COMPRIMIDO
-            }
-            doseHours.push(doseHour)
-        }
-        var offsetHours = doseHours[doseHours.length - 1].hour - 24
-        
-        offsetHours = offsetHours > 0 ? offsetHours : 0
-        for( i = 0; i < doseHours.length; i++){
-            let adjustedHour = doseHours[i].hour - offsetHours
-            doseHours[i].hour = adjustedHour === 24 ? 0 : adjustedHour
-        }
-        
-        setDoseHoursItems(doseHours)
-    }
-
     return (
         <View style={style.form}>
             <View style={style.card}>
@@ -190,12 +122,8 @@ export default ({navigation, route}) => {
                     {scheduleField()}
                 </View>
             </View>
-            <DoseHourDialog 
-                visible={doseDialogVisibility}
-                onClose={onCloseDialog}/>
         </View>
     )
-
 
     
 }
@@ -240,14 +168,5 @@ const style = StyleSheet.create({
         color: '#6f11fd',
         fontWeight: 'bold'
         
-    },
-    doseHourText:{
-        color:'#6f11fd',
-        fontWeight: 'bold', 
-        fontSize: 20
-    },
-    doseHourAmount:{
-        color:'#6f11fd',
-        fontSize: 18
     }
 })
