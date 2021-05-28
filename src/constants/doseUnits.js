@@ -1,10 +1,25 @@
 export default {
 
-    COMPRIMIDO : 'Comprimido',
-    CAPSULA : 'Cápsula',
-    GOTA : 'Gota',
-    ML : 'Ml',
-    MEDIDA : 'Medida',
+    COMPRIMIDO :{
+        key: 'COMPRIMIDO',
+        label: 'Comprimido'
+    },
+    CAPSULA :{
+        key: 'CAPSULA',
+        label: 'Cápsula'
+    },
+    GOTA :{
+        key: 'GOTA',
+        label: 'Gota'
+    },
+    ML :{
+        key: 'ML',
+        label: 'Ml'
+    },
+    MEDIDA :{
+        key: 'MEDIDA',
+        label: 'Medida'
+    }
 }
     
 

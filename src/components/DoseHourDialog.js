@@ -1,16 +1,23 @@
 import React, {useState}from 'react'
+import { Button } from 'react-native';
 import{ Text,
     Modal,
     Alert,
     StyleSheet,
     Pressable,
-    View
+    View,
+    TextInput,
+    TouchableOpacity
 } from 'react-native'
+import doseUnitsSelection from '../constants/doseUnitsSelection'
+import doseUnits from '../constants/doseUnits'
+import TreatmentSpinner from './TreatmentSpinner';
+import { Icon } from 'react-native-elements/dist/icons/Icon'
 
+export default (props) =>{
 
-export default props =>{
-
-  const [modalVisible, setModalVisible] = useState(true);
+  const [amount, setAmount] = useState(props.dose ? props.dose.amount : 1)
+  const [unit, setUnit] = useState(props.dose ? props.dose.unit : doseUnits.COMPRIMIDO.key)
 
   return (
     <View style={styles.centeredView}>
@@ -19,19 +26,35 @@ export default props =>{
         transparent={true}
         visible={props.visible}
         onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          // setModalVisible(!modalVisible);
-        }}
-      >
+          props.close()
+        }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Horário para tomar</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => props.onClose()}
-            >
-              <Text style={styles.textStyle}>Hide Modal</Text>
-            </Pressable>
+            <Text style={styles.modalText}>Quanto tomar?</Text>
+            <View style={styles.selectionContainer}>
+              <TextInput
+                      style={styles.input}
+                      onChangeText={ amount => setAmount(amount)}
+                      value={'' + amount}
+                      keyboardType="numeric"/>
+              <TreatmentSpinner 
+                  items={doseUnitsSelection} 
+                  value={props.dose.unit}
+                  onChangeValue={ unit => setUnit(unit)}/> 
+
+            </View>
+            <View style={styles.buttonsRow}>
+              <TouchableOpacity
+                onPress={() => props.close()}
+                style={styles.buttonCancel}>
+                <Text style={styles.cancelText}>Cancelar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => props.onSet(amount, unit)}
+                style={styles.buttonConfirm}>
+                <Text style={styles.confirmText}>Ok</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Modal>
@@ -47,10 +70,10 @@ const styles = StyleSheet.create({
     marginTop: 22
   },
   modalView: {
-    margin: 20,
+    margin: 10,
     backgroundColor: "white",
     borderRadius: 5,
-    padding: 35,
+    padding: 15,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -61,24 +84,57 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2
+  buttonsRow:{
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
+  buttonCancel:{
+    borderRadius: 5,
+    marginTop: 15,
+    marginRight: 5,
+    padding: 6,
+    elevation: 1,
+    backgroundColor: "#ddd",
   },
-  buttonClose: {
-    backgroundColor: "#2196F3",
+  buttonConfirm: {
+    borderRadius: 5,
+    marginTop: 15,
+    marginLeft: 5,
+    width: 60,
+    padding: 6,
+    elevation: 1,
+    backgroundColor: "#6f11fd"
   },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center"
+  cancelText:{
+    color: '#6f11fd',
+    textAlign: 'center'
+  },
+  confirmText:{
+    color: '#fff',
+    textAlign: 'center'
+  },
+  selectionContainer:{
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  input: {
+    height: 40,
+    width: 70,
+    overflow: 'hidden' ,
+    borderColor: 'gray',
+    textAlign: 'center',
+    color:'#444',
+    borderRadius: 5,
+    borderWidth: 1,
+    marginBottom: 10,
+    marginTop: 5,
+    padding: 10
   },
   modalText: {
     marginBottom: 15,
-    textAlign: "center"
+    textAlign: "center",
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#6f11fd'
   }
 });

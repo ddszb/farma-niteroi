@@ -1,25 +1,23 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import {
     Text,
     StyleSheet,
-    TextInput,
     View,
-    Switch,
     TouchableOpacity
 } from "react-native"
 
 import doseUnits from '../constants/doseUnits'
-import doseTimes from '../constants/doseTimes'
+import doseTimes from '../constants/doseTimesSelection'
 import TreatmentSpinner from '../components/TreatmentSpinner'
+import DoseHourDialog from '../components/DoseHourDialog'
 
 import DateTimePicker from '@react-native-community/datetimepicker'
-
 export default props =>{
 
-    const [doseHoursItems, setDoseHoursItems] = useState([{ hour: 8, minute: 0, amount: 1, unit: doseUnits.COMPRIMIDO, index: 0}])
+    const [doseHoursItems, setDoseHoursItems] = useState([{ hour: 8, minute: 0, amount: 1, unit: doseUnits.COMPRIMIDO.key, index: 0}])
     const [showDoseHourPicker, setShowDoseHourPicker] = useState(false)
     const [selectedDose, setSelectedDose] = useState(doseHoursItems[0])
-    const [selectedDoseTime, setselectedDoseTime] = useState(new Date())
+    const [showDialog, setShowDialog] = useState(false)
 
     const updateDoseHourItem = (event, date) =>{
         const currDate = date || getSelectedDoseDate()
@@ -70,7 +68,7 @@ export default props =>{
                 hour : startTime,
                 minute : defaultStartMinute,
                 amount: 1,
-                unit: doseUnits.COMPRIMIDO,
+                unit: doseUnits.COMPRIMIDO.key,
                 index: i
             }
             doseHours.push(doseHour)
@@ -85,16 +83,35 @@ export default props =>{
         
         setDoseHoursItems(doseHours)
     }
-    
+
+    const updateItem = (amount, unit) =>{
+        var dose = selectedDose
+        dose.amount = amount
+        dose.unit = doseUnits[unit].key
+        setSelectedDose(dose)
+        
+        var doses = doseHoursItems
+        doses.splice(dose.index, 1, dose)
+        doses = doses.map( d => {return {...d, unit}})
+        setDoseHoursItems(doses)
+
+        setShowDialog(!showDialog)
+    }
+
+    const closeDialog = () =>{
+        setShowDialog(false)
+    }
+
     const doseHoursItemList = () =>{
         return doseHoursItems.map( d =>{
             return (
-                    <View style={{flexDirection : 'row', justifyContent: 'space-between', padding: 4}}>
+                <>
+                    <View key={d.index} style={{flexDirection : 'row', justifyContent: 'space-between', padding: 4}}>
                         <TouchableOpacity
-                                onPress={ () => {
-                                    setSelectedDose(d)
-                                    setShowDoseHourPicker(true)
-                                }}
+                            onPress={ () => {
+                                setSelectedDose(d)
+                                setShowDoseHourPicker(true)
+                            }}
                             >
                             <View style={{flexDirection : 'row'}}>
                                 <Text style={style.doseHourText}>
@@ -105,9 +122,13 @@ export default props =>{
                                 </Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={ () => {
+                                setSelectedDose(d)
+                                setShowDialog(!showDialog)}}
+                            >
                             <View>
-                                <Text style={style.doseHourAmount}>{d.amount + " " +  d.unit + "(s)"}</Text>
+                                <Text style={style.doseHourAmount}>{"Tomar " + d.amount + " " +  doseUnits[d.unit].label + "(s)"}</Text>
                             </View>
                         </TouchableOpacity>
                         { showDoseHourPicker && 
@@ -119,8 +140,14 @@ export default props =>{
                             textColor="#6f11fd"
                             minuteInterval={5}
                             onChange={updateDoseHourItem}
-                        />)}
+                            />)}
                     </View>
+                    <DoseHourDialog 
+                        visible={showDialog} 
+                        dose={d}
+                        close={closeDialog}
+                        onSet={updateItem}/>
+                </>
             )
         })
     }

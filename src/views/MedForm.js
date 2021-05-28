@@ -70,7 +70,7 @@ export default ({navigation, route}) => {
                 <View>
                     {med.scheduledDoses 
                     ?   <View>
-                            <DoseHourItems/>
+                            <DoseHourItems key="index"/>
                         </View>
                     : <Text>Tomar quando necessário</Text>
                     } 
