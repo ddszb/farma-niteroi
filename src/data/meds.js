@@ -36,7 +36,7 @@ export default [
         iconColor: '#f0303f'
     },
     {
-        id: 1,
+        id: 5,
         name: 'Dipirona',
         amount: 1,
         unit: 'Comprimido',
@@ -45,7 +45,7 @@ export default [
         iconColor: '#5555ff'
     },
     {
-        id: 2,
+        id: 6,
         name: 'Novalgina',
         amount: 20,
         unit: 'Gota',
@@ -54,7 +54,7 @@ export default [
         iconColor: '#f555ff'
     },
     {
-        id: 3,
+        id: 7,
         name: 'Ibuprofeno',
         amount: 1,
         unit: 'Cápsula',
@@ -63,7 +63,7 @@ export default [
         iconColor: '#e5855f'
     },
     {
-        id: 4,
+        id: 8,
         name: 'Neosaldina',
         amount: 1,
         unit: 'Comprimido',
@@ -72,7 +72,7 @@ export default [
         iconColor: '#f0303f'
     },
     {
-        id: 1,
+        id: 9,
         name: 'Dipirona',
         amount: 1,
         unit: 'Comprimido',
@@ -81,7 +81,7 @@ export default [
         iconColor: '#5555ff'
     },
     {
-        id: 2,
+        id: 11,
         name: 'Novalgina',
         amount: 20,
         unit: 'Gota',
@@ -90,7 +90,7 @@ export default [
         iconColor: '#f555ff'
     },
     {
-        id: 3,
+        id: 12,
         name: 'Ibuprofeno',
         amount: 1,
         unit: 'Cápsula',
@@ -99,7 +99,7 @@ export default [
         iconColor: '#e5855f'
     },
     {
-        id: 4,
+        id: 13,
         name: 'Neosaldina',
         amount: 1,
         unit: 'Comprimido',

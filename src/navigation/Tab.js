@@ -5,8 +5,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
 import Home from '../views/Home'
 import Info from '../views/Info'
-import MedList from '../views/MedList'
-import MedForm from '../views/MedForm'
+import MedList from '../views/MedList/MedList'
+import MedForm from '../views/MedForm/MedForm'
 import Search from '../views/Search'
 
 const Tab = createBottomTabNavigator()

@@ -1,10 +1,11 @@
 import React, {useContext} from 'react'
-import {View, Text, FlatList, Alert, StyleSheet} from 'react-native'
-import { Avatar, ListItem, Button } from 'react-native-elements'
+import {FlatList, Alert} from 'react-native'
+import { ListItem} from 'react-native-elements'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
-import AppContext from '../context/context'
-import FAB from '../components/FloatActionButton'
+import AppContext from '../../context/context'
+import FAB from '../../components/FloatActionButton'
 
+import {LeftTitle, RightTitle, LeftSubtitle, RightSubtitle, RightContainer, MedListView} from './styles'
 
 export default props =>{
 
@@ -42,62 +43,37 @@ export default props =>{
                 {/* <Avatar source={{uri: med.avatarUrl}}/> */}
                 {/* Nome e quantidade */}
                 <ListItem.Content>
-                    <ListItem.Title style={styles.leftContentTitle}>
+                    <LeftTitle>
                         {med.name}
-                    </ListItem.Title>
-                    <ListItem.Subtitle style={styles.leftContentSubtitle}>
+                    </LeftTitle>
+                    <LeftSubtitle>
                         {med.amount} {med.unit}{med.amount > 1 ? 's' : ''}
-                    </ListItem.Subtitle>
+                    </LeftSubtitle>
                 </ListItem.Content>
                 {/* Tempo restante */}
-                <ListItem.Content style={styles.rightContentContainer}>
-                    <ListItem.Title style={[styles.rightContentTitle, {color: med.iconColor}]}>
+                <RightContainer>
+                    <RightTitle style={{color: med.iconColor}}>
                         {med.daysLeft} {med.daysLeft > 1 ? 'dias' : 'dia'}
-                    </ListItem.Title>
-                    <ListItem.Subtitle style={styles.rightContentSubtitle}>
+                    </RightTitle>
+                    <RightSubtitle>
                         {med.daysLeft > 1 ? 'restantes' : 'restante'}
-                    </ListItem.Subtitle>
-                </ListItem.Content>
+                    </RightSubtitle>
+                </RightContainer>
             </ListItem>
                 
         )
     }
     
     return (
-        <View style={{flex: 1, justifyContent: 'center'}}>
+        <MedListView>
             <FlatList
                 keyExtractor={user => user.id.toString()}
                 data={state.users}
                 renderItem={getMedItem}
             />
             <FAB onClick={navigateToNew}/>
-        </View>
+        </MedListView>
         
     )
 }
 
-const styles = StyleSheet.create({
-    leftContentTitle:{
-        color: '#721dab',
-        fontSize: 20,
-        fontWeight: 'bold',
-    },
-    leftContentSubtitle:{
-        fontSize: 16,
-    },
-    rightContentContainer:{
-        alignItems: 'flex-end',
-        marginRight: 10
-    },
-    rightContentTitle:{
-        fontWeight: 'bold',
-        fontSize: 18,
-    },
-    rightContentSubtitle:{
-        fontWeight: 'bold',
-        fontSize: 16,
-        color:'#aaa'
-    },
-
-
-})

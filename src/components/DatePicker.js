@@ -4,7 +4,7 @@ import DatePicker from 'react-native-datepicker'
 export default props =>{
     return (
         <DatePicker
-            style={{width: 200,}}
+            style={{width: 200, paddingLeft: 6}}
             date={props.date}
             showIcon={false}
             mode="date"
@@ -33,7 +33,6 @@ export default props =>{
                     alignItems: 'flex-start',
                     marginTop: 5,
                 }
-            // ... You can check the source to find the other keys.
             }}
             onDateChange={(date) => {
                 props.onChangeValue(date)

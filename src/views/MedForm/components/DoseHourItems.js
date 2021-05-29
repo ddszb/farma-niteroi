@@ -6,10 +6,10 @@ import {
     TouchableOpacity
 } from "react-native"
 
-import doseUnits from '../constants/doseUnits'
-import doseTimes from '../constants/doseTimesSelection'
-import TreatmentSpinner from '../components/TreatmentSpinner'
-import DoseHourDialog from '../components/DoseHourDialog'
+import doseUnits from '../../../constants/doseUnits'
+import doseTimes from '../../../constants/doseTimesSelection'
+import TreatmentSpinner from '../../../components/Spinner'
+import DoseHourDialog from './DoseHourDialog'
 
 import DateTimePicker from '@react-native-community/datetimepicker'
 export default props =>{

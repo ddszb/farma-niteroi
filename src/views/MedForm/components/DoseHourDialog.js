@@ -1,18 +1,16 @@
 import React, {useState}from 'react'
-import { Button } from 'react-native';
 import{ Text,
     Modal,
-    Alert,
     StyleSheet,
-    Pressable,
     View,
     TextInput,
     TouchableOpacity
 } from 'react-native'
-import doseUnitsSelection from '../constants/doseUnitsSelection'
-import doseUnits from '../constants/doseUnits'
-import TreatmentSpinner from './TreatmentSpinner';
-import { Icon } from 'react-native-elements/dist/icons/Icon'
+import doseUnitsSelection from '../../../constants/doseUnitsSelection'
+import doseUnits from '../../../constants/doseUnits'
+import UnitSpinner from '../../../components/Spinner';
+
+
 
 export default (props) =>{
 
@@ -37,7 +35,7 @@ export default (props) =>{
                       onChangeText={ amount => setAmount(amount)}
                       value={'' + amount}
                       keyboardType="numeric"/>
-              <TreatmentSpinner 
+              <UnitSpinner 
                   items={doseUnitsSelection} 
                   value={props.dose.unit}
                   onChangeValue={ unit => setUnit(unit)}/> 
