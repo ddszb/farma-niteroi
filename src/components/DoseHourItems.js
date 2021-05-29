@@ -14,48 +14,59 @@ import DoseHourDialog from '../components/DoseHourDialog'
 import DateTimePicker from '@react-native-community/datetimepicker'
 export default props =>{
 
-    const [doseHoursItems, setDoseHoursItems] = useState([{ hour: 8, minute: 0, amount: 1, unit: doseUnits.COMPRIMIDO.key, index: 0}])
-    const [showDoseHourPicker, setShowDoseHourPicker] = useState(false)
-    const [selectedDose, setSelectedDose] = useState(doseHoursItems[0])
-    const [showDialog, setShowDialog] = useState(false)
+    var defaultDate = new Date()
+    defaultDate.setMinutes(0)
+    defaultDate.setHours(8)
 
-    const updateDoseHourItem = (event, date) =>{
-        const currDate = date || getSelectedDoseDate()
-        var dose = selectedDose
-        dose.hour = currDate.getHours()
-        dose.minute = currDate.getMinutes()
-        setShowDoseHourPicker(false)
-        setSelectedDose(currDate)
-        updateList()
-    }
+    const [state, setState] = useState({
+        doseHoursItems: [{ time: defaultDate, amount: 1, unit: doseUnits.COMPRIMIDO.key, index: 0}],
+        selectedDose: 0,
+        showDialog: false,
+        showDoseHourPicker: false,
+    })
 
-    getSelectedDoseDate = () =>{
-        var date = new Date()
-        if(selectedDose){
-            date.setHours(selectedDose.hour)
-            date.setMinutes(selectedDose.minute)
+    const __updateDoseTime = (event, date) =>{
+        if(event.type === "set"){
+            // Atualizando dose selecionada
+            var doses = state.doseHoursItems
+            var index = state.selectedDose
+            var selectedDose = doses[index]
+            selectedDose.time = date
+            
+            // Atualizando lista
+            doses.splice(index, 1, selectedDose)
+            // if(dose.index == 0){
+            //     doses = __shiftDoseTimes(doses)
+            // }
+            
+            // Atualizando estado
+            setState({
+                ...state,
+                selectedDose: index,
+                doseHoursItem: doses,
+                showDoseHourPicker: false,
+            })
+        }else{
+            setState({
+                ...state,
+                showDoseHourPicker: false,
+            })
         }
-        return date
+        
     }
 
-    const updateList = () =>{
-        var doses = doseHoursItems
-        doses.splice(selectedDose.index, 1, selectedDose)
-        setDoseHoursItems(doses)
-    }
-
-    const shiftDoseTimes = (doses) =>{
+    const __shiftDoseTimes = (doses) =>{
         const newDoses = []
-        offset = 8 - doses[0].hour
+        offset = 8 - doses[0].getHours()
         for(var i = 0; i < doses.length; i++){
             let dose = doses[i]
-            dose.hour = doses[i] + offset >= 24 ? doses[i] + offset : 24 - doses[i] + offset
+            dose.setHours(doses[i] + offset >= 24 ? doses[i] + offset : 24 - doses[i] + offset)
             newDoses.push(dose)
         }
         return newDoses
     }
 
-    const createDoseTimes = (value) =>{
+    const __createDoseTimes = (value) =>{
         var defaultStartHour = 8
         var defaultStartMinute = 0
         var amountInADay = value;
@@ -64,89 +75,105 @@ export default props =>{
         doseHours = []
         for( i = 0; i < amountInADay; i++){
             let startTime = defaultStartHour + (i * interval)
+            let doseTime = new Date()
+            doseTime.setHours(startTime)
+            doseTime.setMinutes(defaultStartMinute)
             let doseHour = {
-                hour : startTime,
-                minute : defaultStartMinute,
+                time: doseTime,
                 amount: 1,
                 unit: doseUnits.COMPRIMIDO.key,
                 index: i
             }
             doseHours.push(doseHour)
         }
-        var offsetHours = doseHours[doseHours.length - 1].hour - 24
         
-        offsetHours = offsetHours > 0 ? offsetHours : 0
-        for( i = 0; i < doseHours.length; i++){
-            let adjustedHour = doseHours[i].hour - offsetHours
-            doseHours[i].hour = adjustedHour === 24 ? 0 : adjustedHour
+        // Se passou para o dia seguinte
+        if(doseHours[doseHours.length - 1].time.getDate() > doseHours[0].time.getDate()){
+            var offsetHours = doseHours[doseHours.length - 1].time.getHours() 
+            for( i = 0; i < doseHours.length; i++){
+                let adjustedHour = doseHours[i].time.getHours() - offsetHours
+                doseHours[i].time.setHours(adjustedHour)
+            }
         }
         
-        setDoseHoursItems(doseHours)
+        setState({
+            ...state,
+            doseHoursItems: doseHours,
+        })
     }
 
-    const updateItem = (amount, unit) =>{
-        var dose = selectedDose
+    const __updateItem = (amount, unit) =>{
+        var doses = state.doseHoursItems
+        var index = state.selectedDose
+        var dose = doses[index]
         dose.amount = amount
         dose.unit = doseUnits[unit].key
-        setSelectedDose(dose)
         
-        var doses = doseHoursItems
-        doses.splice(dose.index, 1, dose)
+        doses.splice(index, 1, dose)
         doses = doses.map( d => {return {...d, unit}})
-        setDoseHoursItems(doses)
-
-        setShowDialog(!showDialog)
+        
+        setState({
+            ...state,
+            selectedDose: dose.index,
+            doseHoursItems: doses,
+            showDialog: false
+        })
     }
 
-    const closeDialog = () =>{
-        setShowDialog(false)
+    const __closeDialog = () =>{
+        setState({ ...state, showDialog: false})
     }
 
-    const doseHoursItemList = () =>{
-        return doseHoursItems.map( d =>{
+    const __doseHoursItemList = () =>{
+        const doses = state.doseHoursItems
+        return doses.map( d =>{
             return (
                 <>
-                    <View key={d.index} style={{flexDirection : 'row', justifyContent: 'space-between', padding: 4}}>
+                    <View key={d.index} style={{flexDirection : 'row', justifyContent: 'space-between', padding: 0}}>
                         <TouchableOpacity
-                            onPress={ () => {
-                                setSelectedDose(d)
-                                setShowDoseHourPicker(true)
-                            }}
+                            onPress={ () => { setState({
+                                ...state,
+                                selectedDose: d.index,
+                                showDoseHourPicker: true,
+                            })}}
                             >
                             <View style={{flexDirection : 'row'}}>
                                 <Text style={style.doseHourText}>
-                                    {d.hour.toString().padStart(2, '0')}:
+                                    {d.time.getHours().toString().padStart(2, '0')}:
                                 </Text>
                                 <Text style={style.doseHourText}>
-                                    {d.minute.toString().padStart(2, '0')}
+                                    {d.time.getMinutes().toString().padStart(2, '0')}
                                 </Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={ () => {
-                                setSelectedDose(d)
-                                setShowDialog(!showDialog)}}
+                                setState({
+                                    ...state,
+                                    selectedDose: d.index,
+                                    showDialog: true
+                                })}}
                             >
                             <View>
                                 <Text style={style.doseHourAmount}>{"Tomar " + d.amount + " " +  doseUnits[d.unit].label + "(s)"}</Text>
                             </View>
                         </TouchableOpacity>
-                        { showDoseHourPicker && 
+                        { state.showDoseHourPicker && 
                         (<DateTimePicker
-                            value={getSelectedDoseDate()}
+                            value={d.time}
                             mode="time"
                             is24Hour={true}
                             display="spinner"
                             textColor="#6f11fd"
                             minuteInterval={5}
-                            onChange={updateDoseHourItem}
+                            onChange={__updateDoseTime}
                             />)}
                     </View>
                     <DoseHourDialog 
-                        visible={showDialog} 
+                        visible={state.showDialog} 
                         dose={d}
-                        close={closeDialog}
-                        onSet={updateItem}/>
+                        close={__closeDialog}
+                        onSet={__updateItem}/>
                 </>
             )
         })
@@ -154,8 +181,8 @@ export default props =>{
 
     return(
         <>
-            <TreatmentSpinner items={doseTimes} onChangeValue={createDoseTimes}/> 
-            {doseHoursItemList()}
+            <TreatmentSpinner items={doseTimes} onChangeValue={__createDoseTimes}/> 
+            {__doseHoursItemList()}
         </>
     )
 }
