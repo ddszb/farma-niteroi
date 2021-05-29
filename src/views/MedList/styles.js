@@ -3,7 +3,6 @@ import styled from "styled-components/native"
 import {ListItem} from 'react-native-elements'
 
 export const LeftTitle = styled(ListItem.Title)`
-    color: #721dab;
     font-size: 20px;
     font-weight: bold;
 `
@@ -27,4 +26,7 @@ export const MedListView = styled.View`
     flex: 1;
     justify-content: center;
 `
-
+export const IconPadding = styled.View`
+    padding-left: 10px;
+    padding-right: 5px;
+`

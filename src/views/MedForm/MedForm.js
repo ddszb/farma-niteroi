@@ -10,8 +10,10 @@ import AppContext from '../../context/context'
 import DatePicker from '../../components/DatePicker'
 import DoseHourItems from './components/DoseHourItems'
 import DurationRadioGroup from './components/DurationRadioGroup'
+import FrequencyRadioGroup from './components/FrequencyRadioGroup'
 import { FormFieldLabel, FormInputTextField, FormFieldLabelLight,
     ViewFlexRow, CardBox, CardContent, Form} from './styles'
+import IconPicker from './components/IconPicker'
 
 
 export default ({navigation, route}) => {
@@ -19,6 +21,7 @@ export default ({navigation, route}) => {
     // console.warn(Object.keys(route))
     
     const [med, setMed] = useState(route.params ? route.params : {})
+
 
     const { dispatch } = useContext(AppContext)
 
@@ -38,6 +41,14 @@ export default ({navigation, route}) => {
     const setExpireDate = (expireDate) =>{
         setMed({...med, expireDate})
     }
+
+    const onColorChange = (color) =>{
+        setMed({...med, iconColor: color})
+    }
+    const onIconChange = (icon) =>{
+        setMed({...med, icon: icon})
+    }
+    
 
     const medExpireDateField = () => {
         return (
@@ -84,8 +95,7 @@ export default ({navigation, route}) => {
         setMed({...med, startTime})
     }
 
-    const scheduleField = (value) =>{
-        
+    const scheduleField = () =>{
         return(
             <View>
                 <FormFieldLabel>Cronograma</FormFieldLabel>
@@ -96,9 +106,21 @@ export default ({navigation, route}) => {
                     onChangeValue={setTreatmentStartTime}/>
                 <FormFieldLabelLight>duração</FormFieldLabelLight>
                 <DurationRadioGroup/>
+                <FormFieldLabelLight>frequência</FormFieldLabelLight>
+                <FrequencyRadioGroup/>
             </View>
         )
     }
+
+    const iconField = () => {
+        return(
+            <View>
+                <FormFieldLabel>Ícone</FormFieldLabel>
+                <IconPicker onChangeIcon={onIconChange} onChangeColor={onColorChange}/>
+            </View>
+        )
+    }
+
 
     return (
         <ScrollView>
@@ -117,6 +139,11 @@ export default ({navigation, route}) => {
                 <CardBox>
                     <CardContent>
                         {scheduleField()}
+                    </CardContent>
+                </CardBox>
+                <CardBox>
+                    <CardContent>
+                        {iconField()}
                     </CardContent>
                 </CardBox>
             </Form>

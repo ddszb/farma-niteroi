@@ -7,6 +7,7 @@ import Home from '../views/Home'
 import Info from '../views/Info'
 import MedList from '../views/MedList/MedList'
 import MedForm from '../views/MedForm/MedForm'
+import MedDetail from '../views/MedDetail/MedDetail'
 import Search from '../views/Search'
 
 const Tab = createBottomTabNavigator()
@@ -16,8 +17,9 @@ const MedsStack = createStackNavigator()
 function MedStackScreen() {
     return (
         <MedsStack.Navigator>
-            <MedsStack.Screen name="MedList" component={MedList}/>
-            <MedsStack.Screen name="MedForm" component={MedForm}/>
+            <MedsStack.Screen name="Meus Medicamentos" component={MedList}/>
+            <MedsStack.Screen name="Adicionar Medicamento" component={MedForm}/>
+            <MedsStack.Screen name="Meu Medicamento" component={MedDetail}/>
         </MedsStack.Navigator>
     )
 
@@ -34,17 +36,17 @@ export default props =>(
                     ? 'home'
                     : 'home-outline'
                     break
-                case 'Med':
+                case 'Medicamentos':
                     iconName = focused
                     ? 'medkit'
                     : 'medkit-outline'
                     break
-                case 'Search':
+                case 'Procurar':
                     iconName = focused
                     ? 'search'
                     : 'search-outline'
                     break
-                case 'Info':
+                case 'Informação':
                     iconName = focused
                     ? 'help'
                     : 'help-outline'
@@ -61,9 +63,9 @@ export default props =>(
         labelStyle: {fontSize: 10}
     }} initialRouteName="Home">
         <Tab.Screen name="Home" component={Home}/>
-        <Tab.Screen name="Med" component={MedStackScreen}/>
-        <Tab.Screen name="Search" component={Search}/>
-        <Tab.Screen name="Info" component={Info}/>
+        <Tab.Screen name="Medicamentos" component={MedStackScreen}/>
+        <Tab.Screen name="Procurar" component={Search}/>
+        <Tab.Screen name="Informação" component={Info}/>
     </Tab.Navigator>
 )
 

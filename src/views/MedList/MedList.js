@@ -1,19 +1,25 @@
 import React, {useContext} from 'react'
 import {FlatList, Alert} from 'react-native'
 import { ListItem} from 'react-native-elements'
-import { Icon } from 'react-native-elements/dist/icons/Icon'
 import AppContext from '../../context/context'
 import FAB from '../../components/FloatActionButton'
-
-import {LeftTitle, RightTitle, LeftSubtitle, RightSubtitle, RightContainer, MedListView} from './styles'
+import { createIconSetFromIcoMoon } from 'react-native-vector-icons'
+import iconMoonConfig from '../../selection.json'
+import {LeftTitle, RightTitle, LeftSubtitle, RightSubtitle, RightContainer,
+     MedListView, IconPadding} from './styles'
 
 export default props =>{
 
     const {state, dispatch} = useContext(AppContext)
 
-    function navigateToNew(){
-        props.navigation.navigate('Med', {screen: 'MedForm'})
+    const MedIcon = createIconSetFromIcoMoon(iconMoonConfig)
 
+    function navigateToNew(){
+        props.navigation.navigate('Adicionar Medicamento', {screen: 'Adicionar Medicamento'})
+    }
+
+    function navigateToView(med){
+        props.navigation.navigate('Meu Medicamento', {screen: 'Meu Medicamento', med: med} )
     }
 
     function confirmUserDeletion(user){
@@ -33,17 +39,20 @@ export default props =>{
         }])
     }
 
+
+
     function getMedItem({ item: med }){
         return (
             <ListItem 
                 key={med.id.toString()}
                 bottomDivider
-                onPress={() => props.navigation.navigate('medForm', med)}>
-                <Icon source={{uri: med.avatarUrl}}/>
-                {/* <Avatar source={{uri: med.avatarUrl}}/> */}
+                onPress={() => navigateToView(med)}>
+                <IconPadding>
+                    <MedIcon name={med.icon} size={40} color={med.iconColor}/> 
+                </IconPadding>
                 {/* Nome e quantidade */}
                 <ListItem.Content>
-                    <LeftTitle>
+                    <LeftTitle style={{color: med.iconColor}}>
                         {med.name}
                     </LeftTitle>
                     <LeftSubtitle>
