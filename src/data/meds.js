@@ -5,8 +5,12 @@ export default [
         amount: 1,
         unit: 'Comprimido',
         daysLeft: 2,
-        icon: 1,
-        iconColor: '#5555ff'
+        icon: 'med_caps',
+        iconColor: '#5555ff',
+        expireDate: new Date(),
+        notes: "Tomar após refeições, nunca com estômago vazio",
+        isOffered: true,
+
     },
     {
         id: 2,
@@ -14,8 +18,12 @@ export default [
         amount: 20,
         unit: 'Gota',
         daysLeft: 4,
-        icon: 1,
-        iconColor: '#f555ff'
+        icon: 'med_drop',
+        iconColor: '#f555ff',
+        expireDate: new Date(),
+        notes: "Tomar após refeições, nunca com estômago vazio",
+        isOffered: false,
+
     },
     {
         id: 3,
@@ -23,8 +31,12 @@ export default [
         amount: 1,
         unit: 'Cápsula',
         daysLeft: 7,
-        icon: 1,
-        iconColor: '#e5855f'
+        icon: 'med_caps',
+        iconColor: '#e5855f',
+        expireDate: new Date(),
+        notes: "Tomar após refeições, nunca com estômago vazio",
+        isOffered: false,
+
     },
     {
         id: 4,
@@ -32,8 +44,12 @@ export default [
         amount: 1,
         unit: 'Comprimido',
         daysLeft: 8,
-        icon: 1,
-        iconColor: '#f0303f'
+        icon: 'med_pill',
+        iconColor: '#f0303f',
+        expireDate: new Date(),
+        notes: "Tomar após refeições, nunca com estômago vazio",
+        isOffered: false,
+
     },
     {
         id: 5,
@@ -41,8 +57,12 @@ export default [
         amount: 1,
         unit: 'Comprimido',
         daysLeft: 2,
-        icon: 1,
-        iconColor: '#5555ff'
+        icon: 'med_pill',
+        iconColor: '#5555ff',
+        expireDate: new Date(),
+        notes: "Tomar após refeições, nunca com estômago vazio",
+        isOffered: true,
+
     },
     {
         id: 6,
@@ -50,8 +70,12 @@ export default [
         amount: 20,
         unit: 'Gota',
         daysLeft: 4,
-        icon: 1,
-        iconColor: '#f555ff'
+        icon: 'med_drop',
+        iconColor: '#f555ff',
+        expireDate: new Date(),
+        notes: "Tomar após refeições, nunca com estômago vazio",
+        isOffered: false,
+
     },
     {
         id: 7,
@@ -59,8 +83,12 @@ export default [
         amount: 1,
         unit: 'Cápsula',
         daysLeft: 7,
-        icon: 1,
-        iconColor: '#e5855f'
+        icon: 'med_caps',
+        iconColor: '#e5855f',
+        expireDate: new Date(),
+        notes: "Tomar após refeições, nunca com estômago vazio",
+        isOffered: true,
+
     },
     {
         id: 8,
@@ -68,8 +96,12 @@ export default [
         amount: 1,
         unit: 'Comprimido',
         daysLeft: 8,
-        icon: 1,
-        iconColor: '#f0303f'
+        icon: 'med_pill',
+        iconColor: '#f0303f',
+        expireDate: new Date(),
+        notes: "Tomar após refeições, nunca com estômago vazio",
+        isOffered: true,
+
     },
     {
         id: 9,
@@ -77,8 +109,12 @@ export default [
         amount: 1,
         unit: 'Comprimido',
         daysLeft: 2,
-        icon: 1,
-        iconColor: '#5555ff'
+        icon: 'med_pill',
+        iconColor: '#5555ff',
+        expireDate: new Date(),
+        notes: "Tomar após refeições, nunca com estômago vazio",
+        isOffered: true,
+
     },
     {
         id: 11,
@@ -86,8 +122,12 @@ export default [
         amount: 20,
         unit: 'Gota',
         daysLeft: 4,
-        icon: 1,
-        iconColor: '#f555ff'
+        icon: 'med_drop',
+        iconColor: '#f555ff',
+        expireDate: new Date(),
+        notes: "Tomar após refeições, nunca com estômago vazio",
+        isOffered: true,
+
     },
     {
         id: 12,
@@ -95,8 +135,12 @@ export default [
         amount: 1,
         unit: 'Cápsula',
         daysLeft: 7,
-        icon: 1,
-        iconColor: '#e5855f'
+        icon: 'med_caps',
+        iconColor: '#e5855f',
+        expireDate: new Date(),
+        notes: "Tomar após refeições, nunca com estômago vazio",
+        isOffered: true,
+
     },
     {
         id: 13,
@@ -104,8 +148,12 @@ export default [
         amount: 1,
         unit: 'Comprimido',
         daysLeft: 8,
-        icon: 1,
-        iconColor: '#f0303f'
+        icon: 'med_pill',
+        iconColor: '#f0303f',
+        expireDate: new Date(),
+        notes: "Tomar após refeições, nunca com estômago vazio",
+        isOffered: true,
+
     },
     
 ]
