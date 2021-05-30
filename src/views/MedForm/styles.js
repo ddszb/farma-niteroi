@@ -1,7 +1,7 @@
 import styled from "styled-components/native"
 
 export const FormFieldLabel = styled.Text`
-    color: #6f11fd;
+    color: #63488c;
     font-weight: bold;
 `
 export const FormInputTextField = styled.TextInput`

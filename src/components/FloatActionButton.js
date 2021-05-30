@@ -8,7 +8,7 @@ export default props => (
         width: 50,  
         height: 50,   
         borderRadius: 30,            
-        backgroundColor: '#721dab',                                    
+        backgroundColor: '#63488c',                                    
         position: 'absolute',                                          
         bottom: 10,                                                    
         right: 10, 
@@ -22,6 +22,6 @@ export default props => (
                 size={25}
                 color='#fff'
                 />
-    </TouchableHighlight>
+        </TouchableHighlight>
     </View>
 )

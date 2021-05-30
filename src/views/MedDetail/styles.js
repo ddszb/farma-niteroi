@@ -75,7 +75,7 @@ export const LeftButtonText = styled.Text`
     `
     
     export const RightButtonText = styled.Text`
-    color: #6f11fd;
+    color: #63488c;
     font-size: 16px;
     text-align: center;
 `

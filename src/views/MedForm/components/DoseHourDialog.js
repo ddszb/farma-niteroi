@@ -101,10 +101,10 @@ const styles = StyleSheet.create({
     width: 60,
     padding: 6,
     elevation: 1,
-    backgroundColor: "#6f11fd"
+    backgroundColor: "#63488c"
   },
   cancelText:{
-    color: '#6f11fd',
+    color: '#63488c',
     textAlign: 'center'
   },
   confirmText:{
@@ -133,6 +133,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#6f11fd'
+    color: '#63488c'
   }
 });

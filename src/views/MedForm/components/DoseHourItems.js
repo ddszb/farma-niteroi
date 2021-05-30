@@ -164,7 +164,7 @@ export default props =>{
                             mode="time"
                             is24Hour={true}
                             display="spinner"
-                            textColor="#6f11fd"
+                            textColor="#63488c"
                             minuteInterval={5}
                             onChange={__updateDoseTime}
                             />)}
@@ -189,12 +189,12 @@ export default props =>{
 
 const style = StyleSheet.create({
     doseHourText:{
-        color:'#6f11fd',
+        color:'#63488c',
         fontWeight: 'bold', 
         fontSize: 20
     },
     doseHourAmount:{
-        color:'#6f11fd',
+        color:'#63488c',
         fontSize: 18
     }
 })

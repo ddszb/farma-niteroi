@@ -71,7 +71,7 @@ export default ({navigation, route}) => {
                     <FormFieldLabel>Doses Marcadas</FormFieldLabel>
                     <Switch
                         trackColor={{ false: '#888', true:'#a163ff' }}
-                        thumbColor={med.scheduledDoses ? "#6f11fd" : "#d4d3d4"}
+                        thumbColor={med.scheduledDoses ? "#63488c" : "#d4d3d4"}
                         ios_backgroundColor="#3e3e3e"
                         onValueChange={ (scheduledDoses) => setMed( {...med, scheduledDoses})}
                         value={med.scheduledDoses}
