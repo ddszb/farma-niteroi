@@ -1,12 +1,12 @@
 import React from 'react'
 import { TouchableOpacity } from 'react-native'
-import { ToastAndroid , Pressable, Button } from 'react-native'
+import { ToastAndroid , Pressable} from 'react-native'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons'
 import iconMoonConfig from '../../selection.json'
 import {Container, RowView, MedName, HPadding,
     VPadding, InfoTitle, InfoText, Bottom, ButtonView,
-    RightButton, LeftButton, ButtonBorder} from './styles'
+    RightButtonText, LeftButtonText, Button} from './styles'
 
 export default props =>{
     
@@ -57,18 +57,18 @@ export default props =>{
             <Bottom>
                 <ButtonView>
                     <TouchableOpacity>
-                        <ButtonBorder>
-                            <LeftButton>
+                        <Button>
+                            <LeftButtonText>
                                 Pausar Tratamento
-                            </LeftButton>
-                        </ButtonBorder>
+                            </LeftButtonText>
+                        </Button>
                     </TouchableOpacity>
                     <TouchableOpacity>
-                        <ButtonBorder>
-                            <RightButton>
+                        <Button>
+                            <RightButtonText>
                                 Acabar Tratamento
-                            </RightButton>
-                        </ButtonBorder>
+                            </RightButtonText>
+                        </Button>
                     </TouchableOpacity>
 
                 </ButtonView>

@@ -54,7 +54,7 @@ export const ButtonView = styled.View`
     justify-content: space-between;
 `
 
-export const ButtonBorder = styled.View`
+export const Button = styled.View`
     border-width: 1px;
     border-color: #ccc;
     border-radius: 25px;
@@ -68,13 +68,13 @@ export const ButtonBorder = styled.View`
     margin-right: 10px;
 `
 
-export const LeftButton = styled.Text`
+export const LeftButtonText = styled.Text`
     color: #3489eb;
     font-size: 16px;
     text-align: center;
     `
     
-    export const RightButton = styled.Text`
+    export const RightButtonText = styled.Text`
     color: #6f11fd;
     font-size: 16px;
     text-align: center;
