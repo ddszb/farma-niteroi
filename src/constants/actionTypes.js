@@ -1,7 +1,7 @@
 export default {
  
-    DELETE_USER: 'deleteUser',
-    CREATE_USER: 'createUser',
-    UPDATE_USER: 'updateUser',
+    DELETE_MED: 'deleteMed',
+    CREATE_MED: 'createMed',
+    UPDATE_MED: 'updateMed',
     
 }
