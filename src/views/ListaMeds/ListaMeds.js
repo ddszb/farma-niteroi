@@ -22,15 +22,15 @@ export default props =>{
         props.navigation.navigate('Meu Medicamento', {screen: 'Meu Medicamento', med: med} )
     }
 
-    function confirmUserDeletion(user){
+    function confirmMedDeletion(med){
 
-        Alert.alert('Excluir Usuário', 'Deseja excluir o usuário?',
+        Alert.alert('Excluir Medicamento', 'Deseja remover o medicamento?',
          [{
              text:'Sim',
              onPress(){
                  dispatch({
-                    type: action.DELETE_USER,
-                    payload: user,
+                    type: action.DELETE_MED,
+                    payload: med,
                 })
              }
          },
@@ -76,8 +76,8 @@ export default props =>{
     return (
         <MedListView>
             <FlatList
-                keyExtractor={user => user.id.toString()}
-                data={state.users}
+                keyExtractor={med => med.id.toString()}
+                data={state.meds}
                 renderItem={getMedItem}
             />
             <FAB onClick={navigateToNew}/>
