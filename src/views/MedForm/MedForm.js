@@ -20,7 +20,11 @@ export default ({navigation, route}) => {
 
     // console.warn(Object.keys(route))
     
-    const [med, setMed] = useState(route.params ? route.params : {})
+    const [med, setMed] = useState(
+        route.params ? route.params : 
+            {
+                days: { 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 0:0}
+            })
 
 
     const { dispatch } = useContext(AppContext)
@@ -80,7 +84,7 @@ export default ({navigation, route}) => {
                 <View>
                     {med.scheduledDoses 
                     ?   <View>
-                            <DoseHourItems key="index"/>
+                            <DoseHourItems/>
                         </View>
                     : <Text>Tomar quando necessário</Text>
                     } 
@@ -95,6 +99,13 @@ export default ({navigation, route}) => {
         setMed({...med, startTime})
     }
 
+    const changeFrequencyDays = (days, isDaily) =>{
+        if(isDaily){
+            days = { 1:1, 2:1, 3:1, 4:1, 5:1, 6:1, 0:1}
+        }
+        setMed({...med, days})
+    }
+
     const scheduleField = () =>{
         return(
             <View>
@@ -105,9 +116,12 @@ export default ({navigation, route}) => {
                     placeholder="Data de início"
                     onChangeValue={setTreatmentStartTime}/>
                 <FormFieldLabelLight>duração</FormFieldLabelLight>
-                <DurationRadioGroup/>
+                    <DurationRadioGroup/>
                 <FormFieldLabelLight>frequência</FormFieldLabelLight>
-                <FrequencyRadioGroup/>
+                    <FrequencyRadioGroup 
+                        onChangeValue={changeFrequencyDays}
+                        days={med.days}
+                    />
             </View>
         )
     }
