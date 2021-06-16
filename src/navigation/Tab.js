@@ -10,7 +10,8 @@ import MedForm from '../views/MedForm/MedForm'
 import MedDetail from '../views/MedDetail/MedDetail'
 import Search from '../views/Busca/Busca'
 import MedsNiteroi from '../views/MedsNiteroi/MedsNiteroi'
-import Policlinicas from '../views/Policlinicas/Policlinicas';
+import Policlinicas from '../views/Policlinicas/Policlinicas'
+import MedNiteroiDetalhe from '../views/MedsNiteroi/MedNiteroiDetalhe'
 
 
 const Tab = createBottomTabNavigator()
@@ -32,6 +33,7 @@ function SearchStackScreen(){
     return(
         <SearchStack.Navigator>
             <SearchStack.Screen options={{headerShown: false}} name="Procurar" component={Search}/>
+            <SearchStack.Screen options={{headerTitle: "voltar"}} name="Medicamento Niteroi Detalhe" component={MedNiteroiDetalhe}/>
             <SearchStack.Screen options={{headerTitle:"Medicamentos da Prefeitura"}} name="Medicamentos Niterói" component={MedsNiteroi}/>
             <SearchStack.Screen  name="Policlínicas" component={Policlinicas}/>
         </SearchStack.Navigator>

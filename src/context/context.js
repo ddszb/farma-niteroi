@@ -1,6 +1,7 @@
 import React, {createContext, useReducer} from 'react'
 import meds from '../data/meds'
 import polis from '../data/polis'
+import medsNiteroi from '../data/meds_niteroi'
 
 
 {/*
@@ -12,7 +13,7 @@ import polis from '../data/polis'
     UseReducer (Hook): Gerenciamento do contexto, para evoluir o contexto
 
 */}
-const initialState = { meds, polis }
+const initialState = { meds, polis, medsNiteroi }
 
 const AppContext = createContext({})
 
