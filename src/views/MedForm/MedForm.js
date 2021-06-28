@@ -102,12 +102,6 @@ export default ({navigation, route}) => {
             payload: med,
         })
 
-        // navigation.dispatch(NavigationActions.reset({
-        //     inbdex: 0,
-        //     actions:[
-        //         NavigationActions.navigate({routeName: 'Medicamentos'})
-        //     ]
-        // }))
         navigation.goBack()
     }
 
