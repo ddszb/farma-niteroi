@@ -3,6 +3,7 @@ import React from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
+import { getFocusedRouteNameFromRoute } from '@react-navigation/core';
 import Home from '../views/Home'
 import Info from '../views/Info'
 import ListaMeds from '../views/ListaMeds/ListaMeds'
@@ -38,6 +39,11 @@ function SearchStackScreen(){
             <SearchStack.Screen  name="Policlínicas" component={Policlinicas}/>
         </SearchStack.Navigator>
     )
+}
+
+function __getTabBarVisiblity(route){
+    const routeName = getFocusedRouteNameFromRoute(route)
+    return routeName !== "Adicionar Medicamento"
 }
 
 export default props =>(
@@ -78,7 +84,12 @@ export default props =>(
         labelStyle: {fontSize: 10}
     }} initialRouteName="Home">
         <Tab.Screen name="Home" component={Home}/>
-        <Tab.Screen name="Medicamentos" component={MedStackScreen}/>
+        <Tab.Screen 
+            name="Medicamentos" 
+            component={MedStackScreen} 
+            options={({ route }) => ({
+                tabBarVisible: __getTabBarVisiblity(route)
+            })}/>
         <Tab.Screen name="Procurar" component={SearchStackScreen}/>
         <Tab.Screen name="Informação" component={Info}/>
     </Tab.Navigator>
