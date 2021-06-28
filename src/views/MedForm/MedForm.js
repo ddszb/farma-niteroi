@@ -3,16 +3,21 @@ import {
     Text,
     View,
     Switch,
-    ScrollView
+    ScrollView,
+    TouchableOpacity,
+    ToastAndroid,
+    Alert,
 } from "react-native"
 
+import * as UtilitarioFormatacao from '../../util/UtilitarioFormatacao'
 import AppContext from '../../context/context'
 import DatePicker from '../../components/DatePicker'
 import DoseHourItems from './components/DoseHourItems'
 import DurationRadioGroup from './components/DurationRadioGroup'
 import FrequencyRadioGroup from './components/FrequencyRadioGroup'
-import { FormFieldLabel, FormInputTextField, FormFieldLabelLight,
-    ViewFlexRow, CardBox, CardContent, Form} from './styles'
+import actionTypes from '../../constants/actionTypes'
+import { FormFieldLabel, FormInputTextField, LargeFormInputTextField, FormFieldLabelLight,
+    ViewFlexRow, CardBox, CardContent, ButtonText, Button, Form} from './styles'
 import IconPicker from './components/IconPicker'
 
 
@@ -29,7 +34,84 @@ export default ({navigation, route}) => {
 
     const { dispatch } = useContext(AppContext)
 
-    const medNameField = () => {
+    
+    const __setExpireDate = (expireDate) =>{
+        setMed({...med, expireDate})
+    }
+    
+
+    const __onColorChange = (color) =>{
+        setMed({...med, iconColor: color})
+    }
+    const __onIconChange = (icon) =>{
+        setMed({...med, icon: icon})
+    }
+    
+    const __setTreatmentstartDate = (startDate) =>{
+        setMed({...med, startDate})
+    }
+    
+    const __changeFrequencyDays = (days, isDaily) =>{
+        if(isDaily){
+            days = { 1:1, 2:1, 3:1, 4:1, 5:1, 6:1, 0:1}
+        }
+        setMed({...med, days})
+    }
+
+    const __validateNewMed = () =>{
+        if(!med.name){
+            ToastAndroid.showWithGravityAndOffset("Nome de medicamento obrigatório.",
+                ToastAndroid.SHORT,
+                ToastAndroid.BOTTOM, 0 , 90)
+            return false
+        }
+        return true        
+    }
+
+    const __onPressSaveButton = () =>{
+        if(!__validateNewMed()){
+            return
+        }
+ 
+
+        Alert.alert('Adicionar Medicamento', 'Deseja adicionar o medicamento?',
+            [{   
+                text: 'Não',
+            },
+            {
+                text:'Sim',
+                onPress(){
+                    __confirmSave()
+                }
+            },
+        ])
+
+    }
+    
+    const __confirmSave = () =>{
+        if(med.expireDate){
+            var expireDate = UtilitarioFormatacao.parseDateToStr(med.expireDate)
+        }
+        if(med.startDate){
+            var startDate = UtilitarioFormatacao.parseDateToStr(med.startDate)
+        }
+        setMed({...med, expireDate, startDate})
+        
+        dispatch({
+            type: actionTypes.CREATE_MED,
+            payload: med,
+        })
+
+        // navigation.dispatch(NavigationActions.reset({
+        //     inbdex: 0,
+        //     actions:[
+        //         NavigationActions.navigate({routeName: 'Medicamentos'})
+        //     ]
+        // }))
+        navigation.goBack()
+    }
+
+    const __medNameField = () => {
         return (
             <>
                 <FormFieldLabel>Nome</FormFieldLabel>
@@ -42,33 +124,20 @@ export default ({navigation, route}) => {
         )
     }
 
-    const setExpireDate = (expireDate) =>{
-        setMed({...med, expireDate})
-    }
-
-    const onColorChange = (color) =>{
-        setMed({...med, iconColor: color})
-    }
-    const onIconChange = (icon) =>{
-        setMed({...med, icon: icon})
-    }
-    
-
-    const medExpireDateField = () => {
+    const __medExpireDateField = () => {
         return (
             <>
                 <FormFieldLabel>Validade</FormFieldLabel>
                 <DatePicker
                     date={med.expireDate}
                     placeholder="Data de validade"
-                    onChangeValue={setExpireDate}    
+                    onChangeValue={__setExpireDate}    
                 />
             </>
         )
     }
-
-    const medDosesField = () => {
-
+    
+    const __medDosesField = () => {
         return(
             <>
                 <ViewFlexRow>
@@ -89,80 +158,96 @@ export default ({navigation, route}) => {
                     : <Text>Tomar quando necessário</Text>
                     } 
                 </View>
-                
-                
             </>
         )
     }
 
-    const setTreatmentStartTime = (startTime) =>{
-        setMed({...med, startTime})
-    }
-
-    const changeFrequencyDays = (days, isDaily) =>{
-        if(isDaily){
-            days = { 1:1, 2:1, 3:1, 4:1, 5:1, 6:1, 0:1}
-        }
-        setMed({...med, days})
-    }
-
-    const scheduleField = () =>{
+    const __scheduleField = () =>{
         return(
             <View>
                 <FormFieldLabel>Cronograma</FormFieldLabel>
                 <FormFieldLabelLight>início</FormFieldLabelLight>
                 <DatePicker
-                    date={med.startTime}
+                    date={med.startDate}
                     placeholder="Data de início"
-                    onChangeValue={setTreatmentStartTime}/>
+                    useNativeDriver={true}
+                    onChangeValue={__setTreatmentstartDate}/>
                 <FormFieldLabelLight>duração</FormFieldLabelLight>
                     <DurationRadioGroup/>
                 <FormFieldLabelLight>frequência</FormFieldLabelLight>
                     <FrequencyRadioGroup 
-                        onChangeValue={changeFrequencyDays}
+                        onChangeValue={__changeFrequencyDays}
                         days={med.days}
                     />
             </View>
         )
     }
 
-    const iconField = () => {
+    const __iconField = () => {
         return(
             <View>
                 <FormFieldLabel>Ícone</FormFieldLabel>
-                <IconPicker onChangeIcon={onIconChange} onChangeColor={onColorChange}/>
+                <IconPicker onChangeIcon={__onIconChange} onChangeColor={__onColorChange}/>
             </View>
         )
     }
 
+    const __obsField = () =>{
+        return(
+            <View>
+                <FormFieldLabel>Observações</FormFieldLabel>
+                <LargeFormInputTextField
+                    onChangeText={ observacao => setMed({...med , observacao})}
+                    value={med.observacao}    
+                    maxLength={200}
+                    multiline={true}
+                    numberOfLines={5}
+                />
+            </View>
+        )
+    }
 
     return (
         <ScrollView>
             <Form>
                 <CardBox>
                     <CardContent>
-                        {medNameField()}
-                        {medExpireDateField()}
+                        {__medNameField()}
+                        {__medExpireDateField()}
                     </CardContent>
                 </CardBox>
                 <CardBox>
                     <CardContent>
-                        {medDosesField()}
+                        {__medDosesField()}
+                    </CardContent>
+                </CardBox>
+                {med.scheduledDoses &&
+                <CardBox>
+                    <CardContent>
+                        {__scheduleField()}
+                    </CardContent>
+                </CardBox>
+                }
+                <CardBox>
+                    <CardContent>
+                        {__iconField()}
                     </CardContent>
                 </CardBox>
                 <CardBox>
                     <CardContent>
-                        {scheduleField()}
+                        {__obsField()}
                     </CardContent>
                 </CardBox>
-                <CardBox>
-                    <CardContent>
-                        {iconField()}
-                    </CardContent>
-                </CardBox>
+                <TouchableOpacity
+                    onPress={__onPressSaveButton}>
+                    <Button>
+                        <ButtonText>
+                            Salvar
+                        </ButtonText>
+                    </Button>
+                </TouchableOpacity>
             </Form>
         </ScrollView>
     )
 
-    
 }
