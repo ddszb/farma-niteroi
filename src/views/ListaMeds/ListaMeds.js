@@ -33,10 +33,6 @@ export default props =>{
     }
 
     function navigateToView(med){
-        analytics().logEvent('medcreation',{
-            id: 1320,
-            item: 'new med'
-        })
         props.navigation.navigate('Meu Medicamento', {screen: 'Meu Medicamento', med: med} )
     }
 
@@ -57,19 +53,36 @@ export default props =>{
         }])
     }
 
+    const __getDaysLeft = (med) =>{
+        var _MS_PER_DAY = 1000 * 60 * 60 * 24
+        var startDate = new Date(med.startDate)
+        var endDate = new Date(med.endDate)
+        const utc1 = Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate())
+        const utc2 = Date.UTC(endDate.getFullYear(), endDate.getMonth(), endDate.getDate())
+        return Math.floor((utc2 - utc1) / _MS_PER_DAY)
+    }
+
     const __getRightContent = (med) =>{
         if(med.scheduledDoses){
-            return(
-            <>
-                <RightTitle style={{color: med.iconColor}}>
-                {med.daysLeft} {med.daysLeft > 1 ? 'dias' : 'dia'}
-                </RightTitle>
-                <RightSubtitle>
-                    {med.daysLeft > 1 ? 'restantes' : 'restante'}
-                </RightSubtitle>
-            </>
+            if(med.days > 0 && med.startDate && med.endDate){
+                var daysLeft = __getDaysLeft(med)
+                return(
+                <>
+                    <RightTitle style={{color: med.iconColor}}>
+                    {daysLeft} {daysLeft > 1 ? 'dias' : 'dia'}
+                    </RightTitle>
+                    <RightSubtitle>
+                        {daysLeft > 1 ? 'restantes' : 'restante'}
+                    </RightSubtitle>
+                </>)
+            }else{
+                return(
+                    <RightSubtitle>
+                        {"Tratamento contínuo"}
+                    </RightSubtitle>
+                )
+            }
 
-            )
         }else{
             return(
                 <RightSubtitle>

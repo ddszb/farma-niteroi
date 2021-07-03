@@ -6,16 +6,13 @@ import{ Text,
     TextInput,
     TouchableOpacity
 } from 'react-native'
-import doseUnitsSelection from '../../../constants/doseUnitsSelection'
 import doseUnits from '../../../constants/doseUnits'
-import UnitSpinner from '../../../components/Spinner';
 
 
 
 export default (props) =>{
 
   const [amount, setAmount] = useState(props.dose ? props.dose.amount : 1)
-  const [unit, setUnit] = useState(props.dose ? props.dose.unit : doseUnits.COMPRIMIDO.key)
 
   return (
     <View style={styles.centeredView}>
@@ -35,10 +32,7 @@ export default (props) =>{
                       onChangeText={ amount => setAmount(amount)}
                       value={'' + amount}
                       keyboardType="numeric"/>
-              <UnitSpinner 
-                  items={doseUnitsSelection} 
-                  value={props.dose.unit}
-                  onChangeValue={ unit => setUnit(unit)}/> 
+              <Text style={styles.unitText}>{doseUnits[props.dose.unit].label + "(s)"}</Text>
 
             </View>
             <View style={styles.buttonsRow}>
@@ -48,7 +42,7 @@ export default (props) =>{
                 <Text style={styles.cancelText}>Cancelar</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => props.onSet(amount, unit)}
+                onPress={() => props.onSet(amount)}
                 style={styles.buttonConfirm}>
                 <Text style={styles.confirmText}>Ok</Text>
               </TouchableOpacity>
@@ -113,7 +107,8 @@ const styles = StyleSheet.create({
   },
   selectionContainer:{
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   input: {
     height: 40,
@@ -133,6 +128,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 20,
     fontWeight: 'bold',
+    color: '#63488c'
+  },
+  unitText: {
+    textAlign: "center",
+    marginBottom: 5,
+    marginLeft: 8,
+    fontSize: 16,
     color: '#63488c'
   }
 });

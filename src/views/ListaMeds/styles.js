@@ -15,8 +15,9 @@ export const RightTitle = styled(ListItem.Title)`
 `
 export const RightSubtitle = styled(ListItem.Subtitle)`
     font-weight: bold;
-    fontSize: 16px;
+    font-size: 16px;
     color: #aaa;
+    text-align: center;
 `
 export const RightContainer = styled(ListItem.Content)`
     align-items: flex-end;
