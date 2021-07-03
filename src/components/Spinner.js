@@ -5,6 +5,7 @@ import { View, StyleSheet } from "react-native";
 export default props =>{
     const [selectedValue, setSelectedValue] = useState(props.items[0].value);
 
+    const defaultStyles = {height: 40, width: 190, color: '#63488c'}
     const getList = () =>{
       return props.items.map( i => {
         return <Picker.Item 
@@ -17,12 +18,14 @@ export default props =>{
     return (
           <Picker
             selectedValue={selectedValue}
-            style={{ height: 50, width: 190,}}
-            mode="dropdown"
+            style={props.styles || defaultStyles}
+            mode="dialog"
+            dropdownIconColor="#eaeaea"
             selectedValue={ props.value ? props.value : undefined}
             onValueChange={(itemValue, itemIndex) =>{ 
+              var item = props.items.filter( i => i.value === itemValue)[0]
               setSelectedValue(itemValue)
-              props.onChangeValue(itemValue)
+              props.onChangeValue(item)
             }}
           >
             {getList()}

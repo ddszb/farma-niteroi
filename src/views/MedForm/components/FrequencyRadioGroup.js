@@ -7,10 +7,24 @@ import {RadioButtonView, BorderlessInputText} from '../styles'
 import WeekdayPicker from 'react-native-weekday-picker'
 export default props =>{
 
-
     const [daily, setDaily] = useState(true)
+    const [prevDays, setPrevDays] = useState(props.days)
 
-    var defaultDays = {1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 0:0}
+    const __getTimesAWeek = (days) =>{
+      var toWeekdays = k => days[k]
+      var sum = (a, b) => a + b
+      return Object.keys(days).map(toWeekdays).reduce(sum)
+  }
+
+    const __onChangeValue  = (days) =>{
+      if(__getTimesAWeek(days) > 0){
+        setPrevDays(days)
+        props.onChangeValue(days, daily)
+      }else{
+        props.onChangeValue(prevDays, daily)
+      }
+    }
+    
 
 return (
     <>
@@ -30,8 +44,8 @@ return (
     </RadioButton.Group>
       {!daily &&
       <WeekdayPicker
-        days={props.days || defaultDays}
-        onChange={ (d) => props.onChangeValue(d, daily)}
+        days={props.days}
+        onChange={ (d) => __onChangeValue(d)}
         style={styles.picker}
         dayStyle={styles.day}/>}
     </>

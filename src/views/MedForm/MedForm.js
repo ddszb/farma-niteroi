@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, {useState } from 'react'
 import {
     Text,
     View,
@@ -10,36 +10,47 @@ import {
 } from "react-native"
 
 import * as UtilitarioFormatacao from '../../util/UtilitarioFormatacao'
-import AppContext from '../../context/context'
 import DatePicker from '../../components/DatePicker'
 import DoseHourItems from './components/DoseHourItems'
 import DurationRadioGroup from './components/DurationRadioGroup'
 import FrequencyRadioGroup from './components/FrequencyRadioGroup'
-import actionTypes from '../../constants/actionTypes'
+import UnitSpinner from '../../components/Spinner'
+
+import medicons from '../../constants/medicons'
+import iconColors from '../../constants/iconColors'
+import doseUnits from '../../constants/doseUnits'
+
 import { FormFieldLabel, FormInputTextField, LargeFormInputTextField, FormFieldLabelLight,
-    ViewFlexRow, CardBox, CardContent, ButtonText, Button, Form} from './styles'
+    ViewFlexRow, CardBox, CardContent, ButtonText, Button, Form, FormInputAsLabel} from './styles'
 import IconPicker from './components/IconPicker'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import doseUnitsSelection from '../../constants/doseUnitsSelection'
+
+const initialState = 
+    {
+        weekdays: { 0:1, 1:1, 2:1, 3:1, 4:1, 5:1, 6:1},
+        days: 7,
+        startDate: new Date(),
+        scheduledDoses: false,
+        icon: medicons[0],
+        iconColor: iconColors[0],
+        notes: null,
+        stock:{
+            amount: '0',
+            unit: doseUnits.COMPRIMIDO
+        }
+    }
 
 
 export default ({navigation, route}) => {
 
-    // console.warn(Object.keys(route))
     
-    const [med, setMed] = useState(
-        route.params ? route.params : 
-            {
-                days: { 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 0:0}
-            })
+    const [med, setMed] = useState(initialState )
 
-
-    const { dispatch } = useContext(AppContext)
-
-    
     const __setExpireDate = (expireDate) =>{
         setMed({...med, expireDate})
     }
     
-
     const __onColorChange = (color) =>{
         setMed({...med, iconColor: color})
     }
@@ -51,11 +62,20 @@ export default ({navigation, route}) => {
         setMed({...med, startDate})
     }
     
-    const __changeFrequencyDays = (days, isDaily) =>{
+    const __updateMedUnit = (unitSelection) =>{
+        var unit = doseUnits[unitSelection.value]
+        setMed({...med, stock:{...med.stock, unit}})
+    }
+
+    const __changeFrequencyDays = (weekdays, isDaily) =>{
         if(isDaily){
-            days = { 1:1, 2:1, 3:1, 4:1, 5:1, 6:1, 0:1}
+            weekdays = { 1:1, 2:1, 3:1, 4:1, 5:1, 6:1, 0:1}
+        }else{
+            if(__getTimesAWeek(weekdays) == 0){
+                return
+            }
         }
-        setMed({...med, days})
+        setMed({...med, weekdays})
     }
 
     const __validateNewMed = () =>{
@@ -72,8 +92,6 @@ export default ({navigation, route}) => {
         if(!__validateNewMed()){
             return
         }
- 
-
         Alert.alert('Adicionar Medicamento', 'Deseja adicionar o medicamento?',
             [{   
                 text: 'Não',
@@ -85,22 +103,68 @@ export default ({navigation, route}) => {
                 }
             },
         ])
+    }
+
+    const __setDaysSettings = (days) => {
+        setMed({...med,days})
+    }
+
+    const __onUpdateDoseHours = (doseHours) =>{
 
     }
-    
-    const __confirmSave = () =>{
-        if(med.expireDate){
-            var expireDate = UtilitarioFormatacao.parseDateToStr(med.expireDate)
+
+    const __getTimesAWeek = (days) =>{
+        var toWeekdays = k => days[k]
+        var sum = (a, b) => a + b
+        return Object.keys(days).map(toWeekdays).reduce(sum)
+    }
+
+    const __calcEndDate = (medPersist) => {
+        if(!medPersist.scheduledDoses || medPersist.days == 0){
+            medPersist.endDate = null
+        }else{
+            var endDate = new Date(medPersist.startDate)
+            var intakes = 0
+            var daysArray = Object.keys(medPersist.weekdays).map(d => medPersist.weekdays[d])
+            while(intakes < medPersist.days - 1){
+                if(daysArray[endDate.getDay()] == 1){
+                    intakes += 1
+                }
+                endDate.setDate(endDate.getDate() + 1)
+            }
+            return endDate
         }
-        if(med.startDate){
-            var startDate = UtilitarioFormatacao.parseDateToStr(med.startDate)
-        }
-        setMed({...med, expireDate, startDate})
+    }
+
+    const __fillMedInfo = (medPersist) =>{   
+        medPersist.scheduledDoses = !!med.scheduledDoses
+        medPersist.icon = medPersist.icon ? medPersist.icon : medicons[0]
+        medPersist.iconColor = medPersist.iconColor ? medPersist.iconColor : iconColors[0]
         
-        dispatch({
-            type: actionTypes.CREATE_MED,
-            payload: med,
-        })
+        if(medPersist.expireDate){
+            medPersist.expireDate = UtilitarioFormatacao.parseDate(medPersist.expireDate)
+        }
+        if(medPersist.startDate){
+            medPersist.startDate = UtilitarioFormatacao.parseDate(medPersist.startDate)
+            medPersist.endDate = __calcEndDate(medPersist)
+        }
+         return medPersist        
+    }
+    
+    const __confirmSave = async () =>{
+        var medPersist = {...med}
+        medPersist = __fillMedInfo(medPersist)
+        
+        const medsString = await AsyncStorage.getItem('medsList')
+        const meds = medsString !== null ? JSON.parse(medsString) : []
+        
+        const medSequence = await AsyncStorage.getItem('medsListSequence')
+        const medId = medSequence !== null ? parseInt(medSequence) + 1 : 1
+        medPersist.id = medId
+
+        meds.push(medPersist)
+        AsyncStorage.setItem("medsListSequence", medId.toString())
+        AsyncStorage.setItem('medsList', JSON.stringify(meds))
 
         navigation.goBack()
     }
@@ -131,6 +195,26 @@ export default ({navigation, route}) => {
         )
     }
     
+    const __medStockField = () =>{
+        return(
+            <>
+                <FormFieldLabel>Meu estoque</FormFieldLabel>
+                <ViewFlexRow>
+                    <FormInputAsLabel
+                        onChangeText={ amount => setMed({...med , stock: {...med.stock, amount}})}
+                        placeholder="0"
+                        value={med.stock.amount}
+                        keyboardType="numeric"
+                        maxLength={4}></FormInputAsLabel>
+                    <UnitSpinner 
+                    items={doseUnitsSelection} 
+                    value={med.stock.unit}
+                    onChangeValue={__updateMedUnit}/> 
+                </ViewFlexRow>
+            </>
+        )
+    }
+
     const __medDosesField = () => {
         return(
             <>
@@ -147,7 +231,10 @@ export default ({navigation, route}) => {
                 <View>
                     {med.scheduledDoses 
                     ?   <View>
-                            <DoseHourItems/>
+                            <DoseHourItems
+                                unit={med.stock.unit}
+                                onUpdate={__onUpdateDoseHours}
+                            />
                         </View>
                     : <Text>Tomar quando necessário</Text>
                     } 
@@ -167,11 +254,13 @@ export default ({navigation, route}) => {
                     useNativeDriver={true}
                     onChangeValue={__setTreatmentstartDate}/>
                 <FormFieldLabelLight>duração</FormFieldLabelLight>
-                    <DurationRadioGroup/>
+                    <DurationRadioGroup 
+                        onChangeValue={__setDaysSettings}
+                    />
                 <FormFieldLabelLight>frequência</FormFieldLabelLight>
                     <FrequencyRadioGroup 
                         onChangeValue={__changeFrequencyDays}
-                        days={med.days}
+                        days={med.weekdays}
                     />
             </View>
         )
@@ -208,6 +297,11 @@ export default ({navigation, route}) => {
                     <CardContent>
                         {__medNameField()}
                         {__medExpireDateField()}
+                    </CardContent>
+                </CardBox>
+                <CardBox>
+                    <CardContent>
+                        {__medStockField()}
                     </CardContent>
                 </CardBox>
                 <CardBox>

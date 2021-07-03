@@ -43,7 +43,7 @@ export default props =>{
             {med.expireDate &&
             <VPadding>
                 <InfoTitle>Validade</InfoTitle>
-                <InfoText>{med.expireDate.toLocaleDateString("pt-BR")}</InfoText>
+                <InfoText>{med.expireDate.format("'dd/mm/yyy'")}</InfoText>
             </VPadding>}
             <VPadding>
                 <InfoTitle>Estoque</InfoTitle>

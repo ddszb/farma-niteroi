@@ -15,6 +15,16 @@ export const FormInputTextField = styled.TextInput`
     padding: 10px;
 `
 
+export const FormInputAsLabel = styled.TextInput`
+   font-size: 20px;
+   color: #63488c;
+   font-weight: bold;
+   margin-top: 5px; 
+   margin-left: 5px;
+   width: 55px;
+   text-align: center;
+`
+
 export const LargeFormInputTextField = styled.TextInput`
     height: 40px;
     border-color: gray;
@@ -54,6 +64,7 @@ export const Form = styled.View`
 
 export const ViewFlexRow = styled.View`
     flex-direction : row;
+    align-items: center;
 `
 
 export const RadioButtonView = styled.View`

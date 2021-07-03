@@ -12,19 +12,24 @@ import TreatmentSpinner from '../../../components/Spinner'
 import DoseHourDialog from './DoseHourDialog'
 
 import DateTimePicker from '@react-native-community/datetimepicker'
-export default props =>{
 
+
+export default props =>{
+    
     var defaultDate = new Date()
     defaultDate.setMinutes(0)
     defaultDate.setHours(8)
-
-    const [state, setState] = useState({
-        doseHoursItems: [{ time: defaultDate, amount: 1, unit: doseUnits.COMPRIMIDO.key, index: 0}],
+    
+    const initialState = {
+        doseHoursItems: [{ time: defaultDate, amount: 1, unit: props.unit.key, index: 0}],
         selectedDose: 0,
         showDialog: false,
         showDoseHourPicker: false,
         dialogTime: defaultDate
-    })
+    }
+    
+    const [state, setState] = useState(initialState)
+
 
     /**
      * Atualiza a hora da dose selecionada
@@ -46,10 +51,7 @@ export default props =>{
             
             // Atualizando lista
             doses.splice(index, 1, selectedDose)
-            // if(doses[index].index == 0 && doses.length > 1){
-            //     doses = __shiftDoseTimes(doses)
-            //     console.warn("novo doses", doses.map(p=>p.time.getHours()))
-            // }
+
             
             // Atualizando estado
             setState({
@@ -78,7 +80,6 @@ export default props =>{
      * @returns 
      */
     const __updateDoseTimes = (amountInADay, startHour, startMinute) =>{
-        console.warn("startHour", startHour)
         var interval = 24 / amountInADay;
         
         doseHours = []
@@ -90,7 +91,7 @@ export default props =>{
             let doseHour = {
                 time: doseTime,
                 amount: 1,
-                unit: doseUnits.COMPRIMIDO.key,
+                unit: props.unit.key,
                 index: i
             }
             doseHours.push(doseHour)
@@ -109,6 +110,7 @@ export default props =>{
             ...state,
             doseHoursItems: doseHours,
         })
+        props.onUpdate(doseHours)
     }
         
     /**
@@ -116,15 +118,11 @@ export default props =>{
      * @param {Number} amount A quantidade a ser tomada na dose
      * @param {String} unit A unidade de medida da dose
      */
-    const __updateItem = (amount, unit) =>{
+    const __updateItem = (amount) =>{
         var doses = state.doseHoursItems
         var index = state.selectedDose
         var dose = doses[index]
         dose.amount = amount
-        dose.unit = doseUnits[unit].key
-        
-        doses.splice(index, 1, dose)
-        doses = doses.map( d => {return {...d, unit}})
         
         setState({
             ...state,
@@ -132,6 +130,7 @@ export default props =>{
             doseHoursItems: doses,
             showDialog: false
         })
+        props.onUpdate(doses)
     }
 
     /**
@@ -161,11 +160,11 @@ export default props =>{
     
     /**
      * Cria a lista de doses de acordo com a opção selecionada no spinner
-     * @param {Number} value Quantidade de doses que serão tomadas em um dia
+     * @param {doseTimes} doseTimesSelection Quantidade de doses que serão tomadas em um dia
      */
-    const __createDoseTimes = (value) =>{
+    const __createDoseTimes = (doseTimeSelection) =>{
         // Cria doses com horário inicial padrão de 8:00
-        __updateDoseTimes(value, 8, 0)
+        __updateDoseTimes(parseInt(doseTimeSelection.value), 8, 0)
     }
 
     /**
@@ -205,7 +204,7 @@ export default props =>{
                                 })}}
                             >
                             <View>
-                                <Text style={style.doseHourAmount}>{"Tomar " + d.amount + " " +  doseUnits[d.unit].label + "(s)"}</Text>
+                                <Text style={style.doseHourAmount}>{"Tomar " + d.amount + " " +  props.unit.label + "(s)"}</Text>
                             </View>
                         </TouchableOpacity>
                         { state.showDoseHourPicker && 
