@@ -1,24 +1,42 @@
-import React, {useContext} from 'react'
-import {FlatList, Alert} from 'react-native'
+import React, {useState, useEffect} from 'react'
+import {FlatList, Alert, Button} from 'react-native'
 import { ListItem} from 'react-native-elements'
-import AppContext from '../../context/context'
 import FAB from '../../components/FloatActionButton'
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons'
 import iconMoonConfig from '../../selection.json'
 import {LeftTitle, RightTitle, LeftSubtitle, RightSubtitle, RightContainer,
      MedListView, IconPadding} from './styles'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import analytics from '@react-native-firebase/analytics'
 
 export default props =>{
-
-    const {state, dispatch} = useContext(AppContext)
-
+    
+    const [meds, setMeds] = useState([])
     const MedIcon = createIconSetFromIcoMoon(iconMoonConfig)
+    
+    clearAsyncStorage = async() => {
+        AsyncStorage.clear();
+    }
+
+    useEffect(() =>{
+        async function getMeds(){
+            const medsString = await AsyncStorage.getItem('medsList')
+            const meds = JSON.parse(medsString) || []
+            setMeds(meds)
+        }
+        getMeds()
+    }, [meds])
+
 
     function navigateToNew(){
         props.navigation.navigate('Adicionar Medicamento', {screen: 'Adicionar Medicamento'})
     }
 
     function navigateToView(med){
+        analytics().logEvent('medcreation',{
+            id: 1320,
+            item: 'new med'
+        })
         props.navigation.navigate('Meu Medicamento', {screen: 'Meu Medicamento', med: med} )
     }
 
@@ -39,7 +57,27 @@ export default props =>{
         }])
     }
 
+    const __getRightContent = (med) =>{
+        if(med.scheduledDoses){
+            return(
+            <>
+                <RightTitle style={{color: med.iconColor}}>
+                {med.daysLeft} {med.daysLeft > 1 ? 'dias' : 'dia'}
+                </RightTitle>
+                <RightSubtitle>
+                    {med.daysLeft > 1 ? 'restantes' : 'restante'}
+                </RightSubtitle>
+            </>
 
+            )
+        }else{
+            return(
+                <RightSubtitle>
+                    {"Tomar quando necessário"}
+                </RightSubtitle>
+            )
+        }
+    }
 
     function getMedItem({ item: med }){
         return (
@@ -61,12 +99,7 @@ export default props =>{
                 </ListItem.Content>
                 {/* Tempo restante */}
                 <RightContainer>
-                    <RightTitle style={{color: med.iconColor}}>
-                        {med.daysLeft} {med.daysLeft > 1 ? 'dias' : 'dia'}
-                    </RightTitle>
-                    <RightSubtitle>
-                        {med.daysLeft > 1 ? 'restantes' : 'restante'}
-                    </RightSubtitle>
+                    {__getRightContent(med)}
                 </RightContainer>
             </ListItem>
                 
@@ -75,12 +108,14 @@ export default props =>{
     
     return (
         <MedListView>
+            <Button onPress={clearAsyncStorage} title="Limpar"/>
             <FlatList
                 keyExtractor={med => med.id.toString()}
-                data={state.meds}
+                data={meds}
                 renderItem={getMedItem}
             />
             <FAB onClick={navigateToNew}/>
+
         </MedListView>
         
     )
