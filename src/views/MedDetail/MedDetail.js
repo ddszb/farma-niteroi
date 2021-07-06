@@ -7,11 +7,90 @@ import iconMoonConfig from '../../selection.json'
 import {Container, RowView, MedName, HPadding,
     VPadding, InfoTitle, InfoText, Bottom, ButtonView,
     RightButtonText, LeftButtonText, Button} from './styles'
+import doseUnits from '../../constants/doseUnits'
+import * as UtilitarioCalculo from '../../util/UtilitarioCalculo'
+import weekdays from '../../constants/weekdays'
+import moment from 'moment'
+import 'moment/locale/pt-br'
 
 export default props =>{
     
     const {med, screen} = props.route.params
     const MedIcon = createIconSetFromIcoMoon(iconMoonConfig)
+
+    const __getTimeContent = () => {
+        if(med.scheduledDoses){
+            if(med.days > 0 && med.startDate && med.endDate){
+                var daysLeft = UtilitarioCalculo.diffDays(new Date(), med.endDate)
+                return(
+                <>
+                    <InfoTitle>
+                        Duração
+                    </InfoTitle>
+                    <InfoText>
+                        {daysLeft} {daysLeft > 1 ? 'dias ' : 'dia '}
+                        {daysLeft > 1 ? 'restantes' : 'restante'}
+                    </InfoText>
+                </>)
+            }else{
+                return(
+                    <>
+                        <InfoTitle>
+                            Duração
+                        </InfoTitle>
+                        <InfoText>
+                            {"Tratamento contínuo"}
+                        </InfoText>
+                    </>
+                )
+            }
+        }else{
+            return(
+                <>
+                    <InfoTitle>
+                        Duração
+                    </InfoTitle>
+                    <InfoText>
+                        {"Tomar quando necessário"}
+                    </InfoText>
+                </>
+            )
+        }
+    }
+
+    __getDoseHoursContent = () => {
+        return med.doseHours.map( d =>{
+            var time = moment(d.time).format("HH:mm")
+            var unitLabel =  doseUnits[d.unit].label + (d.amount > 1 ? "s" : "")
+            return(
+                <RowView key={d.index}>
+                    <InfoTitle>
+                        {time}
+                    </InfoTitle>
+                    <HPadding>
+                        <InfoText>Tomar {d.amount} {unitLabel}</InfoText>
+                    </HPadding>
+                </RowView>
+            )
+        })
+    }
+
+    __getFrequencyContent = () => {
+        var weekdays = { 0: "dom", 1: "seg", 2: "ter", 3: "qua", 4: "qui", 5: "sex", 6: "sab"}
+        var intakes = []
+        Object.keys(med.weekdays).forEach( d =>{
+            if(med.weekdays[d] == 1){
+                intakes.push(weekdays[d])
+            }
+        })
+        return intakes.map( i =>{
+            return(
+                <HPadding key={i}>
+                    <InfoText>{i}  </InfoText>
+                </HPadding>
+            )
+        })
+    }
 
     return (
         <Container>
@@ -37,18 +116,31 @@ export default props =>{
                 </RowView>
             </VPadding>
             <VPadding>
-                <InfoTitle>{med.daysLeft} dias</InfoTitle>
-                <InfoText>restantes</InfoText>
+                {__getTimeContent()}
             </VPadding>
+            <VPadding>
+                <InfoTitle>Estoque</InfoTitle>
+                <InfoText>{med.stock.amount} {med.stock.unit.label}(s)</InfoText>
+            </VPadding>
+            {med.scheduledDoses && med.doseHours &&
+            <VPadding>
+                <InfoTitle>Horários</InfoTitle>
+                {__getDoseHoursContent()}
+            </VPadding>}
+            {med.scheduledDoses && 
+            <VPadding>
+                <InfoTitle>Frequência</InfoTitle>
+                <VPadding>
+                    <RowView>
+                        {__getFrequencyContent()}
+                    </RowView>
+                </VPadding>
+            </VPadding>}
             {med.expireDate &&
             <VPadding>
                 <InfoTitle>Validade</InfoTitle>
                 <InfoText>{med.expireDate.format("'dd/mm/yyy'")}</InfoText>
             </VPadding>}
-            <VPadding>
-                <InfoTitle>Estoque</InfoTitle>
-                <InfoText>Lorem ipsum </InfoText>
-            </VPadding>
             {med.notes &&
             <VPadding>
                 <InfoTitle>Notas</InfoTitle>
@@ -73,7 +165,6 @@ export default props =>{
 
                 </ButtonView>
             </Bottom>
-
         </Container>
     )
 }

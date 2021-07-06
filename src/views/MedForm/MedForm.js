@@ -110,7 +110,7 @@ export default ({navigation, route}) => {
     }
 
     const __onUpdateDoseHours = (doseHours) =>{
-
+        setMed({...med, doseHours})
     }
 
     const __getTimesAWeek = (days) =>{
