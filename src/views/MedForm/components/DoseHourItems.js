@@ -10,9 +10,10 @@ import doseUnits from '../../../constants/doseUnits'
 import doseTimes from '../../../constants/doseTimesSelection'
 import TreatmentSpinner from '../../../components/Spinner'
 import DoseHourDialog from './DoseHourDialog'
-
 import DateTimePicker from '@react-native-community/datetimepicker'
 
+import moment from 'moment'
+import 'moment/locale/pt-br'
 
 export default props =>{
     
@@ -174,6 +175,7 @@ export default props =>{
     const __doseHoursItemList = () =>{
         const doses = state.doseHoursItems
         return doses.map( d =>{
+            var time = moment(d.time).format("HH:mm")
             return (
                 <View key={d.index}>
                     <View style={{flexDirection : 'row', justifyContent: 'space-between', padding: 0}}>
@@ -188,10 +190,7 @@ export default props =>{
                             >
                             <View style={{flexDirection : 'row'}}>
                                 <Text style={style.doseHourText}>
-                                    {d.time.getHours().toString().padStart(2, '0')}:
-                                </Text>
-                                <Text style={style.doseHourText}>
-                                    {d.time.getMinutes().toString().padStart(2, '0')}
+                                    {time}
                                 </Text>
                             </View>
                         </TouchableOpacity>
