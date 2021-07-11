@@ -2,7 +2,7 @@ import React, {createContext, useReducer} from 'react'
 import meds from '../data/meds'
 import polis from '../data/polis'
 import medsNiteroi from '../data/meds_niteroi'
-
+import firestore from '@react-native-firebase/firestore'
 
 {/*
     Context API (Hook): Compartilhar informações dentro de toda a árvore de componentes

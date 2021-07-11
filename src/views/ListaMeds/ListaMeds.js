@@ -115,7 +115,7 @@ export default props =>{
         <MedListView>
             <Button onPress={clearAsyncStorage} title="Limpar"/>
             <FlatList
-                keyExtractor={med => med.id.toString()}
+                keyExtractor={ (item, index) => `${index}`}
                 data={meds}
                 renderItem={getMedItem}
             />

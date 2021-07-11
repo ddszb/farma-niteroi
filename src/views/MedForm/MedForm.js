@@ -25,6 +25,7 @@ import { FormFieldLabel, FormInputTextField, LargeFormInputTextField, FormFieldL
 import IconPicker from './components/IconPicker'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import doseUnitsSelection from '../../constants/doseUnitsSelection'
+import doseStatus from '../../constants/doseStatus'
 
 const initialState = 
     {
@@ -119,20 +120,49 @@ export default ({navigation, route}) => {
         return Object.keys(days).map(toWeekdays).reduce(sum)
     }
 
-    const __calcEndDate = (medPersist) => {
+    const __createDayDoses = (medPersist, doses, day) =>{
+        // console.warn("medPersis:", medPersist)
+        // console.warn("doses:", medPersist.doseHours)
+        console.log("day b4:", day)
+        medPersist.doseHours.forEach( doseTime =>{
+            day.setHours(doseTime.time.getHours(), doseTime.time.getMinutes())
+            var doseDate = new Date(day)
+            console.log("day aftter:", day)
+            let dose = {
+                medName: medPersist.name,
+                date: doseDate, 
+                unit: doseTime.unit,
+                amount: doseTime.amount,
+                dateTaken: null,
+                newDate: null,
+                status: doseStatus.NOT_TAKEN,
+                icon: medPersist.icon,
+                iconColor: medPersist.iconColor,
+            }
+            doses.push(dose)
+        })
+    }
+
+    const __createDosesList = (medPersist) => {
         if(!medPersist.scheduledDoses || medPersist.days == 0){
             medPersist.endDate = null
+            medPersist.doses = []
         }else{
-            var endDate = new Date(medPersist.startDate)
+            var doseDay = new Date(medPersist.startDate)
             var intakes = 0
             var daysArray = Object.keys(medPersist.weekdays).map(d => medPersist.weekdays[d])
+            var doses = []
             while(intakes < medPersist.days - 1){
-                if(daysArray[endDate.getDay()] == 1){
+                if(daysArray[doseDay.getDay()] == 1){
                     intakes += 1
+                    __createDayDoses(medPersist, doses, doseDay)
                 }
-                endDate.setDate(endDate.getDate() + 1)
+                doseDay.setDate(doseDay.getDate() + 1)
+                // console.log(doseDay)
             }
-            return endDate
+            medPersist.endDate = doseDay
+            medPersist.doses = doses
+            console.log("doses:", JSON.stringify(doses, 0, 2))
         }
     }
 
@@ -146,24 +176,27 @@ export default ({navigation, route}) => {
         }
         if(medPersist.startDate){
             medPersist.startDate = UtilitarioFormatacao.parseDate(medPersist.startDate)
-            medPersist.endDate = __calcEndDate(medPersist)
+            __createDosesList(medPersist)
         }
          return medPersist        
     }
     
     const __confirmSave = async () =>{
         var medPersist = {...med}
+        console.warn("confirmSave:")
         medPersist = __fillMedInfo(medPersist)
-        
+        console.warn("medPersis:", medPersist)
         const medsString = await AsyncStorage.getItem('medsList')
+        console.warn("medList", medsString)
         const meds = medsString !== null ? JSON.parse(medsString) : []
         
         const medSequence = await AsyncStorage.getItem('medsListSequence')
         const medId = medSequence !== null ? parseInt(medSequence) + 1 : 1
         medPersist.id = medId
-
+        
+        console.warn("meds",meds)
         meds.push(medPersist)
-        AsyncStorage.setItem("medsListSequence", medId.toString())
+        AsyncStorage.setItem("medsListSequeence", medId.toString())
         AsyncStorage.setItem('medsList', JSON.stringify(meds))
 
         navigation.goBack()

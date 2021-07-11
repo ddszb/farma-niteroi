@@ -4,7 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
 import { getFocusedRouteNameFromRoute } from '@react-navigation/core';
-import Home from '../views/Home'
+import Home from '../views/Home/Home'
 import Info from '../views/Info'
 import ListaMeds from '../views/ListaMeds/ListaMeds'
 import MedForm from '../views/MedForm/MedForm'
@@ -69,8 +69,8 @@ export default props =>(
                     break
                 case 'Informação':
                     iconName = focused
-                    ? 'help'
-                    : 'help-outline'
+                    ? 'md-book'
+                    : 'md-book-outline'
                     break
             }
                         
