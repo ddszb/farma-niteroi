@@ -135,7 +135,7 @@ export default ({navigation, route}) => {
                 amount: doseTime.amount,
                 dateTaken: null,
                 newDate: null,
-                status: doseStatus.NOT_TAKEN,
+                status: doseStatus.NAO_TOMADA,
                 icon: medPersist.icon,
                 iconColor: medPersist.iconColor,
             }
@@ -208,7 +208,7 @@ export default ({navigation, route}) => {
                 <FormFieldLabel>Nome</FormFieldLabel>
                 <FormInputTextField
                     onChangeText={ name => setMed({...med , name})}
-                    placeholder="Nome do usuário"
+                    placeholder="Nome do medicamento"
                     value={med.name}    
                 />
             </>
