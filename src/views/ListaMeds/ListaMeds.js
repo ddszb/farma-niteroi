@@ -6,6 +6,7 @@ import { createIconSetFromIcoMoon } from 'react-native-vector-icons'
 import iconMoonConfig from '../../selection.json'
 import {LeftTitle, RightTitle, LeftSubtitle, RightSubtitle, RightContainer,
      MedListView, IconPadding} from './styles'
+import {useFocusEffect} from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import analytics from '@react-native-firebase/analytics'
 import * as UtilitarioCalculo from '../../util/UtilitarioCalculo'
@@ -19,15 +20,16 @@ export default props =>{
         AsyncStorage.clear();
     }
 
-    useEffect(() =>{
-        async function getMeds(){
-            const medsString = await AsyncStorage.getItem('medsList')
-            const meds = JSON.parse(medsString) || []
-            setMeds(meds)
-        }
-        getMeds()
-    }, [meds])
+    const getMeds = async () =>{
+        const medsString = await AsyncStorage.getItem('medsList')
+        const meds = JSON.parse(medsString) || []
+        setMeds(meds)
+    }
 
+    useFocusEffect(
+        React.useCallback(() =>{
+        getMeds()
+    }, []))
 
     function navigateToNew(){
         props.navigation.navigate('Adicionar Medicamento', {screen: 'Adicionar Medicamento'})
