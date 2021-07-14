@@ -1,6 +1,6 @@
 import React from 'react'
 import { TouchableOpacity } from 'react-native'
-import { ToastAndroid , Pressable} from 'react-native'
+import { ToastAndroid , Pressable, View} from 'react-native'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons'
 import iconMoonConfig from '../../selection.json'
@@ -85,9 +85,9 @@ export default props =>{
         })
         return intakes.map( i =>{
             return(
-                <HPadding key={i}>
+                <View key={i}>
                     <InfoText>{i}  </InfoText>
-                </HPadding>
+                </View>
             )
         })
     }
