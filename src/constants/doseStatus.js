@@ -1,6 +1,7 @@
 export default{
-    CANCELED: -1,
-    NOT_TAKEN: 0,
-    TAKEN: 1,
-    POSTPONED: 2
+    CANCELADA: -1,
+    NAO_TOMADA: 0,
+    TOMADA: 1,
+    ADIADA: 2,
+    PAUSADA:3
 }
