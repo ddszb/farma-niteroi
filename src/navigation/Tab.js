@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
 import { getFocusedRouteNameFromRoute } from '@react-navigation/core';
 import Home from '../views/Home/Home'
-import Info from '../views/Info'
+import Info from '../views/Info/Info'
 import ListaMeds from '../views/ListaMeds/ListaMeds'
 import MedForm from '../views/MedForm/MedForm'
 import MedDetail from '../views/MedDetail/MedDetail'
