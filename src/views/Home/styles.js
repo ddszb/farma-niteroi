@@ -16,9 +16,9 @@ export const CardBox = styled.View`
     background-color: #eaeaea;
     border-right-color: #bbb;
     border-bottom-color: #bbb;
-    border-right-width: 1px;
     border-bottom-width: 1px;
-    border-radius: 10px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
     margin-bottom: 8px;
     flex-direction: row;
     margin-horizontal: 4px;
@@ -107,4 +107,20 @@ export const EmptyListContainer = styled.View`
     justify-content: flex-end;
     align-items: center;
     margin-top: 100px;
+`
+
+export const RightSwipe = styled.View`
+    flex: 1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    padding-horizontal: 20px;
+    margin-bottom: 8px;
+`
+
+export const RightSwipeText = styled.Text`
+    font-weight: bold;
+    font-size: 20px;
+    margin: 10px;
+    color: #FFF;
 `
