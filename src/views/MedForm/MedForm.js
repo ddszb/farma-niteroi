@@ -196,7 +196,7 @@ export default ({navigation, route}) => {
         
         console.warn("meds",meds)
         meds.push(medPersist)
-        AsyncStorage.setItem("medsListSequeence", medId.toString())
+        AsyncStorage.setItem("medsListSequence", medId.toString())
         AsyncStorage.setItem('medsList', JSON.stringify(meds))
 
         navigation.goBack()
