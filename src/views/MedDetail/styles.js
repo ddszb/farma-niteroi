@@ -47,6 +47,7 @@ export const Bottom = styled.View`
     flex: 1;
     justify-content: flex-end;
     align-self: center;
+    margin-bottom: 10px;
 ` 
 export const ButtonView = styled.View`
     flex-direction: row;

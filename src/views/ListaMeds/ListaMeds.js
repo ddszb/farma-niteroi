@@ -8,8 +8,9 @@ import {LeftTitle, RightTitle, LeftSubtitle, RightSubtitle, RightContainer,
      MedListView, IconPadding} from './styles'
 import {useFocusEffect} from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import analytics from '@react-native-firebase/analytics'
 import * as UtilitarioCalculo from '../../util/UtilitarioCalculo'
+import medStatus from '../../constants/medStatus'
+import doseStatus from '../../constants/doseStatus'
 
 export default props =>{
     
@@ -57,16 +58,24 @@ export default props =>{
     }
 
     const __getRightContent = (med) =>{
+        if(med.status == medStatus.INATIVO){
+            return(
+                <>
+                    <RightSubtitle>
+                        Tratamento Encerrado
+                    </RightSubtitle>
+                </>)
+        }
         if(med.scheduledDoses){
-            if(med.days > 0 && med.startDate && med.endDate){
-                var daysLeft = UtilitarioCalculo.diffDays(new Date(), med.endDate)
+            if(med.days > 0 && med.doses && med.doses.length > 0){
+                var dosesLeft = med.doses.filter(d => d.status == doseStatus.NAO_TOMADA || d.status == doseStatus.ADIADA).length
                 return(
                 <>
                     <RightTitle style={{color: med.iconColor}}>
-                    {daysLeft} {daysLeft > 1 ? 'dias' : 'dia'}
+                    {dosesLeft} {dosesLeft > 1 ? 'doses' : 'dose'}
                     </RightTitle>
                     <RightSubtitle>
-                        {daysLeft > 1 ? 'restantes' : 'restante'}
+                        {dosesLeft > 1 ? 'restantes' : 'restante'}
                     </RightSubtitle>
                 </>)
             }else{
@@ -101,7 +110,7 @@ export default props =>{
                         {med.name}
                     </LeftTitle>
                     <LeftSubtitle>
-                        {med.amount} {med.unit}{med.amount > 1 ? 's' : ''}
+                        {med.stock.amount} {med.stock.unit.label}{med.stock.amount > 1 ? 's' : ''}
                     </LeftSubtitle>
                 </ListItem.Content>
                 {/* Tempo restante */}
@@ -115,7 +124,7 @@ export default props =>{
     
     return (
         <MedListView>
-            <Button onPress={clearAsyncStorage} title="Limpar"/>
+            {/* <Button onPress={clearAsyncStorage} title="Limpar"/> */}
             <FlatList
                 keyExtractor={ (item, index) => `${index}`}
                 data={meds}
