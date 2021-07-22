@@ -3,5 +3,5 @@ export default{
     NAO_TOMADA: 0,
     TOMADA: 1,
     ADIADA: 2,
-    PAUSADA:3
+    ENCERRADA:3
 }

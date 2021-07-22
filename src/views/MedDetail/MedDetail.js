@@ -1,6 +1,6 @@
 import React from 'react'
 import { TouchableOpacity } from 'react-native'
-import { ToastAndroid , Pressable, View} from 'react-native'
+import { ToastAndroid , Pressable, View, Alert} from 'react-native'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons'
 import iconMoonConfig from '../../selection.json'
@@ -9,16 +9,66 @@ import {Container, RowView, MedName, HPadding,
     RightButtonText, LeftButtonText, Button} from './styles'
 import doseUnits from '../../constants/doseUnits'
 import * as UtilitarioCalculo from '../../util/UtilitarioCalculo'
-import weekdays from '../../constants/weekdays'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import moment from 'moment'
 import 'moment/locale/pt-br'
+import doseStatus from '../../constants/doseStatus'
+import medStatus from '../../constants/medStatus'
 
 export default props =>{
     
     const {med, screen} = props.route.params
     const MedIcon = createIconSetFromIcoMoon(iconMoonConfig)
 
+
+    const __endTreatment = async () =>{        
+        console.warn(Object.keys(screen))
+        var medEnded = {...med}
+        medEnded.doses.forEach(d =>{
+            if(d.status != doseStatus.TOMADA || !d.dateTaken){
+                d.status = doseStatus.ENCERRADA
+            }
+        })
+        medEnded.status = medStatus.INATIVO;
+
+        const medsString = await AsyncStorage.getItem('medsList')
+        var meds = medsString !== null ? JSON.parse(medsString) : []
+        var meds = meds.map( m => m.name == medEnded.name ? medEnded : m)
+        AsyncStorage.setItem('medsList', JSON.stringify(meds))
+        console.log(JSON.stringify(meds,0, 2))
+        props.navigation.goBack()
+        
+    }
+
+    const __onPressEndTreatment = () =>{
+        var mensagemConfirmacao = "Deseja encerrar o tratamento?"
+        if (med.doses && med.doses.length > 0){
+            mensagemConfirmacao += " Todas as doses não tomadas serão removidas."
+        }
+         
+        Alert.alert('Encerrar tratamento', mensagemConfirmacao,
+            [{   
+                text: 'Não',
+            },
+            {
+                text:'Sim',
+                onPress(){
+                    __endTreatment()
+                }
+            },
+        ])
+    }
+
     const __getTimeContent = () => {
+        if(med.status == medStatus.INATIVO){
+            return(
+                <>
+                    <InfoTitle>
+                        Tratamento Encerrado
+                    </InfoTitle>
+                </>)
+        }
+        
         if(med.scheduledDoses){
             if(med.days > 0 && med.startDate && med.endDate){
                 var daysLeft = UtilitarioCalculo.diffDays(new Date(), med.endDate)
@@ -139,7 +189,7 @@ export default props =>{
             {med.expireDate &&
             <VPadding>
                 <InfoTitle>Validade</InfoTitle>
-                <InfoText>{med.expireDate.format("'dd/mm/yyy'")}</InfoText>
+                <InfoText>{moment(med.expireDate).format("L")}</InfoText>
             </VPadding>}
             {med.notes &&
             <VPadding>
@@ -148,21 +198,15 @@ export default props =>{
             </VPadding>}
             <Bottom>
                 <ButtonView>
-                    <TouchableOpacity>
-                        <Button>
-                            <LeftButtonText>
-                                Pausar Tratamento
-                            </LeftButtonText>
-                        </Button>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
+                    {med.status == medStatus.ATIVO && 
+                    <TouchableOpacity
+                        onPress={__onPressEndTreatment}>
                         <Button>
                             <RightButtonText>
-                                Acabar Tratamento
+                                Encerrar Tratamento
                             </RightButtonText>
                         </Button>
-                    </TouchableOpacity>
-
+                    </TouchableOpacity>}
                 </ButtonView>
             </Bottom>
         </Container>
