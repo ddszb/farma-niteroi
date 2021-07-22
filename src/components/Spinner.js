@@ -15,19 +15,19 @@ export default props =>{
       } )
     }
 
+    const onValueChange = (itemValue, itemIndex) =>{
+      var item = props.items.filter( i => i.value === itemValue)[0]
+      setSelectedValue(itemValue)
+      props.onChangeValue(item)
+    }
+
     return (
           <Picker
             selectedValue={selectedValue}
             style={props.styles || defaultStyles}
             mode="dialog"
             dropdownIconColor="#eaeaea"
-            selectedValue={ props.value ? props.value : undefined}
-            onValueChange={(itemValue, itemIndex) =>{ 
-              var item = props.items.filter( i => i.value === itemValue)[0]
-              setSelectedValue(itemValue)
-              props.onChangeValue(item)
-            }}
-          >
+            onValueChange={onValueChange}>
             {getList()}
           </Picker>
       );
