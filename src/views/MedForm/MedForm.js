@@ -26,6 +26,7 @@ import IconPicker from './components/IconPicker'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import doseUnitsSelection from '../../constants/doseUnitsSelection'
 import doseStatus from '../../constants/doseStatus'
+import medStatus from '../../constants/medStatus'
 
 const initialState = 
     {
@@ -36,6 +37,8 @@ const initialState =
         icon: medicons[0],
         iconColor: iconColors[0],
         notes: null,
+        status: medStatus.ATIVO,
+        doseHours: [{ time: 8, amount: 1, unit: doseUnits.COMPRIMIDO, index: 0}],
         stock:{
             amount: '0',
             unit: doseUnits.COMPRIMIDO
@@ -121,13 +124,9 @@ export default ({navigation, route}) => {
     }
 
     const __createDayDoses = (medPersist, doses, day) =>{
-        // console.warn("medPersis:", medPersist)
-        // console.warn("doses:", medPersist.doseHours)
-        console.log("day b4:", day)
         medPersist.doseHours.forEach( doseTime =>{
             day.setHours(doseTime.time.getHours(), doseTime.time.getMinutes())
             var doseDate = new Date(day)
-            console.log("day aftter:", day)
             let dose = {
                 medName: medPersist.name,
                 date: doseDate, 
@@ -145,24 +144,21 @@ export default ({navigation, route}) => {
 
     const __createDosesList = (medPersist) => {
         if(!medPersist.scheduledDoses || medPersist.days == 0){
-            medPersist.endDate = null
             medPersist.doses = []
         }else{
             var doseDay = new Date(medPersist.startDate)
+            var totalIntakes = medPersist.days * medPersist.doseHours.length
             var intakes = 0
             var daysArray = Object.keys(medPersist.weekdays).map(d => medPersist.weekdays[d])
             var doses = []
-            while(intakes < medPersist.days - 1){
+            while(intakes < totalIntakes - 1){
                 if(daysArray[doseDay.getDay()] == 1){
                     intakes += 1
                     __createDayDoses(medPersist, doses, doseDay)
                 }
                 doseDay.setDate(doseDay.getDate() + 1)
-                // console.log(doseDay)
             }
-            medPersist.endDate = doseDay
             medPersist.doses = doses
-            console.log("doses:", JSON.stringify(doses, 0, 2))
         }
     }
 
@@ -183,18 +179,14 @@ export default ({navigation, route}) => {
     
     const __confirmSave = async () =>{
         var medPersist = {...med}
-        console.warn("confirmSave:")
         medPersist = __fillMedInfo(medPersist)
-        console.warn("medPersis:", medPersist)
         const medsString = await AsyncStorage.getItem('medsList')
-        console.warn("medList", medsString)
         const meds = medsString !== null ? JSON.parse(medsString) : []
         
         const medSequence = await AsyncStorage.getItem('medsListSequence')
         const medId = medSequence !== null ? parseInt(medSequence) + 1 : 1
         medPersist.id = medId
         
-        console.warn("meds",meds)
         meds.push(medPersist)
         AsyncStorage.setItem("medsListSequence", medId.toString())
         AsyncStorage.setItem('medsList', JSON.stringify(meds))
