@@ -16,8 +16,6 @@ import 'moment/locale/pt-br'
 import { TouchableOpacity, View, RefreshControl } from 'react-native'
 import doseStatus from '../../constants/doseStatus'
 
-
-
 export default props =>{
 
     const MedIcon = createIconSetFromIcoMoon(iconMoonConfig)
@@ -60,9 +58,8 @@ export default props =>{
     }
 
     const filterDoses = () =>{
-        console.log(meds)
         var allDoses = [].concat.apply([], meds.map( m => m.doses)) // Concatena todas as doses de todos os medicamentos
-        let visibleDoses = allDoses.filter( d => moment(d.date).isSame(filterDay, 'day'))
+        let visibleDoses = allDoses.filter( d => moment(d.date).isSame(filterDay, 'day') && d.status !== doseStatus.ENCERRADA)
         visibleDoses.sort((a, b) => new Date(a.date) - new Date(b.date) )
         setVisibleDoses(visibleDoses)
     }
@@ -80,7 +77,6 @@ export default props =>{
             updatedDose.status = status
             updatedDose.dateTaken = new Date()
         }
-        console.log(JSON.stringify(updatedDose, 0, 2))
         if(swipeableRef && swipeableRef.current){
             swipeableRef.current.close()
         }
@@ -126,18 +122,16 @@ export default props =>{
     }
 
     const getRightSwipe = (dose) => {
-        switch(dose.status){
-            case doseStatus.NAO_TOMADA:
-                return (
-                    <RightSwipe style={{backgroundColor: '#038f00'}}>
-                        <RightSwipeText>
-                            Tomar dose
-                        </RightSwipeText>
-                        <Icon name="check" size={30} color='#FFF'/>
-                    </RightSwipe>
-                )
+        if (dose.status == doseStatus.NAO_TOMADA && moment().isSame(dose.date, 'day')){
+            return (
+                <RightSwipe style={{backgroundColor: '#038f00'}}>
+                    <RightSwipeText>
+                        Tomar dose
+                    </RightSwipeText>
+                    <Icon name="check" size={30} color='#FFF'/>
+                </RightSwipe>
+            )
         }   
-
     }
 
     const getDoseItem = ({item : dose}) =>{
@@ -161,7 +155,8 @@ export default props =>{
             case doseStatus.TOMADA:
                 status = (
                     <LightText>
-                        Tomado às {moment(dose.dateTaken).format('HH:mm')}
+                        {"Tomado às\n" +
+                        moment(dose.dateTaken).format('HH:mm')}
                     </LightText>
             )
                 break

@@ -62,8 +62,9 @@ export const DarkText = styled.Text`
 
 export const LightText = styled.Text`
     font-size: 18px;
-    color: #888;
+    color: #777;
     margin-horizontal: 5px;
+    text-align: center;
 `
 
 export const DateText = styled.Text`
