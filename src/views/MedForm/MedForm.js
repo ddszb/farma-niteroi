@@ -28,6 +28,13 @@ import doseUnitsSelection from '../../constants/doseUnitsSelection'
 import doseStatus from '../../constants/doseStatus'
 import medStatus from '../../constants/medStatus'
 
+import moment from 'moment'
+import 'moment/locale/pt-br'
+
+
+const initialDoseTime = new Date();
+initialDoseTime.setHours(8)
+initialDoseTime.setMinutes(0)
 const initialState = 
     {
         weekdays: { 0:1, 1:1, 2:1, 3:1, 4:1, 5:1, 6:1},
@@ -38,9 +45,9 @@ const initialState =
         iconColor: iconColors[0],
         notes: null,
         status: medStatus.ATIVO,
-        doseHours: [{ time: 8, amount: 1, unit: doseUnits.COMPRIMIDO, index: 0}],
+        doseHours: [{ time: initialDoseTime, amount: 1, unit: doseUnits.COMPRIMIDO.key, index: 0}],
         stock:{
-            amount: '0',
+            amount: null,
             unit: doseUnits.COMPRIMIDO
         }
     }
@@ -62,7 +69,10 @@ export default ({navigation, route}) => {
         setMed({...med, icon: icon})
     }
     
-    const __setTreatmentstartDate = (startDate) =>{
+    const __setTreatmentstartDate = (date) =>{
+        let startDate = new Date(date)
+        startDate.setHours(0)
+        startDate.setMinutes(0)
         setMed({...med, startDate})
     }
     
@@ -123,22 +133,24 @@ export default ({navigation, route}) => {
         return Object.keys(days).map(toWeekdays).reduce(sum)
     }
 
-    const __createDayDoses = (medPersist, doses, day) =>{
+    const __createDayDoses = (medPersist, doses, day, currentTime) =>{
         medPersist.doseHours.forEach( doseTime =>{
             day.setHours(doseTime.time.getHours(), doseTime.time.getMinutes())
-            var doseDate = new Date(day)
-            let dose = {
-                medName: medPersist.name,
-                date: doseDate, 
-                unit: doseTime.unit,
-                amount: doseTime.amount,
-                dateTaken: null,
-                newDate: null,
-                status: doseStatus.NAO_TOMADA,
-                icon: medPersist.icon,
-                iconColor: medPersist.iconColor,
+            if(day > currentTime){
+                var doseDate = new Date(day)
+                let dose = {
+                    medName: medPersist.name,
+                    date: doseDate, 
+                    unit: doseTime.unit,
+                    amount: doseTime.amount,
+                    dateTaken: null,
+                    newDate: null,
+                    status: doseStatus.NAO_TOMADA,
+                    icon: medPersist.icon,
+                    iconColor: medPersist.iconColor,
+                }
+                doses.push(dose)
             }
-            doses.push(dose)
         })
     }
 
@@ -147,14 +159,13 @@ export default ({navigation, route}) => {
             medPersist.doses = []
         }else{
             var doseDay = new Date(medPersist.startDate)
+            var currentTime = new Date()
             var totalIntakes = medPersist.days * medPersist.doseHours.length
-            var intakes = 0
             var daysArray = Object.keys(medPersist.weekdays).map(d => medPersist.weekdays[d])
             var doses = []
-            while(intakes < totalIntakes - 1){
+            while(doses.length < totalIntakes){
                 if(daysArray[doseDay.getDay()] == 1){
-                    intakes += 1
-                    __createDayDoses(medPersist, doses, doseDay)
+                    __createDayDoses(medPersist, doses, doseDay, currentTime)
                 }
                 doseDay.setDate(doseDay.getDate() + 1)
             }

@@ -45,15 +45,13 @@ export default props =>{
         }
         if(event.type === "set"){
             // Atualizando dose selecionada
-            var doses = state.doseHoursItems
+            var doses = [...state.doseHoursItems]
             var index = state.selectedDose
             var selectedDose = doses[index]
-            selectedDose.time = date
+            selectedDose.time = new Date(date)
             
             // Atualizando lista
             doses.splice(index, 1, selectedDose)
-
-            
             // Atualizando estado
             setState({
                 ...state,
@@ -62,7 +60,7 @@ export default props =>{
                 dialogTime: date,
                 showDoseHourPicker: false,
             })
-            console.warn("BC:", state.dialogTime, doses )
+            props.onUpdate(doses)
         }else{
             setState({
                 ...state,
@@ -213,6 +211,7 @@ export default props =>{
                             is24Hour={true}
                             display="spinner"
                             textColor="#63488c"
+                            timeZoneOffsetInMinutes={-180}
                             minuteInterval={5}
                             onChange={__updateDoseItem}/>)
                         }
