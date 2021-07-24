@@ -22,7 +22,6 @@ export default props =>{
 
 
     const __endTreatment = async () =>{        
-        console.warn(Object.keys(screen))
         var medEnded = {...med}
         medEnded.doses.forEach(d =>{
             if(d.status != doseStatus.TOMADA || !d.dateTaken){
@@ -35,7 +34,6 @@ export default props =>{
         var meds = medsString !== null ? JSON.parse(medsString) : []
         var meds = meds.map( m => m.name == medEnded.name ? medEnded : m)
         AsyncStorage.setItem('medsList', JSON.stringify(meds))
-        console.log(JSON.stringify(meds,0, 2))
         props.navigation.goBack()
         
     }
@@ -70,16 +68,16 @@ export default props =>{
         }
         
         if(med.scheduledDoses){
-            if(med.days > 0 && med.startDate && med.endDate){
-                var daysLeft = UtilitarioCalculo.diffDays(new Date(), med.endDate)
+            untakenDoses = med.doses.filter(d => d.status == doseStatus.ADIADA || d.status == doseStatus.NAO_TOMADA).length
+            if(med.days > 0 && untakenDoses > 0){
                 return(
                 <>
                     <InfoTitle>
                         Duração
                     </InfoTitle>
                     <InfoText>
-                        {daysLeft} {daysLeft > 1 ? 'dias ' : 'dia '}
-                        {daysLeft > 1 ? 'restantes' : 'restante'}
+                        {untakenDoses} {untakenDoses > 1 ? 'doses ' : 'dose '}
+                        {untakenDoses > 1 ? 'restantes' : 'restante'}
                     </InfoText>
                 </>)
             }else{
