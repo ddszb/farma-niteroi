@@ -1,20 +1,23 @@
 import React, {useState, useEffect} from 'react'
-import {FlatList, Alert, Button} from 'react-native'
-import { ListItem} from 'react-native-elements'
+import {FlatList, TouchableOpacity, Button, ToastAndroid} from 'react-native'
+import { ListItem } from 'react-native-elements'
+import { Icon } from 'react-native-elements/dist/icons/Icon'
 import FAB from '../../components/FloatActionButton'
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons'
 import iconMoonConfig from '../../selection.json'
 import {LeftTitle, RightTitle, LeftSubtitle, RightSubtitle, RightContainer,
-     MedListView, IconPadding} from './styles'
+     MedListView, IconPadding, HeaderTitle, HeaderTitleText, ToggleView} from './styles'
 import {useFocusEffect} from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import * as UtilitarioCalculo from '../../util/UtilitarioCalculo'
 import medStatus from '../../constants/medStatus'
 import doseStatus from '../../constants/doseStatus'
 
 export default props =>{
     
+    
+    const [showFinishedMeds, setShowFinishedMeds] = useState(true)
     const [meds, setMeds] = useState([])
+    const [visibleMeds, setVisibleMeds] = useState([])
     const MedIcon = createIconSetFromIcoMoon(iconMoonConfig)
     
     clearAsyncStorage = async() => {
@@ -32,6 +35,29 @@ export default props =>{
         getMeds()
     }, []))
 
+    useEffect(() =>{
+        if(meds && meds.length > 0){
+            filterMeds()
+        }
+    }, [meds, showFinishedMeds])
+    
+    const filterMeds = () =>{
+        var allMeds = [...meds]
+        if(!showFinishedMeds){
+            allMeds = meds.filter( m => m.status == medStatus.ATIVO)
+        }
+        allMeds.sort((a,b) => a.status < b.status)
+        setVisibleMeds(allMeds)
+    }
+
+    const toggleFilter = () =>{
+        var toastMessage = showFinishedMeds ? "Ocultando medicamentos finalizados" : "Exibindo medicamentos finalizados"
+        ToastAndroid.showWithGravityAndOffset(toastMessage,
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM, 0 , 120)
+        setShowFinishedMeds(!showFinishedMeds)
+    }
+
     function navigateToNew(){
         props.navigation.navigate('Adicionar Medicamento', {screen: 'Adicionar Medicamento'})
     }
@@ -40,22 +66,7 @@ export default props =>{
         props.navigation.navigate('Meu Medicamento', {screen: 'Meu Medicamento', med: med} )
     }
 
-    function confirmMedDeletion(med){
 
-        Alert.alert('Excluir Medicamento', 'Deseja remover o medicamento?',
-         [{
-             text:'Sim',
-             onPress(){
-                 dispatch({
-                    type: action.DELETE_MED,
-                    payload: med,
-                })
-             }
-         },
-        {   
-            text: 'Não'
-        }])
-    }
 
     const __getRightContent = (med) =>{
         if(med.status == medStatus.INATIVO){
@@ -124,10 +135,24 @@ export default props =>{
     
     return (
         <MedListView>
-            {/* <Button onPress={clearAsyncStorage} title="Limpar"/> */}
+            <HeaderTitle>
+                <HeaderTitleText>
+                    Meus Medicamentos
+                </HeaderTitleText>
+                <ToggleView>
+                    <TouchableOpacity onPress={toggleFilter}> 
+                        <Icon 
+                            name={showFinishedMeds ? "eye" : "eye-slash"}
+                            type={"font-awesome"}
+                            size={25}
+                            color={"#FFFFFF"}/>
+                    </TouchableOpacity>
+                </ToggleView>
+            </HeaderTitle>
+            <Button onPress={clearAsyncStorage} title="Limpar"/>
             <FlatList
                 keyExtractor={ (item, index) => `${index}`}
-                data={meds}
+                data={visibleMeds}
                 renderItem={getMedItem}
             />
             <FAB onClick={navigateToNew}/>

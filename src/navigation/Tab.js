@@ -23,7 +23,7 @@ const SearchStack = createStackNavigator()
 function MedStackScreen() {
     return (
         <MedsStack.Navigator>
-            <MedsStack.Screen name="Meus Medicamentos" component={ListaMeds}/>
+            <MedsStack.Screen options={{headerShown: false}} name="Meus Medicamentos" component={ListaMeds}/>
             <MedsStack.Screen name="Adicionar Medicamento" component={MedForm}/>
             <MedsStack.Screen name="Meu Medicamento" component={MedDetail}/>
         </MedsStack.Navigator>

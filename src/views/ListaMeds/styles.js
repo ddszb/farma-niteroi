@@ -2,6 +2,20 @@ import styled from "styled-components/native"
 
 import {ListItem} from 'react-native-elements'
 
+export const HeaderTitle = styled.View`
+    flex-direction: row;
+    background-color: #63488c;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+`
+export const HeaderTitleText = styled.Text`
+    font-size: 22px;
+    text-align: left;
+    color: #FFF;
+    margin-left: 15px;
+    text-align: center;
+`
 export const LeftTitle = styled(ListItem.Title)`
     font-size: 17px;
     font-weight: bold;
@@ -31,4 +45,9 @@ export const MedListView = styled.View`
 export const IconPadding = styled.View`
     padding-left: 10px;
     padding-right: 5px;
+`
+
+export const ToggleView = styled.View`
+    position: absolute;
+    right: 16px;
 `
