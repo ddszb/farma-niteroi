@@ -60,7 +60,7 @@ export default props =>{
     const filterDoses = () =>{
         var allDoses = [].concat.apply([], meds.map( m => m.doses)) // Concatena todas as doses de todos os medicamentos
         let visibleDoses = allDoses.filter( d => moment(d.date).isSame(filterDay, 'day') && d.status !== doseStatus.ENCERRADA)
-        visibleDoses.sort((a, b) => new Date(a.date) - new Date(b.date) )
+        visibleDoses.sort((a, b) => new Date(a.date) - new Date(b.date))
         setVisibleDoses(visibleDoses)
     }
 
@@ -72,10 +72,14 @@ export default props =>{
 
     const updateDose = (dose, status) =>{
         var medList = [...meds]
-        var updatedDose = medList.filter( m => m.name == dose.medName)[0].doses.filter(d => dose.medName == d.medName && d.date == dose.date )[0]
+        var updatedMed = medList.filter(m => m.name == dose.medName)[0]
+        var updatedDose = updatedMed.doses.filter(d => dose.medName == d.medName && d.date == dose.date )[0]
         if(updatedDose){
-            updatedDose.status = status
-            updatedDose.dateTaken = new Date()
+            if(status == doseStatus.TOMADA){
+                updatedDose.status = status
+                updatedDose.dateTaken = new Date()
+                updatedMed.stock.amount -= dose.amount
+            }
         }
         if(swipeableRef && swipeableRef.current){
             swipeableRef.current.close()
