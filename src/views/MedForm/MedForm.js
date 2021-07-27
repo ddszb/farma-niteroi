@@ -123,7 +123,9 @@ export default ({navigation, route}) => {
         setMed({...med,days})
     }
 
-    const __onUpdateDoseHours = (doseHours) =>{
+    const __onUpdateDoseHours = (doses) =>{
+        var doseHours = [...doses]
+        doseHours.forEach( d => d.unit = med.stock.unit)
         setMed({...med, doseHours})
     }
 

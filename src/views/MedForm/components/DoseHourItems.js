@@ -22,7 +22,7 @@ export default props =>{
     defaultDate.setHours(8)
     
     const initialState = {
-        doseHoursItems: [{ time: defaultDate, amount: 1, unit: props.unit.key, index: 0}],
+        doseHoursItems: [{ time: defaultDate, amount: 1, unit: props.unit, index: 0}],
         selectedDose: 0,
         showDialog: false,
         showDoseHourPicker: false,
@@ -219,6 +219,7 @@ export default props =>{
                     <DoseHourDialog 
                         visible={state.showDialog} 
                         dose={d}
+                        unit={props.unit.label}
                         close={__closeDialog}
                         onSet={__updateItem}/>
                 </View>

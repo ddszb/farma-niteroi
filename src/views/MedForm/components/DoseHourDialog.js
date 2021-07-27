@@ -32,7 +32,7 @@ export default (props) =>{
                       onChangeText={ amount => setAmount(amount)}
                       value={'' + amount}
                       keyboardType="numeric"/>
-              <Text style={styles.unitText}>{doseUnits[props.dose.unit].label + "(s)"}</Text>
+              <Text style={styles.unitText}>{props.unit + "(s)"}</Text>
 
             </View>
             <View style={styles.buttonsRow}>
