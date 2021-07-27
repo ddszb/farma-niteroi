@@ -6,14 +6,13 @@ import {
     TouchableOpacity
 } from "react-native"
 
-import doseUnits from '../../../constants/doseUnits'
 import doseTimes from '../../../constants/doseTimesSelection'
 import TreatmentSpinner from '../../../components/Spinner'
-import DoseHourDialog from './DoseHourDialog'
 import DateTimePicker from '@react-native-community/datetimepicker'
 
 import moment from 'moment'
 import 'moment/locale/pt-br'
+import InputModal from '../../../components/InputModal'
 
 export default props =>{
     
@@ -52,6 +51,10 @@ export default props =>{
             
             // Atualizando lista
             doses.splice(index, 1, selectedDose)
+
+            if(index == 0){
+                doses = __shiftDoseTimes(doses)
+            }
             // Atualizando estado
             setState({
                 ...state,
@@ -122,7 +125,6 @@ export default props =>{
         var index = state.selectedDose
         var dose = doses[index]
         dose.amount = amount
-        
         setState({
             ...state,
             selectedDose: dose.index,
@@ -146,15 +148,19 @@ export default props =>{
      * @returns A lista com horários ajustados
      */
     const __shiftDoseTimes = (doses) =>{
-        const newDoses = []
-        var offset = doses[0].time.getHours() - 8
-        for(var i = 0; i < doses.length; i++){
-            let dose = doses[i]
-            let hours = dose.time.getHours()
-            dose.setHours( hours + offset < 24 ? hours + offset : 24 - hours + offset)
-            newDoses.push(dose)
+        var interval = 24 / doses.length;
+        var startHour = doses[0].time.getHours()
+        var startMinute = doses[0].time.getMinutes()
+
+        doseHours = []
+        for( i = 0; i < doses.length; i++){
+            let startTime = startHour + (i * interval)
+            let doseTime = new Date()
+            doseTime.setHours(startTime)
+            doseTime.setMinutes(startMinute)
+            doses[i].time = doseTime
         }
-        return newDoses
+        return doses
     }
     
     /**
@@ -176,7 +182,7 @@ export default props =>{
             var time = moment(d.time).format("HH:mm")
             return (
                 <View key={d.index}>
-                    <View style={{flexDirection : 'row', justifyContent: 'space-between', padding: 0}}>
+                    <View style={{flexDirection : 'row', justifyContent: 'space-between', paddingVertical: 6}}>
                         <TouchableOpacity
                             onPress={ () => {
                                 setState({
@@ -216,10 +222,13 @@ export default props =>{
                             onChange={__updateDoseItem}/>)
                         }
                     </View>
-                    <DoseHourDialog 
-                        visible={state.showDialog} 
-                        dose={d}
-                        unit={props.unit.label}
+                    <InputModal
+                        visible={state.showDialog}
+                        title={"Quanto tomar?"}
+                        initialValue={'' + d.amount}
+                        inputType={"numeric"}
+                        inputText={props.unit.label + "(s)"}
+                        inputLength={4}
                         close={__closeDialog}
                         onSet={__updateItem}/>
                 </View>

@@ -1,12 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { TouchableOpacity } from 'react-native'
-import { ToastAndroid , Pressable, View, Alert} from 'react-native'
+import { ToastAndroid , Pressable, View, Alert, Modal} from 'react-native'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons'
 import iconMoonConfig from '../../selection.json'
 import {Container, RowView, MedName, HPadding,
     VPadding, InfoTitle, InfoText, Bottom, ButtonView,
-    RightButtonText, LeftButtonText, Button} from './styles'
+    ButtonPurpleText, ButtonBlueText, Button} from './styles'
 import doseUnits from '../../constants/doseUnits'
 import * as UtilitarioCalculo from '../../util/UtilitarioCalculo'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -14,13 +14,15 @@ import moment from 'moment'
 import 'moment/locale/pt-br'
 import doseStatus from '../../constants/doseStatus'
 import medStatus from '../../constants/medStatus'
+import InputModal from '../../components/InputModal'
 
 export default props =>{
     
     const {med, screen} = props.route.params
+    const [modalVisible, setModalVisible] = useState(false)
     const MedIcon = createIconSetFromIcoMoon(iconMoonConfig)
 
-
+    
     const __endTreatment = async () =>{        
         var medEnded = {...med}
         medEnded.doses.forEach(d =>{
@@ -29,7 +31,7 @@ export default props =>{
             }
         })
         medEnded.status = medStatus.INATIVO;
-
+        
         const medsString = await AsyncStorage.getItem('medsList')
         var meds = medsString !== null ? JSON.parse(medsString) : []
         var meds = meds.map( m => m.name == medEnded.name ? medEnded : m)
@@ -37,25 +39,72 @@ export default props =>{
         props.navigation.goBack()
         
     }
-
+    
     const __onPressEndTreatment = () =>{
         var mensagemConfirmacao = "Deseja encerrar o tratamento?"
         if (med.doses && med.doses.length > 0){
             mensagemConfirmacao += " Todas as doses não tomadas serão removidas."
         }
-         
+        
         Alert.alert('Encerrar tratamento', mensagemConfirmacao,
-            [{   
-                text: 'Não',
-            },
-            {
-                text:'Sim',
-                onPress(){
-                    __endTreatment()
-                }
-            },
-        ])
+        [{   
+            text: 'Não',
+        },
+        {
+            text:'Sim',
+            onPress(){
+                __endTreatment()
+            }
+        },
+    ])
     }
+
+    const __addStock = async (amount) =>{
+        console.warn("Adicionados " + amount + " ao estoque")
+        updatedMed = {...med}
+        updatedMed.stock.amount = +updatedMed.stock.amount + +amount
+
+        const medsString = await AsyncStorage.getItem('medsList')
+        var meds = medsString !== null ? JSON.parse(medsString) : []
+        var meds = meds.map( m => m.name == updatedMed.name ? updatedMed : m)
+        AsyncStorage.setItem('medsList', JSON.stringify(meds))
+        setModalVisible(false)
+    }
+
+    const getModal = () =>{
+        return (
+            <InputModal
+                visible={modalVisible}
+                title={"Repor estoque"}
+                subtitle={"Quanto adicionar ao estoque?"}
+                inputType={"numeric"}
+                inputText={med.stock.unit.label + "s"}
+                inputLength={4}
+                close={ () => setModalVisible(false)}
+                onSet={__addStock}
+                confirmText={"Adicionar"}
+            />
+        )
+    }
+
+    const __getStockContent = () =>{
+        return(
+            <>
+                    <InfoTitle>Estoque</InfoTitle>
+                    <RowView style={{marginLeft: 60}}>
+                        <InfoText>{med.stock.amount} {med.stock.unit.label}(s)</InfoText>
+                        <TouchableOpacity
+                                onPress={() => setModalVisible(true)}>
+                                <Button>
+                                    <ButtonBlueText>
+                                        Repor
+                                    </ButtonBlueText>
+                                </Button>
+                        </TouchableOpacity>
+                    </RowView>
+                </>
+            )
+        }
 
     const __getTimeContent = () => {
         if(med.status == medStatus.INATIVO){
@@ -107,6 +156,7 @@ export default props =>{
     }
 
     __getDoseHoursContent = () => {
+        console.log(med.doseHours)
         return med.doseHours.map( d =>{
             var time = moment(d.time).format("HH:mm")
             var unitLabel =  d.unit.label + (d.amount > 1 ? "s" : "")
@@ -167,8 +217,7 @@ export default props =>{
                 {__getTimeContent()}
             </VPadding>
             <VPadding>
-                <InfoTitle>Estoque</InfoTitle>
-                <InfoText>{med.stock.amount} {med.stock.unit.label}(s)</InfoText>
+                {__getStockContent()}
             </VPadding>
             {med.scheduledDoses && med.doseHours &&
             <VPadding>
@@ -200,13 +249,14 @@ export default props =>{
                     <TouchableOpacity
                         onPress={__onPressEndTreatment}>
                         <Button>
-                            <RightButtonText>
+                            <ButtonPurpleText>
                                 Encerrar Tratamento
-                            </RightButtonText>
+                            </ButtonPurpleText>
                         </Button>
                     </TouchableOpacity>}
                 </ButtonView>
             </Bottom>
+            {getModal()}
         </Container>
     )
 }

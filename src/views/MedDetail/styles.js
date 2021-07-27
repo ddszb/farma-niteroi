@@ -69,13 +69,13 @@ export const Button = styled.View`
     margin-right: 10px;
 `
 
-export const LeftButtonText = styled.Text`
+export const ButtonBlueText = styled.Text`
     color: #3489eb;
     font-size: 16px;
     text-align: center;
     `
     
-export const RightButtonText = styled.Text`
+export const ButtonPurpleText = styled.Text`
     color: #63488c;
     font-size: 16px;
     text-align: center;
