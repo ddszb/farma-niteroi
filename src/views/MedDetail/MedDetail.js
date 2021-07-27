@@ -109,7 +109,7 @@ export default props =>{
     __getDoseHoursContent = () => {
         return med.doseHours.map( d =>{
             var time = moment(d.time).format("HH:mm")
-            var unitLabel =  doseUnits[d.unit].label + (d.amount > 1 ? "s" : "")
+            var unitLabel =  d.unit.label + (d.amount > 1 ? "s" : "")
             return(
                 <RowView key={d.index}>
                     <InfoTitle>
