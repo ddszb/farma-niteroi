@@ -21,36 +21,36 @@ export default props =>{
                     props.close()
                 }}>
                 <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-                    <Text style={styles.modalText}>{props.title}</Text>
-                    {props.subtitle && <Text style={styles.text}>{props.subtitle}</Text>}
-                    <View style={styles.selectionContainer}>
-                    <TextInput
-                            style={styles.input}
-                            onChangeText={onChangeText}
-                            value={value}
-                            maxLength={props.inputLength}
-                            keyboardType={props.inputType}/>
-                    <Text style={styles.text}>{props.inputText}</Text>
+                  <View style={styles.modalView}>
+                      <Text style={styles.modalText}>{props.title}</Text>
+                      {props.subtitle && <Text style={styles.text}>{props.subtitle}</Text>}
+                      <View style={styles.selectionContainer}>
+                      <TextInput
+                              style={styles.input}
+                              onChangeText={onChangeText}
+                              value={value}
+                              maxLength={props.inputLength}
+                              keyboardType={props.inputType}/>
+                      <Text style={styles.text}>{props.inputText}</Text>
 
-                    </View>
-                    <View style={styles.buttonsRow}>
-                    <TouchableOpacity
-                        onPress={() => props.close()}
-                        style={styles.buttonCancel}>
-                        <Text style={styles.cancelText}>{props.cancelText ? props.cancelText : 'Cancelar'}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => {
-                            let v = value
-                            setValue('') 
-                            props.onSet(v)
-                        }}
-                        style={styles.buttonConfirm}>
-                        <Text style={styles.confirmText}>{props.confirmText? props.confirmText : 'Ok'}</Text>
-                    </TouchableOpacity>
-                    </View>
-                </View>
+                      </View>
+                      <View style={styles.buttonsRow}>
+                      <TouchableOpacity
+                          onPress={() => props.close()}
+                          style={styles.buttonCancel}>
+                          <Text style={styles.cancelText}>{props.cancelText ? props.cancelText : 'Cancelar'}</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                          onPress={() => {
+                              let v = value
+                              setValue('') 
+                              props.onSet(v)
+                          }}
+                          style={styles.buttonConfirm}>
+                          <Text style={styles.confirmText}>{props.confirmText? props.confirmText : 'Ok'}</Text>
+                      </TouchableOpacity>
+                      </View>
+                  </View>
                 </View>
             </Modal>
     )
@@ -61,7 +61,8 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: "center",
       alignItems: "center",
-      marginTop: 22
+      marginTop: 22,
+      backgroundColor: 'rgba(0, 0, 0, 0.5)'
     },
     modalView: {
       margin: 10,
