@@ -19,6 +19,7 @@ export const HeaderTitleText = styled.Text`
 export const LeftTitle = styled(ListItem.Title)`
     font-size: 17px;
     font-weight: bold;
+    width: 200px;
 `
 export const LeftSubtitle = styled(ListItem.Subtitle)`
     fontSize: 16px;

@@ -117,7 +117,7 @@ export default props =>{
                 </IconPadding>
                 {/* Nome e quantidade */}
                 <ListItem.Content>
-                    <LeftTitle style={{color: med.iconColor}}>
+                    <LeftTitle numberOfLines={1} style={{color: med.iconColor}}>
                         {med.name}
                     </LeftTitle>
                     <LeftSubtitle>
