@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { TouchableOpacity } from 'react-native'
+import { ScrollView, TouchableOpacity } from 'react-native'
 import { ToastAndroid , Pressable, View, Alert, Modal} from 'react-native'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons'
@@ -60,7 +60,7 @@ export default props =>{
     }
 
     const __addStock = async (amount) =>{
-        console.warn("Adicionados " + amount + " ao estoque")
+        
         updatedMed = {...med}
         updatedMed.stock.amount = +updatedMed.stock.amount + +amount
 
@@ -68,6 +68,10 @@ export default props =>{
         var meds = medsString !== null ? JSON.parse(medsString) : []
         var meds = meds.map( m => m.name == updatedMed.name ? updatedMed : m)
         AsyncStorage.setItem('medsList', JSON.stringify(meds))
+        ToastAndroid.showWithGravityAndOffset(med.stock.unit.label + "s adicionados ao estoque",
+            ToastAndroid.SHORT,
+            ToastAndroid.BOTTOM,
+        0, 180)
         setModalVisible(false)
     }
 
@@ -191,72 +195,75 @@ export default props =>{
     }
 
     return (
-        <Container>
-            <VPadding>
-                <RowView>
-                    <MedIcon name={med.icon} size={40} color={med.iconColor}/> 
-                    <HPadding>
-                        <MedName style={{color: med.iconColor}}>{med.name}</MedName>
-                    </HPadding>
-                    {med.isOffered &&
-                    <HPadding>
-                        <Pressable
-                            onPress={ () => {
-                                ToastAndroid.showWithGravityAndOffset("Este medicamento é oferecido pela prefeitura de niterói!",
-                                ToastAndroid.SHORT,
-                                ToastAndroid.TOP,
-                                0, 180)
-                            }}>
-                            <Icon name="new" type="entypo" size={30} color="#eb6134"/>
-                        </Pressable>
-                    </HPadding>}
-                    
-                </RowView>
-            </VPadding>
-            <VPadding>
-                {__getTimeContent()}
-            </VPadding>
-            <VPadding>
-                {__getStockContent()}
-            </VPadding>
-            {med.scheduledDoses && med.doseHours &&
-            <VPadding>
-                <InfoTitle>Horários</InfoTitle>
-                {__getDoseHoursContent()}
-            </VPadding>}
-            {med.scheduledDoses && 
-            <VPadding>
-                <InfoTitle>Frequência</InfoTitle>
+        <ScrollView>
+
+            <Container>
                 <VPadding>
                     <RowView>
-                        {__getFrequencyContent()}
+                        <MedIcon name={med.icon} size={40} color={med.iconColor}/> 
+                        <HPadding>
+                            <MedName style={{color: med.iconColor}}>{med.name}</MedName>
+                        </HPadding>
+                        {med.isOffered &&
+                        <HPadding>
+                            <Pressable
+                                onPress={ () => {
+                                    ToastAndroid.showWithGravityAndOffset("Este medicamento é oferecido pela prefeitura de niterói!",
+                                    ToastAndroid.SHORT,
+                                    ToastAndroid.TOP,
+                                    0, 180)
+                                }}>
+                                <Icon name="new" type="entypo" size={30} color="#eb6134"/>
+                            </Pressable>
+                        </HPadding>}
+                        
                     </RowView>
                 </VPadding>
-            </VPadding>}
-            {med.expireDate &&
-            <VPadding>
-                <InfoTitle>Validade</InfoTitle>
-                <InfoText>{moment(med.expireDate).format("L")}</InfoText>
-            </VPadding>}
-            {med.notes &&
-            <VPadding>
-                <InfoTitle>Notas</InfoTitle>
-                <InfoText>{med.notes}</InfoText>
-            </VPadding>}
-            <Bottom>
-                <ButtonView>
-                    {med.status == medStatus.ATIVO && 
-                    <TouchableOpacity
-                        onPress={__onPressEndTreatment}>
-                        <Button>
-                            <ButtonPurpleText>
-                                Encerrar Tratamento
-                            </ButtonPurpleText>
-                        </Button>
-                    </TouchableOpacity>}
-                </ButtonView>
-            </Bottom>
-            {getModal()}
-        </Container>
+                <VPadding>
+                    {__getTimeContent()}
+                </VPadding>
+                <VPadding>
+                    {__getStockContent()}
+                </VPadding>
+                {med.scheduledDoses && med.doseHours &&
+                <VPadding>
+                    <InfoTitle>Horários</InfoTitle>
+                    {__getDoseHoursContent()}
+                </VPadding>}
+                {med.scheduledDoses && 
+                <VPadding>
+                    <InfoTitle>Frequência</InfoTitle>
+                    <VPadding>
+                        <RowView>
+                            {__getFrequencyContent()}
+                        </RowView>
+                    </VPadding>
+                </VPadding>}
+                {med.expireDate &&
+                <VPadding>
+                    <InfoTitle>Validade</InfoTitle>
+                    <InfoText>{moment(med.expireDate).format("L")}</InfoText>
+                </VPadding>}
+                {med.notes &&
+                <VPadding>
+                    <InfoTitle>Notas</InfoTitle>
+                    <InfoText>{med.notes}</InfoText>
+                </VPadding>}
+                <Bottom>
+                    <ButtonView>
+                        {med.status == medStatus.ATIVO && 
+                        <TouchableOpacity
+                            onPress={__onPressEndTreatment}>
+                            <Button>
+                                <ButtonPurpleText>
+                                    Encerrar Tratamento
+                                </ButtonPurpleText>
+                            </Button>
+                        </TouchableOpacity>}
+                    </ButtonView>
+                </Bottom>
+                {getModal()}
+            </Container>
+        </ScrollView>
     )
 }
