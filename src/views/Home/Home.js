@@ -5,7 +5,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
 import { Body, CardBox, ColorTag, Container,
      Detail, Header, Buttons, DarkText, LightText, ResetDateButton,
-      TopContent, BottomContent, DateText, HeaderTitle, HeaderTitleText, DatePickerView, EmptyListContainer, RightSwipe, RightSwipeText } from './styles'
+     TopContent, BottomContent, DateText, HeaderTitle, HeaderTitleText,
+     DatePickerView, EmptyListContainer, RightSwipe, RightSwipeText,
+     WarningText, 
+     RowView,
+     HPadding} from './styles'
 import { FlatList, Swipeable } from 'react-native-gesture-handler'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import doseUnits from '../../constants/doseUnits'
@@ -139,7 +143,7 @@ export default props =>{
     }
 
     const getDoseItem = ({item : dose}) =>{
-
+        var now = moment()
         var status = null
         switch(dose.status){
             case doseStatus.CANCELADA:
@@ -150,18 +154,36 @@ export default props =>{
                 )
                 break
             case doseStatus.NAO_TOMADA:
-                status = (
-                    <LightText>
-                        Não tomado
-                    </LightText>
-                )
+                if(moment(dose.date) < now ){
+                    status = (
+                        <RowView>
+                            <HPadding>
+                                <WarningText>
+                                    Atrasado
+                                </WarningText>
+                            </HPadding>
+                            <Icon name="warning" type={"font-awesome"} size={24} color='#f03622'/>
+                        </RowView>
+                    )
+                }else{
+                    status = (
+                        <LightText>
+                            Não tomado
+                        </LightText>
+                    )
+                }
                 break
             case doseStatus.TOMADA:
                 status = (
-                    <LightText>
-                        {"Tomado às\n" +
-                        moment(dose.dateTaken).format('HH:mm')}
-                    </LightText>
+                    <RowView>
+                        <HPadding>
+                            <LightText>
+                                {"Tomado às\n" +
+                                moment(dose.dateTaken).format('HH:mm')}
+                            </LightText>
+                        </HPadding>
+                        <Icon name="check-circle" type={"font-awesome"} size={24} color='#40a843'/>
+                    </RowView>
             )
                 break
             case doseStatus.ADIADA:
@@ -191,7 +213,7 @@ export default props =>{
                     <Detail>
                         <TopContent>
                             <MedIcon name={dose.icon} size={24} color={dose.iconColor}/> 
-                            <DarkText>
+                            <DarkText numberOfLines={1}>
                                 {dose.medName}
                             </DarkText>
                         </TopContent>
@@ -201,7 +223,7 @@ export default props =>{
                                 {moment(dose.date).format('HH:mm')}
                             </LightText>
                             <DarkText>
-                                {dose.amount} {doseUnits[dose.unit].label}{dose.amount > 1 ? "s" : ""}
+                                {dose.amount} {dose.unit.label}{dose.amount > 1 && dose.unit.label != "Ml" ? "s" : ""}
                             </DarkText>
                         </BottomContent>
                     </Detail>

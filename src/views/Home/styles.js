@@ -43,6 +43,7 @@ export const TopContent = styled.View`
     flex-direction: row;
     justify-content: flex-start;
     padding: 5px;
+    margin-right: 20px;
 `
 
 export const BottomContent = styled.View`
@@ -58,6 +59,7 @@ export const DarkText = styled.Text`
     font-weight: bold;
     color: #666;
     margin-horizontal: 5px;
+    font-family: Lato;
 `
 
 export const LightText = styled.Text`
@@ -66,6 +68,13 @@ export const LightText = styled.Text`
     margin-horizontal: 5px;
     text-align: center;
 `
+export const WarningText = styled.Text`
+    font-size: 18px;
+    color: #777;
+    margin-horizontal: 5px;
+    text-align: center;
+`
+
 
 export const DateText = styled.Text`
     font-size: 20px;
@@ -124,4 +133,18 @@ export const RightSwipeText = styled.Text`
     font-size: 20px;
     margin: 10px;
     color: #FFF;
+`
+
+export const HPadding = styled.View`
+    padding: 5px;
+`
+
+export const VPadding = styled.View`
+    padding: 5px;
+`
+
+export const RowView = styled.View`
+    flex-direction: row;
+    align-items: center;
+    
 `
