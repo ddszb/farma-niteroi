@@ -1,4 +1,6 @@
 import React, {useState, useEffect,  useContext, useRef} from 'react'
+
+import { TouchableOpacity, View, RefreshControl, Modal } from 'react-native'
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons'
 import iconMoonConfig from '../../selection.json'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -12,13 +14,13 @@ import { Body, CardBox, ColorTag, Container,
      HPadding} from './styles'
 import { FlatList, Swipeable } from 'react-native-gesture-handler'
 import DateTimePicker from '@react-native-community/datetimepicker'
-import doseUnits from '../../constants/doseUnits'
 
 import {useFocusEffect} from '@react-navigation/native'
 import moment from 'moment'
 import 'moment/locale/pt-br'
-import { TouchableOpacity, View, RefreshControl } from 'react-native'
 import doseStatus from '../../constants/doseStatus'
+import WelcomeModal from './components/WelcomeModal'
+
 
 export default props =>{
 
@@ -30,6 +32,7 @@ export default props =>{
     const [filterDay, setFilterDay] = useState(new Date())
     const [refreshing, setRefreshing] = useState(false)
     const swipeableRef = useRef(null);
+    const [showWelcomeModal, setShowWelcomeModal] = useState(false)
 
     clearAsyncStorage = async() => {
         AsyncStorage.clear();
@@ -39,15 +42,32 @@ export default props =>{
         AsyncStorage.setItem('medsList', JSON.stringify(meds))
     }
 
+    const checkFirstTime = async () =>{
+        const firstTime = await AsyncStorage.getItem('firstTime')
+        if(!firstTime){
+            setShowWelcomeModal(true)
+        }
+    }
+
+    const saveFirstVisit = async () =>{
+        await AsyncStorage.setItem('firstTime', '1')
+    }
+
     const getMeds = async () =>{
         const medsString = await AsyncStorage.getItem('medsList')
         const meds = JSON.parse(medsString) || []
         setMeds(meds)
     }
 
+    const closeModal = () =>{
+        setShowWelcomeModal(false)
+        saveFirstVisit()
+    }
+
     useFocusEffect(
         React.useCallback(() =>{
         getMeds()
+        checkFirstTime()
     }, []))
 
     useEffect(() =>{
@@ -237,6 +257,10 @@ export default props =>{
 
     return(
         <Container>
+            <WelcomeModal
+                visible={showWelcomeModal}
+                close={closeModal}
+            />
             <Header>
                 <HeaderTitle>
                     <HeaderTitleText>
