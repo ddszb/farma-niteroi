@@ -149,7 +149,7 @@ export default props =>{
                     </TouchableOpacity>
                 </ToggleView>
             </HeaderTitle>
-            <Button onPress={clearAsyncStorage} title="Limpar"/>
+            {/* <Button onPress={clearAsyncStorage} title="Limpar"/>s */}
             <FlatList
                 keyExtractor={ (item, index) => `${index}`}
                 data={visibleMeds}
