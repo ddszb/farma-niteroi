@@ -1,27 +1,21 @@
 import React, {useState} from 'react'
-import {StyleSheet, TextInput} from 'react-native'
+import {StyleSheet, View} from 'react-native'
 
 import {RadioButton, Text} from 'react-native-paper'
 
 import {RadioButtonView, BorderlessInputText} from '../styles'
-import WeekdayPicker from 'react-native-weekday-picker'
+import WeekdayPicker from './WeekdayPicker'
+
+const dailyTemplate = { 0:1, 1:1, 2:1, 3:1, 4:1, 5:1, 6:1}
+
 export default props =>{
 
     const [daily, setDaily] = useState(true)
-    const [prevDays, setPrevDays] = useState(props.days)
 
-    const __getTimesAWeek = (days) =>{
-      var toWeekdays = k => days[k]
-      var sum = (a, b) => a + b
-      return Object.keys(days).map(toWeekdays).reduce(sum)
-  }
-
-    const __onChangeValue  = (days) =>{
-      if(__getTimesAWeek(days) > 0){
-        setPrevDays(days)
-        props.onChangeValue(days, daily)
-      }else{
-        props.onChangeValue(prevDays, daily)
+    
+    const onChangeButton = (isDaily) =>{
+      if(isDaily){
+        props.onChangeDays(dailyTemplate)
       }
     }
     
@@ -30,7 +24,7 @@ return (
     <>
     <RadioButton.Group  onValueChange={newValue =>{
         setDaily(newValue)      
-        props.onChangeValue(props.days, newValue)
+        onChangeButton(newValue)
       }}
       value={daily}>
       <RadioButtonView>
@@ -43,11 +37,11 @@ return (
       </RadioButtonView>
     </RadioButton.Group>
       {!daily &&
-      <WeekdayPicker
-        days={props.days}
-        onChange={ (d) => __onChangeValue(d)}
-        style={styles.picker}
-        dayStyle={styles.day}/>}
+      <View style={styles.weekday}>
+        <WeekdayPicker
+          days={props.days}
+          onChange={props.onChangeDays}/>
+      </View>}
     </>
 )}
 
@@ -58,7 +52,10 @@ const styles = StyleSheet.create({
     },
     dayStyle:{
         margin: 5
+    },
+    weekday:{
+      justifyContent: 'center',
+      alignItems: 'center'
     }
-
 
 })
