@@ -124,4 +124,10 @@ export const ButtonText = styled.Text`
     color: white;
     font-size: 22px;
     text-align: center;
-    `
+`
+
+export const DatePickerText = styled.Text`
+    margin: 10px;
+    font-size: 20px;
+    color: #666;
+`

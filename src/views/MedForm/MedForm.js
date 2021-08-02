@@ -21,9 +21,11 @@ import iconColors from '../../constants/iconColors'
 import doseUnits from '../../constants/doseUnits'
 
 import { FormFieldLabel, FormInputTextField, LargeFormInputTextField, FormFieldLabelLight,
-    ViewFlexRow, CardBox, CardContent, ButtonText, Button, Form, FormInputAsLabel} from './styles'
+    ViewFlexRow, CardBox, CardContent, ButtonText, Button, Form, FormInputAsLabel, DatePickerText} from './styles'
 import IconPicker from './components/IconPicker'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import DateTimePicker from '@react-native-community/datetimepicker'
+
 import doseUnitsSelection from '../../constants/doseUnitsSelection'
 import doseStatus from '../../constants/doseStatus'
 import medStatus from '../../constants/medStatus'
@@ -37,9 +39,10 @@ initialDoseTime.setHours(8)
 initialDoseTime.setMinutes(0)
 const initialState = 
     {
-        weekdays: { 0:1, 1:1, 2:1, 3:1, 4:1, 5:1, 6:1},
+        weekdays: { 0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0},
         days: 7,
         startDate: new Date(),
+        expireDate: new Date(),
         scheduledDoses: false,
         icon: medicons[0],
         iconColor: iconColors[0],
@@ -56,7 +59,8 @@ const initialState =
 export default ({navigation, route}) => {
 
     
-    const [med, setMed] = useState(initialState )
+    const [med, setMed] = useState(initialState)
+    const [showExpireDatePicker, setShowExpireDatePicker] = useState(false)
 
     const __setExpireDate = (expireDate) =>{
         setMed({...med, expireDate})
@@ -81,29 +85,44 @@ export default ({navigation, route}) => {
         setMed({...med, stock:{...med.stock, unit}})
     }
 
-    const __changeFrequencyDays = (weekdays, isDaily) =>{
-        if(isDaily){
-            weekdays = { 1:1, 2:1, 3:1, 4:1, 5:1, 6:1, 0:1}
-        }else{
-            if(__getTimesAWeek(weekdays) == 0){
-                return
-            }
+    const __changeFrequencyDays = (weekdays) =>{
+        if(__getTimesAWeek(weekdays) == 0){
+            return
         }
         setMed({...med, weekdays})
     }
 
-    const __validateNewMed = () =>{
+    const __validateNewMed = async () =>{
+        var invalid = false
+        var errors  = []
         if(!med.name){
-            ToastAndroid.showWithGravityAndOffset("Nome de medicamento obrigatório.",
-                ToastAndroid.SHORT,
-                ToastAndroid.BOTTOM, 0 , 90)
+            invalid = true
+            errors.push("Nome de medicamento obrigatório")
+        }else{
+            const medsString = await AsyncStorage.getItem('medsList')
+            const meds = medsString !== null ? JSON.parse(medsString) : []
+            if(meds.map(m => m.name).includes(med.name)){
+                invalid = true
+                errors.push("Você já cadastrou um medicamento com esse nome.")
+            }
+        }
+        
+        if(!med.stock.amount || med.stock.amount <= 0){
+            invalid = true
+            errors.push("Por favor informe o estoque da medicação atual")
+        }
+        if(invalid){
+            ToastAndroid.showWithGravityAndOffset(errors[0],
+            ToastAndroid.SHORT,
+            ToastAndroid.BOTTOM, 0 , 90)
             return false
         }
         return true        
     }
 
-    const __onPressSaveButton = () =>{
-        if(!__validateNewMed()){
+    const __onPressSaveButton = async () =>{
+        var isValid = await __validateNewMed()
+        if(!isValid){
             return
         }
         Alert.alert('Adicionar Medicamento', 'Deseja adicionar o medicamento?',
@@ -212,6 +231,7 @@ export default ({navigation, route}) => {
             <>
                 <FormFieldLabel>Nome</FormFieldLabel>
                 <FormInputTextField
+                    placeholderTextColor="#666" 
                     onChangeText={ name => setMed({...med , name})}
                     placeholder="Nome do medicamento"
                     value={med.name}    
@@ -221,14 +241,29 @@ export default ({navigation, route}) => {
     }
 
     const __medExpireDateField = () => {
+
+        let minimumDate = new Date()
+        let datePicker = <DateTimePicker 
+            value={med.expireDate}
+            minimumDate={minimumDate}
+            onChange={ (_, date) =>{
+                setShowExpireDatePicker(false)
+                setMed({...med, expireDate: date})
+            }}
+            mode="date"/>
+
+        var dateString = moment(med.expireDate).format('DD/MM/YYYY')
+        
         return (
             <>
                 <FormFieldLabel>Validade</FormFieldLabel>
-                <DatePicker
-                    date={med.expireDate}
-                    placeholder="Data de validade"
-                    onChangeValue={__setExpireDate}    
-                />
+                <TouchableOpacity
+                    onPress={ () => setShowExpireDatePicker(true)}>
+                    <DatePickerText>
+                        {dateString}
+                    </DatePickerText>
+                </TouchableOpacity>
+                {showExpireDatePicker && datePicker}
             </>
         )
     }
@@ -241,6 +276,7 @@ export default ({navigation, route}) => {
                     <FormInputAsLabel
                         onChangeText={ amount => setMed({...med , stock: {...med.stock, amount}})}
                         placeholder="0"
+                        placeholderTextColor="#666" 
                         value={med.stock.amount}
                         keyboardType="numeric"
                         maxLength={4}></FormInputAsLabel>
@@ -298,6 +334,7 @@ export default ({navigation, route}) => {
                 <FormFieldLabelLight>frequência</FormFieldLabelLight>
                     <FrequencyRadioGroup 
                         onChangeValue={__changeFrequencyDays}
+                        onChangeDays={__changeFrequencyDays}
                         days={med.weekdays}
                     />
             </View>
