@@ -39,7 +39,7 @@ initialDoseTime.setHours(8)
 initialDoseTime.setMinutes(0)
 const initialState = 
     {
-        weekdays: { 0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0},
+        weekdays: { 0:1, 1:1, 2:1, 3:1, 4:1, 5:1, 6:1},
         days: 7,
         startDate: new Date(),
         expireDate: new Date(),
@@ -169,6 +169,7 @@ export default ({navigation, route}) => {
                     status: doseStatus.NAO_TOMADA,
                     icon: medPersist.icon,
                     iconColor: medPersist.iconColor,
+                    index: doses.length
                 }
                 doses.push(dose)
             }

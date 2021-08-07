@@ -1,6 +1,6 @@
 import React, {useState, useEffect,  useContext, useRef} from 'react'
 
-import { TouchableOpacity, View, RefreshControl, Modal } from 'react-native'
+import { TouchableOpacity, View, RefreshControl, Button } from 'react-native'
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons'
 import iconMoonConfig from '../../selection.json'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -20,6 +20,8 @@ import moment from 'moment'
 import 'moment/locale/pt-br'
 import doseStatus from '../../constants/doseStatus'
 import WelcomeModal from './components/WelcomeModal'
+import EditDoseModal from './components/EditDoseModal'
+import doseActions from '../../constants/doseActions'
 
 
 export default props =>{
@@ -33,6 +35,7 @@ export default props =>{
     const [refreshing, setRefreshing] = useState(false)
     const swipeableRef = useRef(null);
     const [showWelcomeModal, setShowWelcomeModal] = useState(false)
+    const [showEditDoseModal, setShowEditDoseModal] = useState(false)
 
     clearAsyncStorage = async() => {
         AsyncStorage.clear();
@@ -59,7 +62,11 @@ export default props =>{
         setMeds(meds)
     }
 
-    const closeModal = () =>{
+    const closeEditModal = () =>{
+        setShowEditDoseModal(false)
+    }
+
+    const closeWelcomeModal = () =>{
         setShowWelcomeModal(false)
         saveFirstVisit()
     }
@@ -85,7 +92,14 @@ export default props =>{
         var allDoses = [].concat.apply([], meds.map( m => m.doses)) // Concatena todas as doses de todos os medicamentos
         let visibleDoses = allDoses.filter( d => moment(d.date).isSame(filterDay, 'day') && d.status !== doseStatus.ENCERRADA)
         visibleDoses.sort((a, b) => new Date(a.date) - new Date(b.date))
+
         setVisibleDoses(visibleDoses)
+    }
+
+    const onPressDose = dose =>{
+        if(moment().isSame(dose.date, 'day')){
+            setShowEditDoseModal(true)
+        }
     }
 
     const shiftDate = offset =>{
@@ -94,17 +108,43 @@ export default props =>{
         setFilterDay(newDate)
     }
 
-    const updateDose = (dose, status) =>{
+    const takeQuickDose = dose =>{
+        dose.status = doseStatus.TOMADA
+        dose.dateTaken = new Date()
+        updateDose(dose, doseActions.TOMAR_DOSE)
+    }
+
+    const onEditDose = dose =>{
+        switch(dose.status){
+            case doseStatus.TOMADA:
+                updateDose(dose, doseActions.EDITAR_DOSE_TOMADA)
+                break
+            case doseStatus.NAO_TOMADA:
+                updateDose(dose, doseActions.TOMAR_DOSE)
+                break
+        }
+        setShowEditDoseModal(false)
+    }
+
+    const updateDose = (dose, action) =>{
         var medList = [...meds]
         var updatedMed = medList.filter(m => m.name == dose.medName)[0]
-        var updatedDose = updatedMed.doses.filter(d => dose.medName == d.medName && d.date == dose.date )[0]
+        var updatedDose = updatedMed.doses.filter(d => dose.medName == d.medName && d.index == dose.index )[0]
+
         if(updatedDose){
-            if(status == doseStatus.TOMADA){
-                updatedDose.status = status
-                updatedDose.dateTaken = new Date()
-                updatedMed.stock.amount -= dose.amount
+            switch(action){
+                case doseActions.TOMAR_DOSE:
+                    updatedMed.stock.amount -= dose.amount
+                    dose.status = doseStatus.TOMADA
+                    break
+                case doseActions.EDITAR_DOSE_TOMADA:
+                    updatedMed.stock.amount += updatedDose.amount - dose.amount
+                    break
             }
         }
+        newDoses = updatedMed.doses.map( d => d.index == dose.index ? dose : d)
+        updatedMed.doses = newDoses
+
         if(swipeableRef && swipeableRef.current){
             swipeableRef.current.close()
         }
@@ -223,43 +263,57 @@ export default props =>{
         }
 
         return(
-            <Swipeable
-                ref={swipeableRef}
-                renderRightActions={() => getRightSwipe(dose)}
-                onSwipeableRightOpen={() => updateDose(dose, doseStatus.TOMADA)}
-                >
-                <CardBox>
-                    <ColorTag style={{backgroundColor: dose.iconColor}}/>
-                    <Detail>
-                        <TopContent>
-                            <MedIcon name={dose.icon} size={24} color={dose.iconColor}/> 
-                            <DarkText numberOfLines={1}>
-                                {dose.medName}
-                            </DarkText>
-                        </TopContent>
-                        <BottomContent>
-                            <Icon name="clock-o" type="font-awesome" size={20} color="#666"/>
-                            <LightText>
-                                {moment(dose.date).format('HH:mm')}
-                            </LightText>
-                            <DarkText>
-                                {dose.amount} {dose.unit.label}{dose.amount > 1 && dose.unit.label != "Ml" ? "s" : ""}
-                            </DarkText>
-                        </BottomContent>
-                    </Detail>
-                    <Buttons>
-                        {status}
-                    </Buttons>
-                </CardBox>
-            </Swipeable>
+            <>
+            <EditDoseModal
+                visible={showEditDoseModal}
+                dose={dose}
+                onSet={onEditDose}
+                close={closeEditModal}
+            />
+            <TouchableOpacity
+                activeOpacity={0.7}
+                delayPressIn={200}
+                onPressIn={() => onPressDose(dose)}>
+                <Swipeable
+                    ref={swipeableRef}
+                    renderRightActions={() => getRightSwipe(dose)}
+                    onSwipeableRightOpen={() => takeQuickDose(dose)}>
+                    <CardBox>
+                        <ColorTag style={{backgroundColor: dose.iconColor}}/>
+                        <Detail>
+                            <TopContent>
+                                <MedIcon name={dose.icon} size={24} color={dose.iconColor}/> 
+                                <DarkText numberOfLines={1}>
+                                    {dose.medName}
+                                </DarkText>
+                            </TopContent>
+                            <BottomContent>
+                                <Icon name="clock-o" type="font-awesome" size={20} color="#666"/>
+                                <LightText>
+                                    {moment(dose.date).format('HH:mm')}
+                                </LightText>
+                                <DarkText>
+                                    {dose.amount} {dose.unit.label}{dose.amount > 1 && dose.unit.label != "Ml" ? "s" : ""}
+                                </DarkText>
+                            </BottomContent>
+                        </Detail>
+                        <Buttons>
+                            {status}
+                        </Buttons>
+                    </CardBox>
+                </Swipeable>
+            </TouchableOpacity>
+            </>
         )
     }
 
     return(
         <Container>
+            <Button onPress={clearAsyncStorage} title="Limpar"/>
+
             <WelcomeModal
                 visible={showWelcomeModal}
-                close={closeModal}
+                close={closeWelcomeModal}
             />
             <Header>
                 <HeaderTitle>
