@@ -22,7 +22,7 @@ const texts = [
     "Na tela inicial encontram-se as doses marcadas para cada dia. Para ver as doses de algum dia específico, " +
     "basta tocar nas setas ou na data para selecionar uma data qualquer. Para voltar ao dia atual, basta clicar no ícone de calendário",
     //2
-    "Para registrar uma dose tomada, basta deslizar a dose do dia desejada para a esquerda para confirmar." +
+    "Para registrar uma dose tomada, basta deslizar a dose do dia desejada para a esquerda para confirmar ou pressionar na dose para marcar corretamente o horário tomado." +
     "Só é possível marcar doses tomadas se estiverem no dia correto.",
     //3
     "Para ver todos os medicamentos atuais, basta tocar na segunda aba, \"Medicamentos\". Para ver mais detalhes do medicamento, basta tocar nele na lista.",

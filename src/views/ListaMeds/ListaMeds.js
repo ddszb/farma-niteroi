@@ -19,10 +19,6 @@ export default props =>{
     const [meds, setMeds] = useState([])
     const [visibleMeds, setVisibleMeds] = useState([])
     const MedIcon = createIconSetFromIcoMoon(iconMoonConfig)
-    
-    clearAsyncStorage = async() => {
-        AsyncStorage.clear();
-    }
 
     const getMeds = async () =>{
         const medsString = await AsyncStorage.getItem('medsList')
@@ -149,7 +145,6 @@ export default props =>{
                     </TouchableOpacity>
                 </ToggleView>
             </HeaderTitle>
-            {/* <Button onPress={clearAsyncStorage} title="Limpar"/>s */}
             <FlatList
                 keyExtractor={ (item, index) => `${index}`}
                 data={visibleMeds}
