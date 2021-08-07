@@ -33,10 +33,11 @@ export default props =>{
     const [showDatePicker, setShowDatePicker] = useState(false)
     const [filterDay, setFilterDay] = useState(new Date())
     const [refreshing, setRefreshing] = useState(false)
-    const swipeableRef = useRef(null);
+    const [editedDose, setEditedDose] = useState()
     const [showWelcomeModal, setShowWelcomeModal] = useState(false)
     const [showEditDoseModal, setShowEditDoseModal] = useState(false)
-
+    const swipeableRef = useRef(null);
+    
     clearAsyncStorage = async() => {
         AsyncStorage.clear();
     }
@@ -98,6 +99,7 @@ export default props =>{
 
     const onPressDose = dose =>{
         if(moment().isSame(dose.date, 'day')){
+            setEditedDose(dose)
             setShowEditDoseModal(true)
         }
     }
@@ -264,12 +266,6 @@ export default props =>{
 
         return(
             <>
-            <EditDoseModal
-                visible={showEditDoseModal}
-                dose={dose}
-                onSet={onEditDose}
-                close={closeEditModal}
-            />
             <TouchableOpacity
                 activeOpacity={0.7}
                 delayPressIn={200}
@@ -310,7 +306,13 @@ export default props =>{
     return(
         <Container>
             <Button onPress={clearAsyncStorage} title="Limpar"/>
-
+            {showEditDoseModal &&
+                <EditDoseModal
+                visible={showEditDoseModal}
+                dose={editedDose}
+                onSet={onEditDose}
+                close={closeEditModal}
+            />}
             <WelcomeModal
                 visible={showWelcomeModal}
                 close={closeWelcomeModal}
