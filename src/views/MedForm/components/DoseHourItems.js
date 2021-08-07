@@ -19,15 +19,7 @@ export default props =>{
     var defaultDate = new Date()
     defaultDate.setMinutes(0)
     defaultDate.setHours(8)
-    
-    // const initialState = {
-    //     doseHoursItems: [{ time: defaultDate, amount: 1, unit: props.unit, index: 0}],
-    //     selectedDose: 0,
-    //     showDialog: false,
-    //     showDoseHourPicker: false,
-    //     dialogTime: defaultDate
-    // }
-    
+
     const [doseHoursItems, setDoseHoursItems] = useState([{ time: defaultDate, amount: 1, unit: props.unit, index: 0}])
     const [selectedDose, setSelectedDose] = useState(0)
     const [showDialog, setShowDialog] = useState(false)
@@ -64,7 +56,6 @@ export default props =>{
                 setShowPicker(true)
                 return
             }
-            console.log("A")
             dose.time = new Date(date)
             
             // Atualizando lista
