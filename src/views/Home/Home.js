@@ -22,6 +22,7 @@ import doseStatus from '../../constants/doseStatus'
 import WelcomeModal from './components/WelcomeModal'
 import EditDoseModal from './components/EditDoseModal'
 import doseActions from '../../constants/doseActions'
+import storageKeys from '../../constants/storageKeys'
 
 
 export default props =>{
@@ -29,6 +30,7 @@ export default props =>{
     const MedIcon = createIconSetFromIcoMoon(iconMoonConfig)
 
     const [meds, setMeds] = useState([])
+    const [sporadicDoses, setSporadicDoses] = useState([])
     const [visibleDoses, setVisibleDoses] = useState([])
     const [showDatePicker, setShowDatePicker] = useState(false)
     const [filterDay, setFilterDay] = useState(new Date())
@@ -43,24 +45,34 @@ export default props =>{
     }
 
     const updateMeds = async () =>{
-        AsyncStorage.setItem('medsList', JSON.stringify(meds))
+        AsyncStorage.setItem(storageKeys.MEDS, JSON.stringify(meds))
+    }
+
+    const updateSporadicDoses = async () =>{
+        AsyncStorage.setItem(storageKeys.SPORADIC_DOSES, JSON.stringify(sporadicDoses))
     }
 
     const checkFirstTime = async () =>{
-        const firstTime = await AsyncStorage.getItem('firstTime')
-        if(!firstTime){
+        const firstLogin = await AsyncStorage.getItem(storageKeys.FIRST_LOGIN)
+        if(!firstLogin){
             setShowWelcomeModal(true)
         }
     }
 
     const saveFirstVisit = async () =>{
-        await AsyncStorage.setItem('firstTime', '1')
+        await AsyncStorage.setItem(storageKeys.FIRST_LOGIN, '1')
     }
 
     const getMeds = async () =>{
-        const medsString = await AsyncStorage.getItem('medsList')
+        const medsString = await AsyncStorage.getItem(storageKeys.MEDS)
         const meds = JSON.parse(medsString) || []
         setMeds(meds)
+    }
+
+    const getSporadicDoses = async () =>{
+        const dosesString = await AsyncStorage.getItem(storageKeys.SPORADIC_DOSES)
+        const sporadicDoses = JSON.parse(dosesString) || []
+        setSporadicDoses(sporadicDoses)
     }
 
     const closeEditModal = () =>{
@@ -75,30 +87,38 @@ export default props =>{
     useFocusEffect(
         React.useCallback(() =>{
         getMeds()
+        getSporadicDoses()
         checkFirstTime()
     }, []))
 
     useEffect(() =>{
-        if(meds && meds.length > 0 && filterDay){
+        if(((meds && meds.length > 0) || (sporadicDoses && sporadicDoses.length > 0)) && filterDay){
             filterDoses()
         }
-    }, [meds, filterDay])
+    }, [meds, sporadicDoses, filterDay])
 
     const onRefresh = () =>{
         getMeds()
         setRefreshing(false)
     }
 
+    const navigateToNew = () =>{
+        props.navigation.navigate('Adicionar Dose', {screen: 'Adicionar Dose', meds: meds})
+    }
+
     const filterDoses = () =>{
         var allDoses = [].concat.apply([], meds.map( m => m.doses)) // Concatena todas as doses de todos os medicamentos
-        let visibleDoses = allDoses.filter( d => moment(d.date).isSame(filterDay, 'day') && d.status !== doseStatus.ENCERRADA)
+        allDoses = allDoses.concat(sporadicDoses)
+        console.log(JSON.stringify(allDoses))
+        console.log(filterDay)
+        let visibleDoses = allDoses.filter( d => (moment(d.date).isSame(filterDay, 'day') || moment(d.dateTaken).isSame(filterDay, 'day')) && d.status !== doseStatus.ENCERRADA)
         visibleDoses.sort((a, b) => new Date(a.date) - new Date(b.date))
 
         setVisibleDoses(visibleDoses)
     }
 
     const onPressDose = dose =>{
-        if(moment().isSame(dose.date, 'day')){
+        if(moment().isSame(dose.date, 'day') || moment().isSame(dose.dateTaken, 'day')){
             setEditedDose(dose)
             setShowEditDoseModal(true)
         }
@@ -129,30 +149,35 @@ export default props =>{
     }
 
     const updateDose = (dose, action) =>{
-        var medList = [...meds]
-        var updatedMed = medList.filter(m => m.name == dose.medName)[0]
-        var updatedDose = updatedMed.doses.filter(d => dose.medName == d.medName && d.index == dose.index )[0]
-
-        if(updatedDose){
-            switch(action){
-                case doseActions.TOMAR_DOSE:
-                    updatedMed.stock.amount -= dose.amount
-                    dose.status = doseStatus.TOMADA
-                    break
-                case doseActions.EDITAR_DOSE_TOMADA:
-                    updatedMed.stock.amount += updatedDose.amount - dose.amount
-                    break
+        if(dose.sporadic){
+            var doses = sporadicDoses.map(d => d.index == dose.index ? dose : d)
+            setSporadicDoses(doses)
+            updateSporadicDoses()
+        }else{
+            var medList = [...meds]
+            var updatedMed = medList.filter(m => m.name == dose.medName)[0]
+            var updatedDose = updatedMed.doses.filter(d => dose.medName == d.medName && d.index == dose.index )[0]
+    
+            if(updatedDose){
+                switch(action){
+                    case doseActions.TOMAR_DOSE:
+                        updatedMed.stock.amount -= dose.amount
+                        dose.status = doseStatus.TOMADA
+                        break
+                    case doseActions.EDITAR_DOSE_TOMADA:
+                        updatedMed.stock.amount += updatedDose.amount - dose.amount
+                        break
+                }
             }
-        }
-        newDoses = updatedMed.doses.map( d => d.index == dose.index ? dose : d)
-        updatedMed.doses = newDoses
-
-        if(swipeableRef && swipeableRef.current){
-            swipeableRef.current.close()
-        }
-        setMeds(medList)
-        updateMeds()
-        
+            newDoses = updatedMed.doses.map( d => d.index == dose.index ? dose : d)
+            updatedMed.doses = newDoses
+    
+            if(swipeableRef && swipeableRef.current){
+                swipeableRef.current.close()
+            }
+            setMeds(medList)
+            updateMeds()
+        }     
     }
 
     const getDateFilter = () =>{
@@ -170,7 +195,7 @@ export default props =>{
                 {!moment().isSame(filterDay, 'date') &&
                 <ResetDateButton>
                     <TouchableOpacity onPress={() => setFilterDay(new Date())}>
-                        <Icon name="calendar-day" type="font-awesome-5" size={26} color="#63488c"/>
+                        <Icon name="calendar-day" type="font-awesome-5" size={26} color="#fff"/>
                     </TouchableOpacity>
                 </ResetDateButton>
                 }
@@ -240,8 +265,7 @@ export default props =>{
                     <RowView>
                         <HPadding>
                             <LightText>
-                                {"Tomado às\n" +
-                                moment(dose.dateTaken).format('HH:mm')}
+                                {moment(dose.dateTaken).format('HH:mm')}
                             </LightText>
                         </HPadding>
                         <Icon name="check-circle" type={"font-awesome"} size={24} color='#40a843'/>
@@ -284,10 +308,14 @@ export default props =>{
                                 </DarkText>
                             </TopContent>
                             <BottomContent>
-                                <Icon name="clock-o" type="font-awesome" size={20} color="#666"/>
-                                <LightText>
-                                    {moment(dose.date).format('HH:mm')}
-                                </LightText>
+                                {dose.date &&
+                                <>
+                                    <Icon name="clock-o" type="font-awesome" size={20} color="#666"/>
+                                    <LightText>
+                                        {moment(dose.date).format('HH:mm')}
+                                    </LightText>
+                                </>
+                                }
                                 <DarkText>
                                     {dose.amount} {dose.unit.label}{dose.amount > 1 && dose.unit.label != "Ml" ? "s" : ""}
                                 </DarkText>
@@ -322,6 +350,10 @@ export default props =>{
                     <HeaderTitleText>
                         Doses do dia
                     </HeaderTitleText>
+                    <TouchableOpacity
+                        onPress={navigateToNew}>
+                        <Icon name="plus" type="foundation" size={26} color="#fff"/>
+                    </TouchableOpacity>
                 </HeaderTitle>
                 {getDateFilter()}
             </Header>
