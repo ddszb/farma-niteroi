@@ -15,6 +15,7 @@ import 'moment/locale/pt-br'
 import doseStatus from '../../constants/doseStatus'
 import medStatus from '../../constants/medStatus'
 import InputModal from '../../components/InputModal'
+import storageKeys from '../../constants/storageKeys'
 
 export default props =>{
     
@@ -32,10 +33,10 @@ export default props =>{
         })
         medEnded.status = medStatus.INATIVO;
         
-        const medsString = await AsyncStorage.getItem('medsList')
+        const medsString = await AsyncStorage.getItem(storageKeys.MEDS)
         var meds = medsString !== null ? JSON.parse(medsString) : []
         var meds = meds.map( m => m.name == medEnded.name ? medEnded : m)
-        AsyncStorage.setItem('medsList', JSON.stringify(meds))
+        AsyncStorage.setItem(storageKeys.MEDS, JSON.stringify(meds))
         props.navigation.goBack()
         
     }
@@ -64,10 +65,10 @@ export default props =>{
         updatedMed = {...med}
         updatedMed.stock.amount = +updatedMed.stock.amount + +amount
 
-        const medsString = await AsyncStorage.getItem('medsList')
+        const medsString = await AsyncStorage.getItem(storageKeys.MEDS)
         var meds = medsString !== null ? JSON.parse(medsString) : []
         var meds = meds.map( m => m.name == updatedMed.name ? updatedMed : m)
-        AsyncStorage.setItem('medsList', JSON.stringify(meds))
+        AsyncStorage.setItem(storageKeys.MEDS, JSON.stringify(meds))
         ToastAndroid.showWithGravityAndOffset(med.stock.unit.label + "s adicionados ao estoque",
             ToastAndroid.SHORT,
             ToastAndroid.BOTTOM,

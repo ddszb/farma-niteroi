@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { Modal, View, Text, TouchableOpacity, StyleSheet, Image, TextInput }  from 'react-native'
+import { Modal, View, Text, TouchableOpacity, StyleSheet, TextInput }  from 'react-native'
 import doseStatus from '../../../constants/doseStatus'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import moment from 'moment'
@@ -89,18 +89,8 @@ export default props =>{
 
     const modalContent = () =>{
 
-        var title
-        var content
-
-        switch (dose.status){
-            case doseStatus.TOMADA:
-                title = "Ajustar dose"
-                content = timeAmountContent()
-                break
-            case doseStatus.NAO_TOMADA:
-                title = "Tomar dose"
-                content = timeAmountContent()
-        }
+        var title = dose.status == doseStatus.TOMADA ? "Ajustar dose" : "Tomar dose" 
+        var content = timeAmountContent()
 
         return(
             <>
