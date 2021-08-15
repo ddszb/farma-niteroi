@@ -13,6 +13,8 @@ export const FormInputTextField = styled.TextInput`
     margin-bottom: 10px;
     margin-top: 5px;
     padding: 10px;
+    min-width: 300px;
+    margin-right: 10px;
 `
 
 export const FormInputAsLabel = styled.TextInput`

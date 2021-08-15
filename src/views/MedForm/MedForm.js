@@ -15,11 +15,12 @@ import DoseHourItems from './components/DoseHourItems'
 import DurationRadioGroup from './components/DurationRadioGroup'
 import FrequencyRadioGroup from './components/FrequencyRadioGroup'
 import UnitSpinner from '../../components/Spinner'
-
+import AutoCompleteInput from '../../components/AutoCompleteInput'
 import medicons from '../../constants/medicons'
 import iconColors from '../../constants/iconColors'
 import doseUnits from '../../constants/doseUnits'
-
+import { Icon } from 'react-native-elements/dist/icons/Icon'
+import meds_niteroi from '../../data/meds_niteroi'
 import { FormFieldLabel, FormInputTextField, LargeFormInputTextField, FormFieldLabelLight,
     ViewFlexRow, CardBox, CardContent, ButtonText, Button, Form, FormInputAsLabel, DatePickerText} from './styles'
 import IconPicker from './components/IconPicker'
@@ -40,6 +41,7 @@ initialDoseTime.setHours(8)
 initialDoseTime.setMinutes(0)
 const initialState = 
     {
+        name:'',
         weekdays: { 0:1, 1:1, 2:1, 3:1, 4:1, 5:1, 6:1},
         days: 7,
         startDate: new Date(),
@@ -60,8 +62,10 @@ const initialState =
 
 export default ({navigation, route}) => {
 
-    
+    const autoCompleteOptions = meds_niteroi.map((med, index )=> ({key: index, value: med.nome + " " + med.dosagem}))
+            .sort((a, b) => a.value.toLowerCase() > b.value.toLowerCase() ? 1 : -1)
     const [med, setMed] = useState(initialState)
+    const [medPicked, setMedPicked] = useState(false)
     const [showExpireDatePicker, setShowExpireDatePicker] = useState(false)
 
     const __setExpireDate = (expireDate) =>{
@@ -230,20 +234,63 @@ export default ({navigation, route}) => {
         navigation.goBack()
     }
 
+    const __onPressNextButton = () =>{
+        if(med.name){
+            setMedPicked(true)
+        }
+    }
+
+    const onPressReset = () =>{
+        Alert.alert('Limpar dados', 'Deseja limpar as informações preenchidas?',
+        [{text: 'Não'},
+        {text:'Sim',
+         onPress(){
+             resetMed()
+        }}])
+    }
+    const resetMed = () =>{
+        setMedPicked(false)
+        setShowExpireDatePicker(false)
+        setMed(initialState)
+    }
+
     const __medNameField = () => {
         return (
-            <>
-                <FormFieldLabel>Nome</FormFieldLabel>
-                <FormInputTextField
-                    placeholderTextColor="#666" 
-                    onChangeText={ name => setMed({...med , name})}
-                    placeholder="Nome do medicamento"
-                    value={med.name}    
-                />
-            </>
+            <CardBox>
+                <CardContent>
+                    <FormFieldLabel>Nome</FormFieldLabel>
+                    <ViewFlexRow>
+                    <AutoCompleteInput
+                        editable={!medPicked}
+                        data={autoCompleteOptions}
+                        onChange={ name => setMed({...med , name})}
+                        placeholder="Nome do medicamento"
+                        value={med.name}
+                    />
+                    {medPicked &&
+                    <TouchableOpacity onPress={onPressReset}>
+                        <Icon name={"eraser"} type={"font-awesome-5"} size={25} color={'#63488c'}/>
+                    </TouchableOpacity>}
+                    </ViewFlexRow>
+                </CardContent>
+            </CardBox>
         )
     }
 
+    const __nextButton = () =>{
+        if(!medPicked){
+            return(
+                <TouchableOpacity
+                        onPress={__onPressNextButton}>
+                        <Button>
+                            <ButtonText>
+                                Próximo
+                            </ButtonText>
+                        </Button>
+                </TouchableOpacity>
+            )
+        }
+    }
     const __medExpireDateField = () => {
 
         let minimumDate = new Date()
@@ -259,162 +306,167 @@ export default ({navigation, route}) => {
         var dateString = moment(med.expireDate).format('DD/MM/YYYY')
         
         return (
-            <>
-                <FormFieldLabel>Validade</FormFieldLabel>
-                <TouchableOpacity
-                    onPress={ () => setShowExpireDatePicker(true)}>
-                    <DatePickerText>
-                        {dateString}
-                    </DatePickerText>
-                </TouchableOpacity>
-                {showExpireDatePicker && datePicker}
-            </>
+            <CardBox>
+                <CardContent>
+                    <FormFieldLabel>Validade</FormFieldLabel>
+                    <TouchableOpacity
+                        onPress={ () => setShowExpireDatePicker(true)}>
+                        <DatePickerText>
+                            {dateString}
+                        </DatePickerText>
+                    </TouchableOpacity>
+                    {showExpireDatePicker && datePicker}
+                </CardContent>
+            </CardBox>
         )
     }
     
     const __medStockField = () =>{
         return(
-            <>
-                <FormFieldLabel>Meu estoque</FormFieldLabel>
-                <ViewFlexRow>
-                    <FormInputAsLabel
-                        onChangeText={ amount => setMed({...med , stock: {...med.stock, amount}})}
-                        placeholder="0"
-                        placeholderTextColor="#666" 
-                        value={med.stock.amount}
-                        keyboardType="numeric"
-                        maxLength={4}></FormInputAsLabel>
-                    <UnitSpinner 
-                    items={doseUnitsSelection} 
-                    value={med.stock.unit}
-                    onChangeValue={__updateMedUnit}/> 
-                </ViewFlexRow>
-            </>
+            <CardBox>
+                <CardContent>
+                    <FormFieldLabel>Meu estoque</FormFieldLabel>
+                    <ViewFlexRow>
+                        <FormInputAsLabel
+                            onChangeText={ amount => setMed({...med , stock: {...med.stock, amount}})}
+                            placeholder="0"
+                            placeholderTextColor="#666" 
+                            value={med.stock.amount}
+                            keyboardType="numeric"
+                            maxLength={4}></FormInputAsLabel>
+                        <UnitSpinner 
+                        items={doseUnitsSelection} 
+                        value={med.stock.unit}
+                        onChangeValue={__updateMedUnit}/> 
+                    </ViewFlexRow>
+                </CardContent>
+            </CardBox>
         )
     }
 
     const __medDosesField = () => {
         return(
-            <>
-                <ViewFlexRow>
-                    <FormFieldLabel>Doses Marcadas</FormFieldLabel>
-                    <Switch
-                        trackColor={{ false: '#888', true:'#a163ff' }}
-                        thumbColor={med.scheduledDoses ? "#63488c" : "#d4d3d4"}
-                        ios_backgroundColor="#3e3e3e"
-                        onValueChange={ (scheduledDoses) => setMed( {...med, scheduledDoses})}
-                        value={med.scheduledDoses}
-                    />
-                </ViewFlexRow>
-                <View>
-                    {med.scheduledDoses 
-                    ?   <View>
-                            <DoseHourItems
-                                unit={med.stock.unit}
-                                onUpdate={__onUpdateDoseHours}
-                            />
-                        </View>
-                    : <Text>Tomar quando necessário</Text>
-                    } 
-                </View>
-            </>
+            <CardBox>
+                <CardContent>
+                    <ViewFlexRow>
+                        <FormFieldLabel>Doses Marcadas</FormFieldLabel>
+                        <Switch
+                            trackColor={{ false: '#888', true:'#a163ff' }}
+                            thumbColor={med.scheduledDoses ? "#63488c" : "#d4d3d4"}
+                            ios_backgroundColor="#3e3e3e"
+                            onValueChange={ (scheduledDoses) => setMed( {...med, scheduledDoses})}
+                            value={med.scheduledDoses}
+                        />
+                    </ViewFlexRow>
+                    <View>
+                        {med.scheduledDoses 
+                        ?   <View>
+                                <DoseHourItems
+                                    unit={med.stock.unit}
+                                    onUpdate={__onUpdateDoseHours}
+                                />
+                            </View>
+                        : <Text>Tomar quando necessário</Text>
+                        } 
+                    </View>
+                </CardContent>
+            </CardBox>
         )
     }
 
     const __scheduleField = () =>{
-        return(
-            <View>
-                <FormFieldLabel>Cronograma</FormFieldLabel>
-                <FormFieldLabelLight>início</FormFieldLabelLight>
-                <DatePicker
-                    date={med.startDate}
-                    placeholder="Data de início"
-                    useNativeDriver={true}
-                    onChangeValue={__setTreatmentstartDate}/>
-                <FormFieldLabelLight>duração</FormFieldLabelLight>
-                    <DurationRadioGroup 
-                        onChangeValue={__setDaysSettings}
-                    />
-                <FormFieldLabelLight>frequência</FormFieldLabelLight>
-                    <FrequencyRadioGroup 
-                        onChangeValue={__changeFrequencyDays}
-                        onChangeDays={__changeFrequencyDays}
-                        days={med.weekdays}
-                    />
-            </View>
-        )
+        if (med.scheduledDoses){
+            return(
+                <CardBox>
+                    <CardContent>
+                        <View>
+                            <FormFieldLabel>Cronograma</FormFieldLabel>
+                            <FormFieldLabelLight>início</FormFieldLabelLight>
+                            <DatePicker
+                                date={med.startDate}
+                                placeholder="Data de início"
+                                useNativeDriver={true}
+                                onChangeValue={__setTreatmentstartDate}/>
+                            <FormFieldLabelLight>duração</FormFieldLabelLight>
+                                <DurationRadioGroup 
+                                    onChangeValue={__setDaysSettings}
+                                />
+                            <FormFieldLabelLight>frequência</FormFieldLabelLight>
+                                <FrequencyRadioGroup 
+                                    onChangeValue={__changeFrequencyDays}
+                                    onChangeDays={__changeFrequencyDays}
+                                    days={med.weekdays}
+                                />
+                        </View>
+                    </CardContent>
+                </CardBox>
+            )
+        }
     }
 
     const __iconField = () => {
         return(
-            <View>
-                <FormFieldLabel>Ícone</FormFieldLabel>
-                <IconPicker onChangeIcon={__onIconChange} onChangeColor={__onColorChange}/>
-            </View>
+            <CardBox>
+                <CardContent>
+                    <View>
+                        <FormFieldLabel>Ícone</FormFieldLabel>
+                        <IconPicker onChangeIcon={__onIconChange} onChangeColor={__onColorChange}/>
+                    </View>
+                </CardContent>
+            </CardBox>
         )
     }
 
     const __obsField = () =>{
         return(
-            <View>
-                <FormFieldLabel>Observações</FormFieldLabel>
-                <LargeFormInputTextField
-                    onChangeText={ observacao => setMed({...med , observacao})}
-                    value={med.observacao}    
-                    maxLength={200}
-                    multiline={true}
-                    numberOfLines={5}
-                />
-            </View>
+            <CardBox>
+                <CardContent>
+                    <View>
+                        <FormFieldLabel>Observações</FormFieldLabel>
+                        <LargeFormInputTextField
+                            onChangeText={ observacao => setMed({...med , observacao})}
+                            value={med.observacao}    
+                            maxLength={200}
+                            multiline={true}
+                            numberOfLines={5}
+                        />
+                    </View>
+                </CardContent>
+            </CardBox>
         )
     }
 
-    return (
-        <ScrollView>
-            <Form>
-                <CardBox>
-                    <CardContent>
-                        {__medNameField()}
-                        {__medExpireDateField()}
-                    </CardContent>
-                </CardBox>
-                <CardBox>
-                    <CardContent>
-                        {__medStockField()}
-                    </CardContent>
-                </CardBox>
-                <CardBox>
-                    <CardContent>
-                        {__medDosesField()}
-                    </CardContent>
-                </CardBox>
-                {med.scheduledDoses &&
-                <CardBox>
-                    <CardContent>
-                        {__scheduleField()}
-                    </CardContent>
-                </CardBox>
-                }
-                <CardBox>
-                    <CardContent>
-                        {__iconField()}
-                    </CardContent>
-                </CardBox>
-                <CardBox>
-                    <CardContent>
-                        {__obsField()}
-                    </CardContent>
-                </CardBox>
-                <TouchableOpacity
+    const __saveButton = () =>{
+        return(
+            <TouchableOpacity
                     onPress={__onPressSaveButton}>
                     <Button>
                         <ButtonText>
                             Salvar
                         </ButtonText>
                     </Button>
-                </TouchableOpacity>
+            </TouchableOpacity>
+        )
+    }
+
+
+    return (
+        <Form>
+                {__medNameField()}
+                {__nextButton()}
+            <ScrollView>
+                {medPicked &&
+                <>
+                    {__medExpireDateField()}
+                    {__medStockField()}
+                    {__medDosesField()}
+                    {__scheduleField()}
+                    {__iconField()}
+                    {__obsField()}
+                    {__saveButton()}
+                </>}
+            </ScrollView>
             </Form>
-        </ScrollView>
     )
 
 }
