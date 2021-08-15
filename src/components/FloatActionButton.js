@@ -5,22 +5,19 @@ import { Icon } from 'react-native-elements/dist/icons/Icon'
 
 export default props => (
     <View style={{
-        width: 50,  
-        height: 50,   
-        borderRadius: 30,            
-        backgroundColor: '#63488c',                                    
         position: 'absolute',                                          
-        bottom: 10,                                                    
-        right: 10, 
-        justifyContent:'center'
-        }}>
+        bottom: 12,                                                    
+        right: 12, 
+    }}>
+
         <TouchableHighlight 
             onPress={ () => props.onClick()}
             underlayColor="#4440">
             <Icon 
-                name='add'
-                size={25}
-                color='#fff'
+                name='add-circle'
+                size={56}
+                type={'ionicons'}
+                color='#63488c'
                 />
         </TouchableHighlight>
     </View>
