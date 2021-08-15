@@ -55,7 +55,6 @@ export default props =>{
     const renderItem = ({item : opt}) =>{
         return(
             <TouchableOpacity
-                 
                 style={styles.listItem}
                 onPress={() => onSelect(opt)}>
                 <Text style={styles.text}>
@@ -70,8 +69,9 @@ export default props =>{
             <TextInput style={styles.inputBox}
                 placeholderTextColor="#666" 
                 onChangeText={onChangeText}
+                editable={props.editable != null ? props.editable : true}
                 placeholder={props.placeholder}
-                value={text}    
+                value={props.value != null ? props.value: text}    
             />
 
         {(showList && keyboardVisible) &&
@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         marginTop: 5,
         padding: 10,
+        width: 300
     },
     listItem:{
         borderBottomWidth: 1,
