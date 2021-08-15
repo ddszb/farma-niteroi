@@ -56,7 +56,6 @@ export default props =>{
             <Text style={styles.text}>
                 Quantidade
             </Text>
-            <View styles={styles.row}>
                 <TextInput 
                     style={styles.input}
                     keyboardType="numeric"
@@ -66,7 +65,6 @@ export default props =>{
                 <Text style={styles.text}>
                     {dose.unit.label}(s)
                 </Text>
-            </View>
             <View style={styles.row}>
                 <TouchableOpacity
                     onPress={() => props.close()}
@@ -79,7 +77,7 @@ export default props =>{
                     onPress={confirm}
                     style={styles.buttonConfirm}>
                     <Text style={styles.confirmText}>
-                        Ok
+                        {dose.status == doseStatus.TOMADA ? "Ajustar" : "Tomar" }
                     </Text>
                 </TouchableOpacity>
             </View>
@@ -181,6 +179,11 @@ const styles = StyleSheet.create({
         color:'#63488c',
         fontWeight: 'bold',
         fontSize: 18,
+        borderWidth: 1,
+        borderRadius: 5,
+        borderColor: '#bbb',
+        width: 60,
+        margin: 12
     },
     amountText: {
         textAlign: "justify",
@@ -195,7 +198,7 @@ const styles = StyleSheet.create({
         marginRight: 5,
         padding: 6,
         elevation: 1,
-        backgroundColor: "#ddd",
+        backgroundColor: "#e8e8e8",
       },
     buttonConfirm: {
         borderRadius: 5,
@@ -204,14 +207,17 @@ const styles = StyleSheet.create({
         width: 80,
         padding: 6,
         elevation: 1,
-        backgroundColor: "#63488c"
+        backgroundColor: "#40a843"
     },
     cancelText:{
         color: '#63488c',
-        textAlign: 'center'
+        textAlign: 'center',
+        margin: 5,
     },
     confirmText:{
         color: '#fff',
-        textAlign: 'center'
+        textAlign: 'center',
+        fontWeight: 'bold',
+        margin: 5,
     },
 })
