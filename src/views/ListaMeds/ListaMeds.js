@@ -11,6 +11,7 @@ import {useFocusEffect} from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import medStatus from '../../constants/medStatus'
 import doseStatus from '../../constants/doseStatus'
+import storageKeys from '../../constants/storageKeys'
 
 export default props =>{
     
@@ -21,7 +22,7 @@ export default props =>{
     const MedIcon = createIconSetFromIcoMoon(iconMoonConfig)
 
     const getMeds = async () =>{
-        const medsString = await AsyncStorage.getItem('medsList')
+        const medsString = await AsyncStorage.getItem(storageKeys.MEDS)
         const meds = JSON.parse(medsString) || []
         setMeds(meds)
     }
