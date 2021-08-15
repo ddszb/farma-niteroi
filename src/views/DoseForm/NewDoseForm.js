@@ -22,7 +22,7 @@ export default props =>{
                                             .sort((a, b) => a.value.toLowerCase() > b.value.toLowerCase() ? 1 : -1)
     const [time, setTime] = useState(new Date())
     const [amount, setAmount] = useState('0')
-    const [unit, setUnit] = useState(doseUnitsSelection[0].label)
+    const [unit, setUnit] = useState(doseUnits.COMPRIMIDO)
     const [showTimePicker, setShowTimePicker] = useState(false)
     const [medName, setMedName] = useState() 
     const [selectedMed, setSelectedMed] = useState()
@@ -107,7 +107,11 @@ export default props =>{
 
     const getAmountContent = ()=>{
         if(selectedMed){
-            return (               
+            return (              
+                <>
+                <FormFieldLabel>
+                    Quantidade
+                </FormFieldLabel> 
                 <RowView>
                     <AmountInput
                     keyboardType="numeric"
@@ -118,9 +122,14 @@ export default props =>{
                         {selectedMed.stock.unit.label + "(s)" }
                     </AmountText>
                 </RowView>
+                </>
             )
         }else{
             return(
+                <>
+                <FormFieldLabel>
+                    Quantidade
+                </FormFieldLabel>
                 <LeftPadding>
                     <RowView>
                         <AmountInput
@@ -134,6 +143,7 @@ export default props =>{
                             onChangeValue={changeUnit}/>
                     </RowView>
                 </LeftPadding>
+                </>
             )
         }
     }
@@ -149,9 +159,6 @@ export default props =>{
                     {moment(time).format("HH:mm")}
                 </HourText>
             </TouchableOpacity>
-            <FormFieldLabel>
-                Quantidade
-            </FormFieldLabel>
             {getAmountContent()}
             <FormFieldLabel>
                 Medicamento
@@ -172,8 +179,10 @@ export default props =>{
                     timeZoneOffsetInMinutes={-180}
                     minuteInterval={5}
                     onChange={(_, date) => {
-                        setTime(date)
+                        let hours = date.getHours() - (date.getTimezoneOffset() / 60)
+                        date.setHours(hours)
                         setShowTimePicker(false)
+                        setTime(new Date(date))
                     }}/>)
             }
         </Form>
