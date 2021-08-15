@@ -331,7 +331,7 @@ export default props =>{
 
     return(
         <Container>
-            <Button onPress={clearAsyncStorage} title="Limpar"/>
+            {/* <Button onPress={clearAsyncStorage} title="Limpar"/> */}
             {showEditDoseModal &&
                 <EditDoseModal
                 visible={showEditDoseModal}
