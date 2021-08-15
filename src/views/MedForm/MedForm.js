@@ -32,6 +32,7 @@ import medStatus from '../../constants/medStatus'
 
 import moment from 'moment'
 import 'moment/locale/pt-br'
+import storageKeys from '../../constants/storageKeys'
 
 
 const initialDoseTime = new Date();
@@ -52,7 +53,8 @@ const initialState =
         stock:{
             amount: null,
             unit: doseUnits.COMPRIMIDO
-        }
+        },
+        doses:[]
     }
 
 
@@ -99,7 +101,7 @@ export default ({navigation, route}) => {
             invalid = true
             errors.push("Nome de medicamento obrigatório")
         }else{
-            const medsString = await AsyncStorage.getItem('medsList')
+            const medsString = await AsyncStorage.getItem(storageKeys.MEDS)
             const meds = medsString !== null ? JSON.parse(medsString) : []
             if(meds.map(m => m.name).includes(med.name)){
                 invalid = true
@@ -169,7 +171,8 @@ export default ({navigation, route}) => {
                     status: doseStatus.NAO_TOMADA,
                     icon: medPersist.icon,
                     iconColor: medPersist.iconColor,
-                    index: doses.length
+                    index: doses.length,
+                    sporadic: false
                 }
                 doses.push(dose)
             }
@@ -213,16 +216,16 @@ export default ({navigation, route}) => {
     const __confirmSave = async () =>{
         var medPersist = {...med}
         medPersist = __fillMedInfo(medPersist)
-        const medsString = await AsyncStorage.getItem('medsList')
+        const medsString = await AsyncStorage.getItem(storageKeys.MEDS)
         const meds = medsString !== null ? JSON.parse(medsString) : []
         
-        const medSequence = await AsyncStorage.getItem('medsListSequence')
+        const medSequence = await AsyncStorage.getItem(storageKeys.MED_SEQUENCE)
         const medId = medSequence !== null ? parseInt(medSequence) + 1 : 1
         medPersist.id = medId
         
         meds.push(medPersist)
-        AsyncStorage.setItem("medsListSequence", medId.toString())
-        AsyncStorage.setItem('medsList', JSON.stringify(meds))
+        AsyncStorage.setItem(storageKeys.MED_SEQUENCE, medId.toString())
+        AsyncStorage.setItem(storageKeys.MEDS, JSON.stringify(meds))
 
         navigation.goBack()
     }

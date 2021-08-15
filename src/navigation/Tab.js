@@ -13,12 +13,23 @@ import Search from '../views/Busca/Busca'
 import MedsNiteroi from '../views/MedsNiteroi/MedsNiteroi'
 import Policlinicas from '../views/Policlinicas/Policlinicas'
 import MedNiteroiDetalhe from '../views/MedsNiteroi/MedNiteroiDetalhe'
+import NewDoseForm from '../views/DoseForm/NewDoseForm';
 
 
 const Tab = createBottomTabNavigator()
 
 const MedsStack = createStackNavigator()
 const SearchStack = createStackNavigator()
+const HomeStack = createStackNavigator()
+
+function HomeStackScreen(){
+    return(
+        <HomeStack.Navigator>
+            <HomeStack.Screen options={{headerShown: false}} name="Home" component={Home}/>
+            <HomeStack.Screen name="Adicionar Dose" component={NewDoseForm}/>
+        </HomeStack.Navigator>
+    )
+}
 
 function MedStackScreen() {
     return (
@@ -42,8 +53,9 @@ function SearchStackScreen(){
 }
 
 function __getTabBarVisiblity(route){
+    noTabRoutes = ["Adicionar Medicamento", "Adicionar Dose"]
     const routeName = getFocusedRouteNameFromRoute(route)
-    return routeName !== "Adicionar Medicamento"
+    return !noTabRoutes.includes(routeName)
 }
 
 export default props =>(
@@ -83,15 +95,24 @@ export default props =>(
         showLabel: true,
         labelStyle: {fontSize: 10}
     }} initialRouteName="Home">
-        <Tab.Screen name="Home" component={Home}/>
+        <Tab.Screen 
+            name="Home"
+            component={HomeStackScreen}             
+            options={({ route }) => ({
+                tabBarVisible: __getTabBarVisiblity(route)
+            })}/>
         <Tab.Screen 
             name="Medicamentos" 
             component={MedStackScreen} 
             options={({ route }) => ({
                 tabBarVisible: __getTabBarVisiblity(route)
             })}/>
-        <Tab.Screen name="Procurar" component={SearchStackScreen}/>
-        <Tab.Screen name="Informação" component={Info}/>
+        <Tab.Screen 
+            name="Procurar" 
+            component={SearchStackScreen}/>
+        <Tab.Screen 
+            name="Informação"
+            component={Info}/>
     </Tab.Navigator>
 )
 
