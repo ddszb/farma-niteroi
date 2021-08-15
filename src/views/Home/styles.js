@@ -87,17 +87,18 @@ export const DateText = styled.Text`
 `
 
 export const HeaderTitle = styled.View`
+    flex-direction: row;
     background-color: #63488c;
-    justify-content: center;
+    align-items: center;
+    justify-content: space-around;
     height: 60px;
-    
 `
 
 export const HeaderTitleText = styled.Text`
     font-size: 22px;
     text-align: left;
     color: #FFF;
-    margin-left: 15px;
+    margin-left: 105px;
     text-align: center;
 `
 
@@ -109,8 +110,8 @@ export const DatePickerView = styled.View`
 
 export const ResetDateButton = styled.View`
     position: absolute;
-    left: 15px;
-    top: 15px;
+    left: 25px;
+    top: -44px;
 `
 
 export const EmptyListContainer = styled.View`
@@ -146,5 +147,6 @@ export const VPadding = styled.View`
 export const RowView = styled.View`
     flex-direction: row;
     align-items: center;
+    justify-content: center;
     
 `
