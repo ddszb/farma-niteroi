@@ -6,12 +6,13 @@ import FAB from '../../components/FloatActionButton'
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons'
 import iconMoonConfig from '../../selection.json'
 import {LeftTitle, RightTitle, LeftSubtitle, RightSubtitle, RightContainer,
-     MedListView, IconPadding, HeaderTitle, HeaderTitleText, ToggleView} from './styles'
+     MedListView, IconPadding, HeaderTitle, HeaderTitleText, ToggleView, EmptyListContainer, LightText} from './styles'
 import {useFocusEffect} from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import medStatus from '../../constants/medStatus'
 import doseStatus from '../../constants/doseStatus'
 import storageKeys from '../../constants/storageKeys'
+import { View } from 'react-native'
 
 export default props =>{
     
@@ -64,6 +65,37 @@ export default props =>{
     }
 
 
+    const getMedsList = () =>{
+        if(visibleMeds.length == 0){
+            return(
+                <EmptyListContainer>
+                    <LightText>
+                        {'Nenhum medicamento adicionado!\n'}
+                    </LightText>
+                    <View style={{flexDirection: 'row'}}>
+                    <LightText>
+                        {'Toque no'}
+                    </LightText>
+                    <Icon name='add-circle' type={'ionicons'} size={25} color='#63488c'/>
+                    <LightText>
+                        {'Para adicionar um novo '}
+                    </LightText>
+                    </View>
+                    <LightText>
+                        {'medicamento à sua farmácia pessoal.'}
+                    </LightText>
+                </EmptyListContainer>
+            )
+        }else{
+            return(
+                <FlatList
+                    keyExtractor={ (item, index) => `${index}`}
+                    data={visibleMeds}
+                    renderItem={getMedItem}
+                />
+            )
+        }
+    }
 
     const __getRightContent = (med) =>{
         if(med.status == medStatus.INATIVO){
@@ -146,13 +178,8 @@ export default props =>{
                     </TouchableOpacity>
                 </ToggleView>
             </HeaderTitle>
-            <FlatList
-                keyExtractor={ (item, index) => `${index}`}
-                data={visibleMeds}
-                renderItem={getMedItem}
-            />
+            {getMedsList()}
             <FAB onClick={navigateToNew}/>
-
         </MedListView>
         
     )
