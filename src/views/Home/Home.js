@@ -109,8 +109,6 @@ export default props =>{
     const filterDoses = () =>{
         var allDoses = [].concat.apply([], meds.map( m => m.doses)) // Concatena todas as doses de todos os medicamentos
         allDoses = allDoses.concat(sporadicDoses)
-        console.log(JSON.stringify(allDoses))
-        console.log(filterDay)
         let visibleDoses = allDoses.filter( d => (moment(d.date).isSame(filterDay, 'day') || moment(d.dateTaken).isSame(filterDay, 'day')) && d.status !== doseStatus.ENCERRADA)
         visibleDoses.sort((a, b) => new Date(a.date) - new Date(b.date))
 
