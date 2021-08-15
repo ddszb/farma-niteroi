@@ -41,7 +41,6 @@ export const RightContainer = styled(ListItem.Content)`
 `
 export const MedListView = styled.View`
     flex: 1;
-    justify-content: center;
 `
 export const IconPadding = styled.View`
     padding-left: 10px;
@@ -51,4 +50,17 @@ export const IconPadding = styled.View`
 export const ToggleView = styled.View`
     position: absolute;
     right: 16px;
+`
+
+export const EmptyListContainer = styled.View`
+    margin-top: 100px;
+    align-items: center;
+`
+
+export const LightText = styled.Text`
+    font-size: 18px;
+    color: #777;
+    margin-horizontal: 5px;
+    text-align: left;
+    flex-wrap: wrap;
 `
