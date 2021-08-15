@@ -19,8 +19,8 @@ export default props =>{
             return
         }
         if(event.type === "set"){
-            setDialogTime(date)
             setShowPicker(false)
+            setDialogTime(date)
         }
     }
 
