@@ -21,7 +21,7 @@ import iconColors from '../../constants/iconColors'
 import doseUnits from '../../constants/doseUnits'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
 import meds_niteroi from '../../data/meds_niteroi'
-import { FormFieldLabel, FormInputTextField, LargeFormInputTextField, FormFieldLabelLight,
+import { FormFieldLabel, LargeFormInputTextField, FormFieldLabelLight,
     ViewFlexRow, CardBox, CardContent, ButtonText, Button, Form, FormInputAsLabel, DatePickerText} from './styles'
 import IconPicker from './components/IconPicker'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -148,9 +148,8 @@ export default ({navigation, route}) => {
         setMed({...med,days})
     }
 
-    const __onUpdateDoseHours = (doses) =>{
-        var doseHours = [...doses]
-        doseHours.forEach( d => d.unit = med.stock.unit)
+    const __onUpdateDoseHours = (doseHours) =>{
+        console.log(JSON.stringify(doseHours))
         setMed({...med, doseHours})
     }
 

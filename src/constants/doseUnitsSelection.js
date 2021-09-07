@@ -10,19 +10,9 @@ export default [
         key: 2
     },
     {
-        label: 'Gota(s)',
-        value: 'GOTA',
-        key: 3
-    },
-    {
         label: 'Ml(s)',
         value: 'ML',
-        key: 4
-    },
-    {
-        label: 'Medida(s)',
-        value: 'MEDIDA',
-        key: 5
-    },
+        key: 3
+    }
     
 ]

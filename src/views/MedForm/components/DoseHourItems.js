@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Text,
     StyleSheet,
@@ -13,6 +13,9 @@ import DateTimePicker from '@react-native-community/datetimepicker'
 import moment from 'moment'
 import 'moment/locale/pt-br'
 import InputModal from '../../../components/InputModal'
+import liquidDoseUnits from '../../../constants/liquidDoseUnits'
+import doseUnits from '../../../constants/doseUnits'
+import { useFocusEffect } from '@react-navigation/core'
 
 export default props =>{
     
@@ -20,14 +23,14 @@ export default props =>{
     defaultDate.setMinutes(0)
     defaultDate.setHours(8)
 
+    const liquidDose = props.unit.key === doseUnits.ML.key
+    
     const [doseHoursItems, setDoseHoursItems] = useState([{ time: defaultDate, amount: 1, unit: props.unit, index: 0}])
     const [selectedDose, setSelectedDose] = useState(0)
     const [showDialog, setShowDialog] = useState(false)
     const [showPicker, setShowPicker] = useState(false)
     const [dialogTime, setDialogTime] = useState(defaultDate)
-    
-    // const [state, setState] = useState(initialState)
-
+    const [customUnit, setCustomUnit] = useState()
 
     /**
      * Atualiza a hora da dose selecionada
@@ -117,12 +120,17 @@ export default props =>{
      * @param {Number} amount A quantidade a ser tomada na dose
      * @param {String} unit A unidade de medida da dose
      */
-    const __updateItem = (amount) =>{
+    const __updateItem = (amount, unit) =>{
+        console.log("unit", unit)
         var doses = [...doseHoursItems]
         var index = selectedDose
         var dose = doses[index]
         dose.amount = amount
-        setDoseHoursItems(doseHoursItems)
+        if(unit){
+            setCustomUnit(unit)
+            doses.forEach( d => d.unit = unit)
+        }
+        setDoseHoursItems(doses)
         setShowDialog(false)
         props.onUpdate(doses)
     }
@@ -171,6 +179,7 @@ export default props =>{
      */
     const __doseHoursItemList = () =>{
         const doses = doseHoursItems
+        const unitlabel = liquidDose && customUnit ? customUnit.label : props.unit.label
         return doses.map( d =>{
             var time = moment(d.time).format("HH:mm")
             return (
@@ -194,7 +203,7 @@ export default props =>{
                                 setShowDialog(true)
                                 }}>
                             <View>
-                                <Text style={style.doseHourAmount}>{"Tomar " + d.amount + " " +  props.unit.label + "(s)"}</Text>
+                                <Text style={style.doseHourAmount}>{"Tomar " + d.amount + " " +  unitlabel + "(s)"}</Text>
                             </View>
                         </TouchableOpacity>
 
@@ -205,6 +214,7 @@ export default props =>{
                         initialValue={'' + d.amount}
                         inputType={"numeric"}
                         inputText={props.unit.label + "(s)"}
+                        pickerOptions={liquidDose? liquidDoseUnits : false}
                         inputLength={4}
                         close={__closeDialog}
                         onSet={__updateItem}/>

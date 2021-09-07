@@ -1,15 +1,23 @@
 import React, { useState } from "react";
 import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import Spinner from "./Spinner";
 
 export default props =>{
 
     const [value, setValue] = useState(props.initialValue ? props.initialValue : '')
+    const [pickerValue, setPickerValue] = useState(props.pickerOptions ? props.pickerOptions[0] : null)
 
     const onChangeText = (text) =>{
         if(props.inputType == "numeric"){
             var value = text.replace(/[^0-9]/g, '')
         }
         setValue(value)
+    }
+
+    const onChangePicker = ( opt )=>{
+      var value = props.pickerOptions.filter( o => o.value === opt.value)[0]
+      console.log(value)
+      setPickerValue(value)
     }
 
     return (
@@ -31,7 +39,17 @@ export default props =>{
                               value={value}
                               maxLength={props.inputLength}
                               keyboardType={props.inputType}/>
-                      <Text style={styles.text}>{props.inputText}</Text>
+                      {props.pickerOptions 
+                      ? <>
+                        <Spinner 
+                          items={props.pickerOptions} 
+                          value={props.pickerOptions[0]}
+                          onChangeValue={onChangePicker}
+                          styles={{width: 160}}/> 
+                        </>
+                      : <Text style={styles.text}>{props.inputText}</Text>
+                    }
+                      
 
                       </View>
                       <View style={styles.buttonsRow}>
@@ -43,8 +61,9 @@ export default props =>{
                       <TouchableOpacity
                           onPress={() => {
                               let v = value
+                              let pick = props.pickerOptions ? pickerValue : null
                               setValue('') 
-                              props.onSet(v)
+                              props.onSet(v, pick)
                           }}
                           style={styles.buttonConfirm}>
                           <Text style={styles.confirmText}>{props.confirmText? props.confirmText : 'Ok'}</Text>
