@@ -26,7 +26,6 @@ export default props =>{
             selectedValue={selectedValue}
             style={props.styles || defaultStyles}
             mode="dropdown"
-            dropdownIconColor="#eaeaea"
             onValueChange={onValueChange}>
             {getList()}
           </Picker>

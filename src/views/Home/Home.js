@@ -165,35 +165,31 @@ export default props =>{
     }
 
     const updateDose = (dose, action) =>{
-        if(dose.sporadic){
-            var doses = sporadicDoses.map(d => d.index == dose.index ? dose : d)
-            setSporadicDoses(doses)
-            updateSporadicDoses()
-        }else{
-            var medList = [...meds]
-            var updatedMed = medList.filter(m => m.name == dose.medName)[0]
-            var updatedDose = updatedMed.doses.filter(d => dose.medName == d.medName && d.index == dose.index )[0]
-    
-            if(updatedDose){
-                switch(action){
-                    case doseActions.TOMAR_DOSE:
-                        updatedMed.stock.amount -= dose.amount
-                        dose.status = doseStatus.TOMADA
-                        break
-                    case doseActions.EDITAR_DOSE_TOMADA:
-                        updatedMed.stock.amount += updatedDose.amount - dose.amount
-                        break
-                }
+
+        var medList = [...meds]
+        var updatedMed = medList.filter(m => m.name == dose.medName)[0]
+        var updatedDose = updatedMed.doses.filter(d => dose.medName == d.medName && d.index == dose.index )[0]
+
+        if(updatedDose){
+            switch(action){
+                case doseActions.TOMAR_DOSE:
+                    updatedMed.stock.amount -= dose.amount
+                    dose.status = doseStatus.TOMADA
+                    break
+                case doseActions.EDITAR_DOSE_TOMADA:
+                    updatedMed.stock.amount += updatedDose.amount - dose.amount
+                    break
             }
-            newDoses = updatedMed.doses.map( d => d.index == dose.index ? dose : d)
-            updatedMed.doses = newDoses
-    
-            if(swipeableRef && swipeableRef.current){
-                swipeableRef.current.close()
-            }
-            setMeds(medList)
-            updateMeds()
-        }     
+        }
+        newDoses = updatedMed.doses.map( d => d.index == dose.index ? dose : d)
+        updatedMed.doses = newDoses
+
+        if(swipeableRef && swipeableRef.current){
+            swipeableRef.current.close()
+        }
+        setMeds(medList)
+        updateMeds()
+             
     }
 
     const getDateFilter = () =>{
