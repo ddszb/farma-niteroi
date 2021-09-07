@@ -112,7 +112,7 @@ export default props =>{
     const toggleFilter = () =>{
         let n = filterOption == 2 ? 0 : filterOption + 1
         setFilterOption(n)
-        ToastAndroid.showWithGravityAndOffset(filterMsgs[n], ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0 , 0)        
+        ToastAndroid.showWithGravityAndOffset(filterMsgs[n], ToastAndroid.SHORT, ToastAndroid.TOP, 0 , 30)        
     }
 
     const filterDoses = () =>{
