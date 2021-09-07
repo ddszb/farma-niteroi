@@ -425,8 +425,8 @@ export default ({navigation, route}) => {
                     <View>
                         <FormFieldLabel>Observações</FormFieldLabel>
                         <LargeFormInputTextField
-                            onChangeText={ observacao => setMed({...med , observacao})}
-                            value={med.observacao}    
+                            onChangeText={ notes => setMed({...med , notes})}
+                            value={med.notes}    
                             maxLength={200}
                             multiline={true}
                             numberOfLines={5}
