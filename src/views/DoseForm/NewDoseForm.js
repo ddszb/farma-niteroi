@@ -3,26 +3,24 @@ import { TouchableOpacity, ToastAndroid }  from 'react-native'
 
 import moment from 'moment'
 import 'moment/locale/pt-br'
-import { AmountInput, AmountText, ButtonText, ButtonView, CancelButton, CardBox, CardContent, ConfirmButton, Form, FormFieldLabel, HourText, LeftPadding, PickerView, RowView } from './styles'
+import { AmountInput, AmountText, ButtonText, ButtonView, CancelButton, CenteredView, ConfirmButton, Form, FormFieldLabel, HourText, LeftPadding, PickerView, RowView } from './styles'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import doseStatus from '../../constants/doseStatus'
-import AutoCompleteInput from '../../components/AutoCompleteInput'
-import UnitSpinner from '../../components/Spinner'
+import Spinner from '../../components/Spinner'
 import doseUnitsSelection from '../../constants/doseUnitsSelection'
 import storageKeys from '../../constants/storageKeys'
 import doseUnits from '../../constants/doseUnits'
+import MedPicker from '../../components/DropdownPicker'
 
 export default props =>{
     
     const {meds} = props.route.params
 
-    const options = meds.map((med, index )=> ({key: index, value: med.name}))
-                                            .sort((a, b) => a.value.toLowerCase() > b.value.toLowerCase() ? 1 : -1)
+    const options = meds.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1)
     const [time, setTime] = useState(new Date())
     const [amount, setAmount] = useState('0')
-    const [unit, setUnit] = useState(doseUnits.COMPRIMIDO)
     const [showTimePicker, setShowTimePicker] = useState(false)
     const [medName, setMedName] = useState() 
     const [selectedMed, setSelectedMed] = useState()
@@ -33,14 +31,6 @@ export default props =>{
         props.navigation.goBack()
     }
 
-    const saveSporadicDose = async (dose)=>{
-        const dosesString = await AsyncStorage.getItem(storageKeys.SPORADIC_DOSES)
-        const doses = JSON.parse(dosesString) || []
-        dose.index = doses.length + 1
-        doses.push(dose)
-        AsyncStorage.setItem(storageKeys.SPORADIC_DOSES, JSON.stringify(doses))
-        props.navigation.goBack()
-    }
 
     const onCancel = () =>{
         props.navigation.goBack()
@@ -48,7 +38,7 @@ export default props =>{
 
     const onConfirm = () =>{
         var error = ''
-        if(amount == '0'){
+        if(amount == '0' || amount == ''){
             error = "Por favor informe a quantidade tomada."
         }
         if(error){
@@ -60,14 +50,14 @@ export default props =>{
         let dose = {
             medName: medName,
             date: null, 
-            unit: selectedMed ? selectedMed.stock.unit : unit,
+            unit: selectedMed.stock.unit,
             amount: amount,
             dateTaken: time,
             newDate: null,
             status: doseStatus.TOMADA,
-            icon: selectedMed ? selectedMed.icon : "med_pill",
-            iconColor: selectedMed ? selectedMed.iconColor : "#888",
-            index: selectedMed ? selectedMed.doses.length : -1,
+            icon: selectedMed.icon,
+            iconColor: "#888",
+            index: selectedMed.doses.length,
             sporadic: true
         }
         if(selectedMed){
@@ -75,20 +65,16 @@ export default props =>{
             med.doses.push(dose)
             med.stock.amount -= parseInt(amount)
             saveMed(med)
-        }else{
-            saveSporadicDose(dose)
         }
     }
 
-    const onSelectMed = value =>{        
-        var med = meds.filter(m => m.name.toLowerCase() == value.toLowerCase())
-        if(med.length > 0){
-            setSelectedMed(med[0])
-            setUnit(med[0].stock.unit)
+    const onSelectMed = med =>{        
+        if(med){
+            setSelectedMed(med)
+            setMedName(med.name)
         }else{
             setSelectedMed(null)
         }
-        setMedName(value)
     }
 
 
@@ -100,52 +86,24 @@ export default props =>{
         setAmount(amount)
     }
 
-    const changeUnit = (item) =>{
-        let unit = doseUnits[item.value]
-        setUnit(unit)
-    }
-
     const getAmountContent = ()=>{
-        if(selectedMed){
-            return (              
-                <>
-                <FormFieldLabel>
-                    Quantidade
-                </FormFieldLabel> 
-                <RowView>
-                    <AmountInput
-                    keyboardType="numeric"
-                    onChangeText={changeAmount}
-                    value={amount}
-                    maxLength={4}/>
-                    <AmountText>
-                        {selectedMed.stock.unit.label + "(s)" }
-                    </AmountText>
-                </RowView>
-                </>
-            )
-        }else{
-            return(
-                <>
-                <FormFieldLabel>
-                    Quantidade
-                </FormFieldLabel>
-                <LeftPadding>
-                    <RowView>
-                        <AmountInput
-                            keyboardType="numeric"
-                            onChangeText={changeAmount}
-                            value={amount}
-                            maxLength={4}/>
-                        <UnitSpinner 
-                            items={doseUnitsSelection} 
-                            value={unit.label}
-                            onChangeValue={changeUnit}/>
-                    </RowView>
-                </LeftPadding>
-                </>
-            )
-        }
+        return (              
+            <>
+            <FormFieldLabel>
+                Quantidade
+            </FormFieldLabel> 
+            <RowView>
+                <AmountInput
+                keyboardType="numeric"
+                onChangeText={changeAmount}
+                value={amount}
+                maxLength={4}/>
+                <AmountText>
+                    { selectedMed ? selectedMed.stock.unit.label + "(s)"  : "Comprimido(s)"}
+                </AmountText>
+            </RowView>
+            </>
+        )
     }
 
     return(
@@ -160,14 +118,14 @@ export default props =>{
                 </HourText>
             </TouchableOpacity>
             {getAmountContent()}
-            <FormFieldLabel>
-                Medicamento
-            </FormFieldLabel>
-                <AutoCompleteInput
+            <CenteredView>
+                <MedPicker 
                     data={options}
-                    placeholder={"Medicamento"}
-                    onChange={onSelectMed}
-                />
+                    title="Medicamento"
+                    onSelect={onSelectMed}
+                    labelField="name"
+                    />
+            </CenteredView>
                 
             { showTimePicker && 
                 (<DateTimePicker

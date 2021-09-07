@@ -66,7 +66,7 @@ export default props =>{
 
     return(
         <View style={styles.container}>
-            <TextInput style={styles.inputBox}
+            <TextInput style={[styles.inputBox, props.styles ? props.styles : {}]}
                 placeholderTextColor="#666" 
                 onChangeText={onChangeText}
                 editable={props.editable != null ? props.editable : true}
@@ -100,7 +100,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         marginTop: 5,
         padding: 10,
-        width: 300
     },
     listItem:{
         borderBottomWidth: 1,

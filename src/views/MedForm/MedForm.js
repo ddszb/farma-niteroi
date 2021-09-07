@@ -266,6 +266,7 @@ export default ({navigation, route}) => {
                         onChange={ name => setMed({...med , name})}
                         placeholder="Nome do medicamento"
                         value={med.name}
+                        styles={{width: 300}}
                     />
                     {medPicked &&
                     <TouchableOpacity onPress={onPressReset}>
