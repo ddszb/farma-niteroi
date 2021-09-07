@@ -1,7 +1,5 @@
 import { Picker } from '@react-native-picker/picker';
 import React, {useState} from 'react'
-import { View, StyleSheet } from "react-native";
-
 export default props =>{
     const [selectedValue, setSelectedValue] = useState(props.items[0].value);
 
@@ -30,12 +28,4 @@ export default props =>{
             {getList()}
           </Picker>
       );
-    }
-    
-    const styles = StyleSheet.create({
-      container: {
-        flex: 1,
-        paddingTop: 4,
-        alignItems: "center"
-      }
-    });
+}
