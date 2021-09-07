@@ -35,7 +35,7 @@ export default props =>{
     }, [])
 
     const onChangeText = (text) =>{
-        setShowList(text != '')
+        setShowList(text.length > 2)
         setText(text)
         filterData(text)
         props.onChange(text)
