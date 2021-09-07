@@ -1,17 +1,22 @@
 import React, {useState, useEffect,  useContext, useRef} from 'react'
 
-import { TouchableOpacity, View, RefreshControl, Button } from 'react-native'
+import { TouchableOpacity, View, RefreshControl, ToastAndroid } from 'react-native'
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons'
 import iconMoonConfig from '../../selection.json'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
+import FAB from '../../components/FloatActionButton'
 import { Body, CardBox, ColorTag, Container,
      Detail, Header, Buttons, DarkText, LightText, ResetDateButton,
      TopContent, BottomContent, DateText, HeaderTitle, HeaderTitleText,
      DatePickerView, EmptyListContainer, RightSwipe, RightSwipeText,
      WarningText, 
      RowView,
-     HPadding} from './styles'
+     HPadding,
+     FooterButton,
+     FooterButtonText,
+     OkText,
+     WaitingText} from './styles'
 import { FlatList, Swipeable } from 'react-native-gesture-handler'
 import DateTimePicker from '@react-native-community/datetimepicker'
 
@@ -25,6 +30,10 @@ import doseActions from '../../constants/doseActions'
 import storageKeys from '../../constants/storageKeys'
 
 
+const filterOptions = { ALL: 0, TAKEN: 1, NOT_TAKEN: 2}
+const filterIcons = ['alarm-plus', 'alarm-check', 'alarm-off']
+const filterMsgs = ['Exibindo todas as doses', 'Exibindo apenas doses tomadas', 'Exibindo apenas doses não tomadas',]
+
 export default props =>{
 
     const MedIcon = createIconSetFromIcoMoon(iconMoonConfig)
@@ -32,6 +41,7 @@ export default props =>{
     const [meds, setMeds] = useState([])
     const [sporadicDoses, setSporadicDoses] = useState([])
     const [visibleDoses, setVisibleDoses] = useState([])
+    const [filterOption, setFilterOption] = useState(filterOptions.ALL)
     const [showDatePicker, setShowDatePicker] = useState(false)
     const [filterDay, setFilterDay] = useState(new Date())
     const [refreshing, setRefreshing] = useState(false)
@@ -69,12 +79,6 @@ export default props =>{
         setMeds(meds)
     }
 
-    const getSporadicDoses = async () =>{
-        const dosesString = await AsyncStorage.getItem(storageKeys.SPORADIC_DOSES)
-        const sporadicDoses = JSON.parse(dosesString) || []
-        setSporadicDoses(sporadicDoses)
-    }
-
     const closeEditModal = () =>{
         setShowEditDoseModal(false)
     }
@@ -87,15 +91,14 @@ export default props =>{
     useFocusEffect(
         React.useCallback(() =>{
         getMeds()
-        getSporadicDoses()
         checkFirstTime()
     }, []))
 
     useEffect(() =>{
-        if(((meds && meds.length > 0) || (sporadicDoses && sporadicDoses.length > 0)) && filterDay){
+        if((meds && meds.length > 0) && filterDay && filterOption != null){
             filterDoses()
         }
-    }, [meds, sporadicDoses, filterDay])
+    }, [meds, filterDay, filterOption])
 
     const onRefresh = () =>{
         getMeds()
@@ -106,13 +109,28 @@ export default props =>{
         props.navigation.navigate('Adicionar Dose', {screen: 'Adicionar Dose', meds: meds})
     }
 
+    const toggleFilter = () =>{
+        let n = filterOption == 2 ? 0 : filterOption + 1
+        setFilterOption(n)
+        ToastAndroid.showWithGravityAndOffset(filterMsgs[n], ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0 , 0)        
+    }
+
     const filterDoses = () =>{
         var allDoses = [].concat.apply([], meds.map( m => m.doses)) // Concatena todas as doses de todos os medicamentos
-        allDoses = allDoses.concat(sporadicDoses)
-        let visibleDoses = allDoses.filter( d => (moment(d.date).isSame(filterDay, 'day') || moment(d.dateTaken).isSame(filterDay, 'day')) && d.status !== doseStatus.ENCERRADA)
-        visibleDoses.sort((a, b) => new Date(a.date) - new Date(b.date))
+        let dayDoses = allDoses.filter( d => (moment(d.date).isSame(filterDay, 'day') || moment(d.dateTaken).isSame(filterDay, 'day')) && d.status !== doseStatus.ENCERRADA)
+        let sporadic = dayDoses.filter( d => d.sporadic)
+        let scheduled = dayDoses.filter( d => !d.sporadic)
 
-        setVisibleDoses(visibleDoses)
+        scheduled.sort((a, b) => new Date(a.date) - new Date(b.date))
+        sporadic.sort((a,b) => new Date(a.dateTaken) - new Date(b.dateTaken))
+        let visible = scheduled.concat(sporadic)
+        
+        if(filterOption == filterOptions.TAKEN){
+            visible = visible.filter( d => d.status == doseStatus.TOMADA )
+        }else if(filterOption == filterOptions.NOT_TAKEN){
+            visible = visible.filter( d => d.status == doseStatus.NAO_TOMADA)
+        }
+        setVisibleDoses(visible)
     }
 
     const onPressDose = dose =>{
@@ -199,13 +217,13 @@ export default props =>{
                 }
                 <DatePickerView>
                     <TouchableOpacity onPress={() => shiftDate(-1)}>
-                        <Icon name="chevron-with-circle-left" type="entypo" size={26} color="#63488c"/>
+                        <Icon name="chevron-with-circle-left" type="entypo" size={28} color="#63488c"/>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={ () => setShowDatePicker(true)}>
                             <DateText>{dateString}</DateText>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => shiftDate(1)}>
-                        <Icon name="chevron-with-circle-right" type="entypo" size={26} color="#63488c"/>
+                        <Icon name="chevron-with-circle-right" type="entypo" size={28} color="#63488c"/>
                     </TouchableOpacity>
                 </DatePickerView>
                 {showDatePicker && datePicker}
@@ -252,9 +270,14 @@ export default props =>{
                     )
                 }else{
                     status = (
-                        <LightText>
-                            Não tomado
-                        </LightText>
+                        <RowView>
+                            <HPadding>
+                                <WaitingText>
+                                    {moment(dose.date).format('HH:mm')}
+                                </WaitingText>
+                            </HPadding>
+                            <Icon name="clock-o" type="font-awesome" size={24} color="#666"/>
+                        </RowView>
                     )
                 }
                 break
@@ -262,9 +285,9 @@ export default props =>{
                 status = (
                     <RowView>
                         <HPadding>
-                            <LightText>
+                            <OkText>
                                 {moment(dose.dateTaken).format('HH:mm')}
-                            </LightText>
+                            </OkText>
                         </HPadding>
                         <Icon name="check-circle" type={"font-awesome"} size={24} color='#40a843'/>
                     </RowView>
@@ -306,17 +329,9 @@ export default props =>{
                                 </DarkText>
                             </TopContent>
                             <BottomContent>
-                                {dose.date &&
-                                <>
-                                    <Icon name="clock-o" type="font-awesome" size={20} color="#666"/>
-                                    <LightText>
-                                        {moment(dose.date).format('HH:mm')}
-                                    </LightText>
-                                </>
-                                }
-                                <DarkText>
+                                <LightText>
                                     {dose.amount} {dose.unit.label}{dose.amount > 1 && dose.unit.label != "Ml" ? "s" : ""}
-                                </DarkText>
+                                </LightText>
                             </BottomContent>
                         </Detail>
                         <Buttons>
@@ -349,8 +364,8 @@ export default props =>{
                         Doses do dia
                     </HeaderTitleText>
                     <TouchableOpacity
-                        onPress={navigateToNew}>
-                        <Icon name="plus" type="foundation" size={26} color="#fff"/>
+                        onPress={toggleFilter}>
+                        <Icon name={filterIcons[filterOption]} type="material-community" size={32} color="#fff"/>
                     </TouchableOpacity>
                 </HeaderTitle>
                 {getDateFilter()}
@@ -375,6 +390,13 @@ export default props =>{
                 </EmptyListContainer>
                 }
             </Body>
+            <FooterButton
+                        onPress={navigateToNew}
+                        activeOpacity={0.9}>
+                    <FooterButtonText>
+                        Nova Dose
+                    </FooterButtonText>
+                </FooterButton>
         </Container>
 
     )
