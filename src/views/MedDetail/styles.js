@@ -53,6 +53,8 @@ export const ButtonView = styled.View`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    margin-top: 10px;
+    margin-bottom: 10px;
 `
 
 export const Button = styled.View`
@@ -79,4 +81,15 @@ export const ButtonPurpleText = styled.Text`
     color: #63488c;
     font-size: 16px;
     text-align: center;
+`
+
+export const StockInput = styled.TextInput`
+    height: 45px;
+    width: 60px;
+    overflow: hidden;
+    text-align: right;
+    font-size: 20px;
+    margin-top: 2px;
+    margin-right: 6px;
+    color: #999;
 `

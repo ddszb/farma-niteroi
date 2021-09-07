@@ -1,26 +1,24 @@
 import React, { useState } from 'react'
 import { ScrollView, TouchableOpacity } from 'react-native'
-import { ToastAndroid , Pressable, View, Alert, Modal} from 'react-native'
+import { ToastAndroid , Pressable, View, Alert} from 'react-native'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons'
 import iconMoonConfig from '../../selection.json'
 import {Container, RowView, MedName, HPadding,
     VPadding, InfoTitle, InfoText, Bottom, ButtonView,
-    ButtonPurpleText, ButtonBlueText, Button} from './styles'
-import doseUnits from '../../constants/doseUnits'
-import * as UtilitarioCalculo from '../../util/UtilitarioCalculo'
+    ButtonPurpleText, Button, StockInput} from './styles'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import moment from 'moment'
 import 'moment/locale/pt-br'
 import doseStatus from '../../constants/doseStatus'
 import medStatus from '../../constants/medStatus'
-import InputModal from '../../components/InputModal'
 import storageKeys from '../../constants/storageKeys'
 
 export default props =>{
     
     const {med, screen} = props.route.params
-    const [modalVisible, setModalVisible] = useState(false)
+    const [editingStock, setEditingStock] = useState(false)
+    const [tempStock, setTempStock] = useState(med.stock.amount.toString())
     const MedIcon = createIconSetFromIcoMoon(iconMoonConfig)
 
     
@@ -56,58 +54,84 @@ export default props =>{
             onPress(){
                 __endTreatment()
             }
-        },
-    ])
+        }])
     }
 
-    const __addStock = async (amount) =>{
-        
+    const updateStock = async (amount) =>{
         updatedMed = {...med}
-        updatedMed.stock.amount = +updatedMed.stock.amount + +amount
+        updatedMed.stock.amount = amount
 
         const medsString = await AsyncStorage.getItem(storageKeys.MEDS)
         var meds = medsString !== null ? JSON.parse(medsString) : []
         var meds = meds.map( m => m.name == updatedMed.name ? updatedMed : m)
         AsyncStorage.setItem(storageKeys.MEDS, JSON.stringify(meds))
-        ToastAndroid.showWithGravityAndOffset(med.stock.unit.label + "s adicionados ao estoque",
+        ToastAndroid.showWithGravityAndOffset("Estoque atualizado!",
             ToastAndroid.SHORT,
             ToastAndroid.BOTTOM,
         0, 180)
         setModalVisible(false)
     }
 
-    const getModal = () =>{
-        return (
-            <InputModal
-                visible={modalVisible}
-                title={"Repor estoque"}
-                subtitle={"Quanto adicionar ao estoque?"}
-                inputType={"numeric"}
-                inputText={med.stock.unit.label + "s"}
-                inputLength={4}
-                close={ () => setModalVisible(false)}
-                onSet={__addStock}
-                confirmText={"Adicionar"}
-            />
-        )
+    const confirmStockChange = () =>{
+        setEditingStock(false)
+        updateStock(tempStock)
+    }
+
+    const cancelStockChange = () =>{
+        setTempStock(med.stock.amount.toString())
+        setEditingStock(false)
     }
 
     const __getStockContent = () =>{
+    
+        const editableStyle = {
+            color: '#63488c',
+            borderColor: 'gray',
+            borderRadius: 5,
+            borderWidth: 1,
+            marginRight: 6,
+            textAlign: 'center'
+        } 
         return(
             <>
-                    <InfoTitle>Estoque</InfoTitle>
-                    <RowView style={{marginLeft: 60}}>
-                        <InfoText>{med.stock.amount} {med.stock.unit.label}(s)</InfoText>
-                        <TouchableOpacity
-                                onPress={() => setModalVisible(true)}>
-                                <Button>
-                                    <ButtonBlueText>
-                                        Repor
-                                    </ButtonBlueText>
-                                </Button>
-                        </TouchableOpacity>
-                    </RowView>
-                </>
+            <InfoTitle>Estoque</InfoTitle>
+            <RowView>
+                <StockInput
+                    value={tempStock}
+                    keyboardType="numeric"
+                    editable={editingStock}
+                    placeholderTextColor="red"
+                    maxLength={4}
+                    textAlign="right"
+                    style={[editingStock ? editableStyle : {}]}
+                    onChangeText={(stock) => setTempStock(stock.replace(/[^0-9]/g, ''))}>
+
+                </StockInput>
+                <InfoText>
+                    {med.stock.unit.label}(s)
+                </InfoText>
+                {editingStock  ? 
+                <RowView>
+                    <TouchableOpacity onPress={confirmStockChange}>
+                        <HPadding>
+                            <Icon name="check" type="font-awesome" size={26} color="#40a843"/>
+                        </HPadding>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={cancelStockChange}>
+                        <HPadding>
+                            <Icon name="close" type="font-awesome" size={26} color="#fc6464"/>
+                        </HPadding>
+                    </TouchableOpacity>
+                </RowView>
+                :
+                <TouchableOpacity onPress={() => setEditingStock(true)}>
+                    <HPadding>
+                        <Icon name="pencil" type="material-community" size={26} color="#63488c"/>
+                    </HPadding>
+                </TouchableOpacity>
+                }
+            </RowView>
+            </>
             )
         }
 
@@ -196,8 +220,7 @@ export default props =>{
     }
 
     return (
-        <ScrollView>
-
+        <ScrollView keyboardShouldPersistTaps={'handled'}>
             <Container>
                 <VPadding>
                     <RowView>
@@ -243,12 +266,16 @@ export default props =>{
                 {med.expireDate &&
                 <VPadding>
                     <InfoTitle>Validade</InfoTitle>
-                    <InfoText>{moment(med.expireDate).format("L")}</InfoText>
+                    <VPadding>
+                        <InfoText>{moment(med.expireDate).format("L")}</InfoText>
+                    </VPadding>
                 </VPadding>}
                 {med.notes &&
                 <VPadding>
                     <InfoTitle>Notas</InfoTitle>
-                    <InfoText>{med.notes}</InfoText>
+                    <VPadding>
+                        <InfoText>{med.notes}</InfoText>
+                    </VPadding>
                 </VPadding>}
                 <Bottom>
                     <ButtonView>
@@ -263,7 +290,6 @@ export default props =>{
                         </TouchableOpacity>}
                     </ButtonView>
                 </Bottom>
-                {getModal()}
             </Container>
         </ScrollView>
     )
