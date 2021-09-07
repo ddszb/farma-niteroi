@@ -78,10 +78,11 @@ export const CenteredView = styled.View`
 export const AmountInput = styled.TextInput`
     overflow: hidden ;
     text-align: center;
-    color:#63488c;
+    color:#777;
     font-weight: bold;
     font-size: 20px;
     margin-vertical: 16px;
+    margin-bottom: 1px;
     border-width: 1px;
     border-radius: 5px;
     border-color: #bbb;
@@ -91,8 +92,10 @@ export const AmountInput = styled.TextInput`
 export const AmountText = styled.Text`
     text-align: justify;
     margin: 16px;
-    font-size: 16px;
-    color: #888;
+    margin-bottom: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #777;
 `
 export const PickerView = styled.View`
     justify-content: center;
@@ -105,6 +108,7 @@ export const PickerView = styled.View`
 
 export const ButtonView = styled.View`
     flex: 0.2;
+    justify-content: flex-end;
 `
 export const ConfirmButton = styled.TouchableOpacity`
     flex: 1;

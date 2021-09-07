@@ -68,18 +68,37 @@ export const LightText = styled.Text`
     margin-horizontal: 5px;
     text-align: center;
 `
+
+export const OkText = styled.Text`
+    font-size: 23px;
+    font-weight: bold;
+    color: #40a843;
+    text-align:center;
+    margin-left: 46px;
+    margin-right: 5px;
+`
+
 export const WarningText = styled.Text`
-    font-size: 18px;
-    color: #777;
+    font-size: 23px;
+    color: #f03622;
+    font-weight: bold;
     margin-horizontal: 5px;
     text-align: center;
 `
 
+export const WaitingText = styled.Text`
+    font-size: 23px;
+    color: #777;
+    font-weight: bold;
+    margin-horizontal: 5px;
+    margin-left: 46px;
+    text-align: center;
+`
 
 export const DateText = styled.Text`
-    font-size: 20px;
+    font-size: 23px;
     margin-horizontal: 10px;
-    margin-vertical: 15px;
+    margin-vertical: 16px;
     color: #63488c;
     font-weight: bold;
     font-family: Lato;
@@ -149,4 +168,19 @@ export const RowView = styled.View`
     align-items: center;
     justify-content: center;
     
+`
+
+export const FooterButton = styled.TouchableOpacity`
+    flex: 2;
+    background-color:#52ab55;
+    justify-content: center;
+    max-height: 60px;
+`
+
+export const FooterButtonText = styled.Text`
+    font-size: 23px;
+    font-weight:bold;
+    text-align: left;
+    color: #FFF;
+    text-align: center;
 `

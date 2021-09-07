@@ -25,7 +25,7 @@ export default props =>{
           <Picker
             selectedValue={selectedValue}
             style={props.styles || defaultStyles}
-            mode="dialog"
+            mode="dropdown"
             dropdownIconColor="#eaeaea"
             onValueChange={onValueChange}>
             {getList()}
