@@ -129,7 +129,7 @@ export default props =>{
         }else{
             return(
                 <RightSubtitle>
-                    {"Tomar quando necessário"}
+                    {"Quando\n necessário"}
                 </RightSubtitle>
             )
         }
