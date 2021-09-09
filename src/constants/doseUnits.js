@@ -1,18 +1,35 @@
-export default {
-
-    COMPRIMIDO :{
-        key: 'COMPRIMIDO',
-        label: 'Comprimido'
+export default [
+    {
+        value: 'COMPRIMIDO',
+        label: 'Comprimido',
+        key: 1,
+        liquid: false,
     },
-    CAPSULA :{
-        key: 'CAPSULA',
-        label: 'Cápsula'
+    {
+        value: 'CAPSULA',
+        label: 'Cápsula',
+        key: 2,
+        liquid: false,
     },
-    ML :{
-        key: 'ML',
-        label: 'Ml'
-    }
-}
+    {
+        label: 'Ml',
+        value: 'ML',
+        key: 3,
+        liquid: true,
+    },
+    {
+        label: 'Gota',
+        value: 'GOTA',
+        key: 4,
+        liquid: true,
+        doseOnly: true,
+    },
+    {
+        label: 'Medida',
+        value: 'MEDIDA',
+        key: 5,
+        liquid: true,
+        doseOnly: true
+    },
     
-
-    
+]
