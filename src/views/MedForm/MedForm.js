@@ -18,7 +18,6 @@ import UnitSpinner from '../../components/Spinner'
 import AutoCompleteInput from '../../components/AutoCompleteInput'
 import medicons from '../../constants/medicons'
 import iconColors from '../../constants/iconColors'
-import doseUnits from '../../constants/doseUnits'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
 import meds_niteroi from '../../data/meds_niteroi'
 import { FormFieldLabel, LargeFormInputTextField, FormFieldLabelLight,
@@ -27,13 +26,13 @@ import IconPicker from './components/IconPicker'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import DateTimePicker from '@react-native-community/datetimepicker'
 
-import doseUnitsSelection from '../../constants/doseUnitsSelection'
 import doseStatus from '../../constants/doseStatus'
 import medStatus from '../../constants/medStatus'
 
 import moment from 'moment'
 import 'moment/locale/pt-br'
 import storageKeys from '../../constants/storageKeys'
+import doseUnits from '../../constants/doseUnits'
 
 
 const initialDoseTime = new Date();
@@ -51,10 +50,10 @@ const initialState =
         iconColor: iconColors[0],
         notes: null,
         status: medStatus.ATIVO,
-        doseHours: [{ time: initialDoseTime, amount: 1, unit: doseUnits.COMPRIMIDO.key, index: 0}],
+        doseHours: [{ time: initialDoseTime, amount: 1, unit: doseUnits[0], index: 0}],
         stock:{
             amount: null,
-            unit: doseUnits.COMPRIMIDO
+            unit: doseUnits[0]
         },
         doses:[]
     }
@@ -67,11 +66,9 @@ export default ({navigation, route}) => {
     const [med, setMed] = useState(initialState)
     const [medPicked, setMedPicked] = useState(false)
     const [showExpireDatePicker, setShowExpireDatePicker] = useState(false)
-
-    const __setExpireDate = (expireDate) =>{
-        setMed({...med, expireDate})
-    }
     
+    const medUnits = doseUnits.filter( u => !u.doseOnly)
+
     const __onColorChange = (color) =>{
         setMed({...med, iconColor: color})
     }
@@ -86,8 +83,7 @@ export default ({navigation, route}) => {
         setMed({...med, startDate})
     }
     
-    const __updateMedUnit = (unitSelection) =>{
-        var unit = doseUnits[unitSelection.value]
+    const __updateMedUnit = (unit) =>{
         setMed({...med, stock:{...med.stock, unit}})
     }
 
@@ -149,7 +145,6 @@ export default ({navigation, route}) => {
     }
 
     const __onUpdateDoseHours = (doseHours) =>{
-        console.log(JSON.stringify(doseHours))
         setMed({...med, doseHours})
     }
 
@@ -335,7 +330,7 @@ export default ({navigation, route}) => {
                             keyboardType="numeric"
                             maxLength={4}></FormInputAsLabel>
                         <UnitSpinner 
-                        items={doseUnitsSelection} 
+                        items={medUnits} 
                         value={med.stock.unit}
                         onChangeValue={__updateMedUnit}/> 
                     </ViewFlexRow>
@@ -454,7 +449,7 @@ export default ({navigation, route}) => {
         <Form>
                 {__medNameField()}
                 {__nextButton()}
-            <ScrollView>
+            <ScrollView keyboardShouldPersistTaps={'handled'}>
                 {medPicked &&
                 <>
                     {__medExpireDateField()}
