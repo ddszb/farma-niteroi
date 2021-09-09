@@ -66,7 +66,7 @@ export const Form = styled.View`
 
 export const ViewFlexRow = styled.View`
     flex-direction : row;
-    align-items: center;
+    align-items: center;    
 `
 
 export const RadioButtonView = styled.View`
