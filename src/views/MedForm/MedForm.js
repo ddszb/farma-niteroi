@@ -332,6 +332,7 @@ export default ({navigation, route}) => {
                         <UnitSpinner 
                         items={medUnits} 
                         value={med.stock.unit}
+                        styles={{width: '85%'}}
                         onChangeValue={__updateMedUnit}/> 
                     </ViewFlexRow>
                 </CardContent>

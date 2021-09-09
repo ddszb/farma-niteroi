@@ -3,7 +3,7 @@ import React, {useState} from 'react'
 export default props =>{
     const [selectedValue, setSelectedValue] = useState(props.items[0].value);
 
-    const defaultStyles = {height: 40, width: 190, color: '#63488c'}
+    const defaultStyles = {height: 40, color: '#63488c', textAlign:'right', fontSize: 30}
     const getList = () =>{
       return props.items.map( i => {
         return <Picker.Item 
@@ -22,7 +22,8 @@ export default props =>{
     return (
           <Picker
             selectedValue={selectedValue}
-            style={props.styles || defaultStyles}
+            value={props.value}
+            style={[defaultStyles, props.styles ? props.styles : {}]}
             mode="dropdown"
             onValueChange={onValueChange}>
             {getList()}

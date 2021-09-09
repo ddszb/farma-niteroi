@@ -19,6 +19,15 @@ export default props =>{
       setPickerValue(value)
     }
 
+    const onConfirm = () =>{
+      let v = value
+      let pick = props.pickerOptions ? pickerValue : null
+      if (!props.keepOldText){
+        setValue('') 
+      }
+      props.onSet(v, pick)
+    }
+
     return (
         <Modal
                 animationType="fade"
@@ -42,7 +51,7 @@ export default props =>{
                       ? <>
                         <Spinner 
                           items={props.pickerOptions} 
-                          value={props.pickerOptions[0]}
+                          value={1}
                           onChangeValue={onChangePicker}
                           styles={{width: 140}}/> 
                         </>
@@ -58,12 +67,7 @@ export default props =>{
                           <Text style={styles.cancelText}>{props.cancelText ? props.cancelText : 'Cancelar'}</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
-                          onPress={() => {
-                              let v = value
-                              let pick = props.pickerOptions ? pickerValue : null
-                              setValue('') 
-                              props.onSet(v, pick)
-                          }}
+                          onPress={onConfirm}
                           style={styles.buttonConfirm}>
                           <Text style={styles.confirmText}>{props.confirmText? props.confirmText : 'Ok'}</Text>
                       </TouchableOpacity>
@@ -107,7 +111,7 @@ const styles = StyleSheet.create({
       marginRight: 5,
       padding: 6,
       elevation: 1,
-      backgroundColor: "#ddd",
+      backgroundColor: "#dfdfdf",
     },
     buttonConfirm: {
       borderRadius: 5,
@@ -124,7 +128,8 @@ const styles = StyleSheet.create({
     },
     confirmText:{
       color: '#fff',
-      textAlign: 'center'
+      textAlign: 'center',
+      fontWeight: 'bold'
     },
     selectionContainer:{
       flexDirection: 'row',
