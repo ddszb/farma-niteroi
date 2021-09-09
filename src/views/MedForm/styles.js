@@ -95,16 +95,16 @@ export const SmallInputText = styled.TextInput`
     padding: 10px;
 `
 
-export const BorderlessInputText = styled.TextInput`
-    width: 40px;
+export const BorderInputText = styled.TextInput`
+    width: 46px;
+    height: 40px;
     overflow: hidden;
     text-align: center;
-    border-bottom-width: 1px;
+    border-width: 1px;
+    border-radius: 5px;
     color: #444;
     border-color: #bbb
-    margin-bottom: 10px;
     margin-left: 30px;
-    padding-bottom: 3px;
 `
 
 export const Button = styled.View`
