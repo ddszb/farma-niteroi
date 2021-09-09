@@ -16,7 +16,6 @@ export default props =>{
 
     const onChangePicker = ( opt )=>{
       var value = props.pickerOptions.filter( o => o.value === opt.value)[0]
-      console.log(value)
       setPickerValue(value)
     }
 
@@ -45,7 +44,7 @@ export default props =>{
                           items={props.pickerOptions} 
                           value={props.pickerOptions[0]}
                           onChangeValue={onChangePicker}
-                          styles={{width: 160}}/> 
+                          styles={{width: 140}}/> 
                         </>
                       : <Text style={styles.text}>{props.inputText}</Text>
                     }
