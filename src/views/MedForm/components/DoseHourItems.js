@@ -13,9 +13,7 @@ import DateTimePicker from '@react-native-community/datetimepicker'
 import moment from 'moment'
 import 'moment/locale/pt-br'
 import InputModal from '../../../components/InputModal'
-import liquidDoseUnits from '../../../constants/liquidDoseUnits'
 import doseUnits from '../../../constants/doseUnits'
-import { useFocusEffect } from '@react-navigation/core'
 
 export default props =>{
     
@@ -23,14 +21,27 @@ export default props =>{
     defaultDate.setMinutes(0)
     defaultDate.setHours(8)
 
-    const liquidDose = props.unit.key === doseUnits.ML.key
-    
+    useEffect(() =>{
+        resetUnit()
+    }, [props.unit])
+
+    const liquidDose = props.unit.liquid
+    const liquidDoseUnits = doseUnits.filter( u => u.liquid)
+
     const [doseHoursItems, setDoseHoursItems] = useState([{ time: defaultDate, amount: 1, unit: props.unit, index: 0}])
     const [selectedDose, setSelectedDose] = useState(0)
     const [showDialog, setShowDialog] = useState(false)
     const [showPicker, setShowPicker] = useState(false)
     const [dialogTime, setDialogTime] = useState(defaultDate)
     const [customUnit, setCustomUnit] = useState()
+
+
+    /**
+     * Atualiza a apresentação (unit) das doses marcadas quando a apresentação do medicamento é alterada.
+     */
+    const resetUnit = () =>{
+        doseHoursItems.forEach( d => d.unit = props.unit)
+    }
 
     /**
      * Atualiza a hora da dose selecionada
@@ -50,7 +61,6 @@ export default props =>{
             var dose = doses[index]
             var invalidDate = false
             doses.forEach( d =>{
-                console.log(d.time, "\t\t", date)
                 if(d.time.getHours() == date.getHours() && d.time.getMinutes() == date.getMinutes()){
                     invalidDate = true
                 }
@@ -97,7 +107,7 @@ export default props =>{
             let doseHour = {
                 time: doseTime,
                 amount: 1,
-                unit: props.unit.key,
+                unit: props.unit,
                 index: i
             }
             doseHours.push(doseHour)
@@ -118,10 +128,9 @@ export default props =>{
     /**
      * Atualiza informações de quantidade e unidade de medida de uma dose
      * @param {Number} amount A quantidade a ser tomada na dose
-     * @param {String} unit A unidade de medida da dose
+     * @param {doseUnit} unit A unidade de medida da dose
      */
     const __updateItem = (amount, unit) =>{
-        console.log("unit", unit)
         var doses = [...doseHoursItems]
         var index = selectedDose
         var dose = doses[index]
@@ -129,6 +138,8 @@ export default props =>{
         if(unit){
             setCustomUnit(unit)
             doses.forEach( d => d.unit = unit)
+        }else{
+            doses.forEach( d => d.unit = props.unit)
         }
         setDoseHoursItems(doses)
         setShowDialog(false)
