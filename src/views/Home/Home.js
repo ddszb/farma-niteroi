@@ -1,11 +1,10 @@
-import React, {useState, useEffect,  useContext, useRef} from 'react'
+import React, {useState, useEffect,  useRef} from 'react'
 
-import { TouchableOpacity, View, RefreshControl, ToastAndroid } from 'react-native'
+import { TouchableOpacity, View, RefreshControl, ToastAndroid, Button } from 'react-native'
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons'
 import iconMoonConfig from '../../selection.json'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
-import FAB from '../../components/FloatActionButton'
 import { Body, CardBox, ColorTag, Container,
      Detail, Header, Buttons, DarkText, LightText, ResetDateButton,
      TopContent, BottomContent, DateText, HeaderTitle, HeaderTitleText,
@@ -56,10 +55,6 @@ export default props =>{
 
     const updateMeds = async () =>{
         AsyncStorage.setItem(storageKeys.MEDS, JSON.stringify(meds))
-    }
-
-    const updateSporadicDoses = async () =>{
-        AsyncStorage.setItem(storageKeys.SPORADIC_DOSES, JSON.stringify(sporadicDoses))
     }
 
     const checkFirstTime = async () =>{
@@ -258,7 +253,7 @@ export default props =>{
                         <RowView>
                             <HPadding>
                                 <WarningText>
-                                    Atrasado
+                                    {moment(dose.date).format('HH:mm')}
                                 </WarningText>
                             </HPadding>
                             <Icon name="warning" type={"font-awesome"} size={24} color='#f03622'/>
@@ -386,13 +381,14 @@ export default props =>{
                 </EmptyListContainer>
                 }
             </Body>
+            {meds.length > 0 &&
             <FooterButton
-                        onPress={navigateToNew}
-                        activeOpacity={0.9}>
-                    <FooterButtonText>
-                        Nova Dose
-                    </FooterButtonText>
-                </FooterButton>
+                onPress={navigateToNew}
+                activeOpacity={0.9}>
+                <FooterButtonText>
+                    Nova Dose
+                </FooterButtonText>
+            </FooterButton>}
         </Container>
 
     )
