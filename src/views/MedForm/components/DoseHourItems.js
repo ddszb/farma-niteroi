@@ -14,6 +14,7 @@ import moment from 'moment'
 import 'moment/locale/pt-br'
 import InputModal from '../../../components/InputModal'
 import doseUnits from '../../../constants/doseUnits'
+import { RowView } from '../../DoseForm/styles'
 
 export default props =>{
     
@@ -41,6 +42,7 @@ export default props =>{
      */
     const resetUnit = () =>{
         doseHoursItems.forEach( d => d.unit = props.unit)
+        setCustomUnit()
     }
 
     /**
@@ -126,24 +128,29 @@ export default props =>{
     }
         
     /**
-     * Atualiza informações de quantidade e unidade de medida de uma dose
+     * Atualiza informações de quantidade de medida de uma dose
      * @param {Number} amount A quantidade a ser tomada na dose
      * @param {doseUnit} unit A unidade de medida da dose
      */
-    const __updateItem = (amount, unit) =>{
+    const updateDoseAmount = (amount) =>{
         var doses = [...doseHoursItems]
         var index = selectedDose
         var dose = doses[index]
         dose.amount = amount
-        if(unit){
-            setCustomUnit(unit)
-            doses.forEach( d => d.unit = unit)
-        }else{
-            doses.forEach( d => d.unit = props.unit)
-        }
+
         setDoseHoursItems(doses)
         setShowDialog(false)
         props.onUpdate(doses)
+    }
+
+    /**
+     * Atualiza informações da unidade da medida de uma dose
+     * @param {doseUnit} unit 
+     */
+    const changeLiquidDoseUnit = (unit) =>{
+        var doses = [...doseHoursItems]
+        setCustomUnit(unit)
+        doses.forEach( d => d.unit = unit)
     }
 
     /**
@@ -224,11 +231,11 @@ export default props =>{
                         title={"Quanto tomar?"}
                         initialValue={'' + d.amount}
                         inputType={"numeric"}
-                        inputText={props.unit.label + "(s)"}
-                        pickerOptions={liquidDose? liquidDoseUnits : false}
+                        inputText={(customUnit ? customUnit.label : props.unit.label) + "(s)"}
+                        keepOldText={true}
                         inputLength={4}
                         close={__closeDialog}
-                        onSet={__updateItem}/>
+                        onSet={updateDoseAmount}/>
                 </View>
             )
         })
@@ -239,8 +246,15 @@ export default props =>{
      */
     return(
         <>
+        <View style={style.pickers}>
             <TreatmentSpinner items={doseTimes} onChangeValue={__createDoseTimes}/> 
+            {liquidDose &&
+            <TreatmentSpinner items={liquidDoseUnits} onChangeValue={changeLiquidDoseUnit}/> 
+        }
+        </View>
+        <View style={style.list}>
             {__doseHoursItemList()}
+        </View>
             { showPicker && 
                 (<DateTimePicker
                     value={dialogTime}
@@ -265,5 +279,13 @@ const style = StyleSheet.create({
     doseHourAmount:{
         color:'#63488c',
         fontSize: 18
+    },
+    pickers:{
+        flex: 0.2
+    },
+    list:{
+        paddingTop: 16,
+        marginTop: 16,
+        flex: 0.8
     }
 })
