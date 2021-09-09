@@ -8,10 +8,7 @@ import DateTimePicker from '@react-native-community/datetimepicker'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import doseStatus from '../../constants/doseStatus'
-import Spinner from '../../components/Spinner'
-import doseUnitsSelection from '../../constants/doseUnitsSelection'
 import storageKeys from '../../constants/storageKeys'
-import doseUnits from '../../constants/doseUnits'
 import MedPicker from '../../components/DropdownPicker'
 
 export default props =>{
