@@ -69,12 +69,19 @@ export default props =>{
             ToastAndroid.SHORT,
             ToastAndroid.BOTTOM,
         0, 180)
-        setModalVisible(false)
     }
 
     const confirmStockChange = () =>{
+        if( + tempStock <= 0){
+            ToastAndroid.showWithGravityAndOffset("Por favor insira um valor acima de zero.",
+            ToastAndroid.SHORT, ToastAndroid.BOTTOM, 0, 180)
+            return
+        }
+        let stock = tempStock.replace(/^0+/, '')
+
         setEditingStock(false)
-        updateStock(tempStock)
+        setTempStock(stock)
+        updateStock(stock)
     }
 
     const cancelStockChange = () =>{
