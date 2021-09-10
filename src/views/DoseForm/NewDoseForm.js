@@ -10,6 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import doseStatus from '../../constants/doseStatus'
 import storageKeys from '../../constants/storageKeys'
 import MedPicker from '../../components/DropdownPicker'
+import * as Calculate from '../../util/UtilitarioCalculo'
 
 export default props =>{
     
@@ -47,26 +48,28 @@ export default props =>{
         let dose = {
             medName: medName,
             date: null, 
-            unit: selectedMed.stock.unit,
+            unit: selectedMed.doseUnit,
             amount: amount,
             dateTaken: time,
             newDate: null,
             status: doseStatus.TOMADA,
             icon: selectedMed.icon,
-            iconColor: "#888",
+            iconColor: selectedMed.scheduledDoses ? "#888" : selectedMed.iconColor,
             index: selectedMed.doses.length,
             sporadic: true
         }
         if(selectedMed){
             med = {...selectedMed}
             med.doses.push(dose)
-            med.stock.amount -= parseInt(amount)
+            let newStock = Calculate.newStockAfterDose(med, dose)
+            med.stock.amount = newStock
             saveMed(med)
         }
     }
 
     const onSelectMed = med =>{        
         if(med){
+            console.log(JSON.stringify(med, 0,2))
             setSelectedMed(med)
             setMedName(med.name)
         }else{
@@ -83,7 +86,8 @@ export default props =>{
         setAmount(amount)
     }
 
-    const getAmountContent = ()=>{
+    const getAmountContent = () =>{
+        let unit = selectedMed ? selectedMed.doseUnit.label + "(s)" : "Comprimido(s)"
         return (              
             <>
             <FormFieldLabel>
@@ -96,7 +100,7 @@ export default props =>{
                 value={amount}
                 maxLength={4}/>
                 <AmountText>
-                    { selectedMed ? selectedMed.stock.unit.label + "(s)"  : "Comprimido(s)"}
+                    {unit}
                 </AmountText>
             </RowView>
             </>
