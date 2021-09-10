@@ -18,7 +18,7 @@ export default props =>{
     
     const {med, screen} = props.route.params
     const [editingStock, setEditingStock] = useState(false)
-    const [tempStock, setTempStock] = useState(med.stock.amount.toString())
+    const [tempStock, setTempStock] = useState(Math.round(med.stock.amount).toString())
     const MedIcon = createIconSetFromIcoMoon(iconMoonConfig)
 
     
@@ -90,8 +90,7 @@ export default props =>{
     }
 
     const __getStockContent = () =>{
-    
-        const editableStyle = {
+        let editableStyle = {
             color: '#63488c',
             borderColor: 'gray',
             borderRadius: 5,
@@ -138,6 +137,10 @@ export default props =>{
                 </TouchableOpacity>
                 }
             </RowView>
+            {med.stock.unit.liquid &&
+                <InfoText>
+                    {"   aproximadamente"}
+            </InfoText>}
             </>
             )
         }
@@ -192,10 +195,9 @@ export default props =>{
     }
 
     __getDoseHoursContent = () => {
-        console.log(med.doseHours)
         return med.doseHours.map( d =>{
             var time = moment(d.time).format("HH:mm")
-            var unitLabel =  d.unit.label + (d.amount > 1 ? "s" : "")
+            var unitLabel =  med.doseUnit.label + (d.amount > 1 ? "s" : "")
             return(
                 <RowView key={d.index}>
                     <InfoTitle>

@@ -27,14 +27,12 @@ export default props =>{
     }, [props.unit])
 
     const liquidDose = props.unit.liquid
-    const liquidDoseUnits = doseUnits.filter( u => u.liquid)
 
     const [doseHoursItems, setDoseHoursItems] = useState([{ time: defaultDate, amount: 1, unit: props.unit, index: 0}])
     const [selectedDose, setSelectedDose] = useState(0)
     const [showDialog, setShowDialog] = useState(false)
     const [showPicker, setShowPicker] = useState(false)
     const [dialogTime, setDialogTime] = useState(defaultDate)
-    const [customUnit, setCustomUnit] = useState()
 
 
     /**
@@ -42,7 +40,6 @@ export default props =>{
      */
     const resetUnit = () =>{
         doseHoursItems.forEach( d => d.unit = props.unit)
-        setCustomUnit()
     }
 
     /**
@@ -144,16 +141,6 @@ export default props =>{
     }
 
     /**
-     * Atualiza informações da unidade da medida de uma dose
-     * @param {doseUnit} unit 
-     */
-    const changeLiquidDoseUnit = (unit) =>{
-        var doses = [...doseHoursItems]
-        setCustomUnit(unit)
-        doses.forEach( d => d.unit = unit)
-    }
-
-    /**
      * Atualiza o estado para não mostrar o dialog de unidade de dosagem
      */
     const __closeDialog = () =>{
@@ -197,7 +184,6 @@ export default props =>{
      */
     const __doseHoursItemList = () =>{
         const doses = doseHoursItems
-        const unitlabel = liquidDose && customUnit ? customUnit.label : props.unit.label
         return doses.map( d =>{
             var time = moment(d.time).format("HH:mm")
             return (
@@ -221,7 +207,7 @@ export default props =>{
                                 setShowDialog(true)
                                 }}>
                             <View>
-                                <Text style={style.doseHourAmount}>{"Tomar " + d.amount + " " +  unitlabel + "(s)"}</Text>
+                                <Text style={style.doseHourAmount}>{"Tomar " + d.amount + " " +  props.unit.label + "(s)"}</Text>
                             </View>
                         </TouchableOpacity>
 
@@ -231,7 +217,7 @@ export default props =>{
                         title={"Quanto tomar?"}
                         initialValue={'' + d.amount}
                         inputType={"numeric"}
-                        inputText={(customUnit ? customUnit.label : props.unit.label) + "(s)"}
+                        inputText={props.unit.label + "(s)"}
                         keepOldText={true}
                         inputLength={4}
                         close={__closeDialog}
@@ -248,9 +234,6 @@ export default props =>{
         <>
         <View style={style.pickers}>
             <TreatmentSpinner items={doseTimes} onChangeValue={__createDoseTimes}/> 
-            {liquidDose &&
-            <TreatmentSpinner items={liquidDoseUnits} onChangeValue={changeLiquidDoseUnit}/> 
-        }
         </View>
         <View style={style.list}>
             {__doseHoursItemList()}
@@ -284,8 +267,8 @@ const style = StyleSheet.create({
         flex: 0.2
     },
     list:{
-        paddingTop: 16,
-        marginTop: 16,
+        paddingTop: 12,
+        marginTop: 12,
         flex: 0.8
     }
 })
