@@ -50,6 +50,7 @@ const initialState =
         iconColor: iconColors[0],
         notes: null,
         status: medStatus.ATIVO,
+        doseUnit: doseUnits[0],
         doseHours: [{ time: initialDoseTime, amount: 1, unit: doseUnits[0], index: 0}],
         stock:{
             amount: null,
@@ -68,6 +69,7 @@ export default ({navigation, route}) => {
     const [showExpireDatePicker, setShowExpireDatePicker] = useState(false)
     
     const medUnits = doseUnits.filter( u => !u.doseOnly)
+    const liquidDoseUnits = doseUnits.filter( u => u.liquid)
 
     const __onColorChange = (color) =>{
         setMed({...med, iconColor: color})
@@ -83,8 +85,16 @@ export default ({navigation, route}) => {
         setMed({...med, startDate})
     }
     
+    /**
+     * Atualiza informações da unidade das doses de um medicamento
+     * @param {doseUnit} unit 
+     */
+     const changeDoseUnit = (doseUnit) =>{
+        setMed({...med, doseUnit})
+    }
+
     const __updateMedUnit = (unit) =>{
-        setMed({...med, stock:{...med.stock, unit}})
+        setMed({...med, stock:{...med.stock, unit}, doseUnit: unit})
     }
 
     const __changeFrequencyDays = (weekdays) =>{
@@ -94,6 +104,7 @@ export default ({navigation, route}) => {
         setMed({...med, weekdays})
     }
 
+    
     const __validateNewMed = async () =>{
         var invalid = false
         var errors  = []
@@ -318,6 +329,7 @@ export default ({navigation, route}) => {
     
     const __medStockField = () =>{
         return(
+            <>
             <CardBox>
                 <CardContent>
                     <FormFieldLabel>Meu estoque</FormFieldLabel>
@@ -337,6 +349,15 @@ export default ({navigation, route}) => {
                     </ViewFlexRow>
                 </CardContent>
             </CardBox>
+            {med.doseUnit.liquid &&
+            <CardBox>
+                <CardContent>
+                    <FormFieldLabel>Tipo da dose</FormFieldLabel>
+                    <UnitSpinner items={liquidDoseUnits} onChangeValue={changeDoseUnit}/> 
+                </CardContent>
+            </CardBox>
+            }
+            </>           
         )
     }
 
@@ -358,7 +379,7 @@ export default ({navigation, route}) => {
                         {med.scheduledDoses 
                         ?   <View>
                                 <DoseHourItems
-                                    unit={med.stock.unit}
+                                    unit={med.doseUnit}
                                     onUpdate={__onUpdateDoseHours}
                                 />
                             </View>
@@ -466,3 +487,4 @@ export default ({navigation, route}) => {
     )
 
 }
+''
