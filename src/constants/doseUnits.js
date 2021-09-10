@@ -24,12 +24,12 @@ export default [
         liquid: true,
         doseOnly: true,
     },
-    {
-        label: 'Medida',
-        value: 'MEDIDA',
-        key: 5,
-        liquid: true,
-        doseOnly: true
-    },
+    // {
+    //     label: 'Medida',
+    //     value: 'MEDIDA',
+    //     key: 5,
+    //     liquid: true,
+    //     doseOnly: true
+    // },
     
 ]
