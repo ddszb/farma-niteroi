@@ -5,7 +5,7 @@ export const Container = styled.View`
 `
 
 export const Header = styled.View`
-    flex: 2;
+    height: 130px;
 `
 
 export const Body = styled.View`
@@ -173,6 +173,7 @@ export const RowView = styled.View`
 
 export const FooterButton = styled.TouchableOpacity`
     flex: 2;
+    margin-top: 5px;
     background-color:#52ab55;
     justify-content: center;
     max-height: 60px;

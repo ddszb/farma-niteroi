@@ -27,6 +27,7 @@ import WelcomeModal from './components/WelcomeModal'
 import EditDoseModal from './components/EditDoseModal'
 import doseActions from '../../constants/doseActions'
 import storageKeys from '../../constants/storageKeys'
+import * as Calculate from '../../util/UtilitarioCalculo'
 
 
 const filterOptions = { ALL: 0, TAKEN: 1, NOT_TAKEN: 2}
@@ -166,13 +167,14 @@ export default props =>{
         var updatedDose = updatedMed.doses.filter(d => dose.medName == d.medName && d.index == dose.index )[0]
 
         if(updatedDose){
+            let newStock = Calculate.newStockAfterDose(updatedMed, dose)
             switch(action){
                 case doseActions.TOMAR_DOSE:
-                    updatedMed.stock.amount -= dose.amount
+                    updatedMed.stock.amount = newStock
                     dose.status = doseStatus.TOMADA
                     break
-                case doseActions.EDITAR_DOSE_TOMADA:
-                    updatedMed.stock.amount += updatedDose.amount - dose.amount
+                case doseActions.EDITAR_DOSE_TOMADA:  
+                    updatedMed.stock.amount = newStock + + updatedDose.amount
                     break
             }
         }
@@ -303,7 +305,7 @@ export default props =>{
         return(
             <>
             <TouchableOpacity
-                activeOpacity={0.7}
+                activeOpacity={0.5}
                 delayPressIn={200}
                 onPressIn={() => onPressDose(dose)}>
                 <Swipeable
