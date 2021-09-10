@@ -136,6 +136,7 @@ export default props =>{
     }
 
     function getMedItem({ item: med }){
+        let stockLabel = (med.stock.unit.liquid ? "~" : "") + Math.round(med.stock.amount) + " " + med.stock.unit.label + (med.stock.amount > 1 ? 's' : '')
         return (
             <ListItem 
                 key={med.id.toString()}
@@ -150,7 +151,7 @@ export default props =>{
                         {med.name}
                     </LeftTitle>
                     <LeftSubtitle>
-                        {med.stock.amount} {med.stock.unit.label}{med.stock.amount > 1 ? 's' : ''}
+                        {stockLabel}
                     </LeftSubtitle>
                 </ListItem.Content>
                 {/* Tempo restante */}
