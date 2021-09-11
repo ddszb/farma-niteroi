@@ -39,6 +39,9 @@ export default props =>{
         if(amount == '0' || amount == ''){
             error = "Por favor informe a quantidade tomada."
         }
+        if(!selectedMed){
+            error = "Por favor informe o medicamento."
+        }
         if(error){
             ToastAndroid.showWithGravityAndOffset(error,
             ToastAndroid.SHORT,
@@ -67,7 +70,8 @@ export default props =>{
         }
     }
 
-    const onSelectMed = med =>{        
+    const onSelectMed = med =>{
+        console.log("med", med) 
         if(med){
             console.log(JSON.stringify(med, 0,2))
             setSelectedMed(med)
