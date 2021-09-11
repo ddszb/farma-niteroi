@@ -7,20 +7,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1010643869696:android:d65a42413edafa73df38e5",
+        "mobilesdk_app_id": "1:1010643869696:android:9ad4b582e86a0b8adf38e5",
         "android_client_info": {
-          "package_name": "com.farmaapp"
+          "package_name": "com.danielzambrano.farmaapp"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "1010643869696-9factilh8r1dmm326ukio0fikptigmlf.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.farmaapp",
-            "certificate_hash": "62804ac7510e03b75841943c0e0d591251f97dc3"
-          }
-        },
         {
           "client_id": "1010643869696-mrl55uaho8r4l3ojs5t0or3i52eqvd98.apps.googleusercontent.com",
           "client_type": 3

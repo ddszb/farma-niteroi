@@ -1,4 +1,4 @@
-package com.farmaapp;
+package com.danielzambrano.farmaapp;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
