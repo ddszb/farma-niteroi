@@ -6,6 +6,7 @@ import { createIconSetFromIcoMoon } from 'react-native-vector-icons'
 import iconMoonConfig from '../../../selection.json'
 import medicons from '../../../constants/medicons'
 import iconColors from '../../../constants/iconColors'
+import colors from '../../../styles/colors'
 
 export default props =>{
 
@@ -41,26 +42,26 @@ export default props =>{
                 <Pressable
                     onPress={prevIcon}    
                 >
-                    <Icon name="arrow-left" size={40} color="grey"/>
+                    <Icon name="arrow-left" size={40} color={colors.grey8}/>
                 </Pressable>
                 <MedIcon name={medicons[currIcon]} size={40} color={iconColors[currColor]}/> 
                 <Pressable
                     onPress={nextIcon}
                 >
-                    <Icon name="arrow-right" size={40} color="grey"/>
+                    <Icon name="arrow-right" size={40} color={colors.grey8}/>
                 </Pressable>
             </Selector>
             <Selector>
                 <Pressable
                      onPress={prevColor}
                 >
-                    <Icon name="arrow-left" size={40} color="grey"/>
+                    <Icon name="arrow-left" size={40} color={colors.grey8}/>
                 </Pressable>
                 <Icon name="circle" size={35} color={iconColors[currColor]}/> 
                 <Pressable
                      onPress={nextColor}
                 >
-                    <Icon name="arrow-right" size={40} color="grey"/>
+                    <Icon name="arrow-right" size={40} color={colors.grey8}/>
                 </Pressable>
             </Selector>
         </Container>

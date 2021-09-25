@@ -13,6 +13,7 @@ import 'moment/locale/pt-br'
 import doseStatus from '../../constants/doseStatus'
 import medStatus from '../../constants/medStatus'
 import storageKeys from '../../constants/storageKeys'
+import colors from '../../styles/colors'
 
 export default props =>{
     
@@ -91,8 +92,8 @@ export default props =>{
 
     const __getStockContent = () =>{
         let editableStyle = {
-            color: '#63488c',
-            borderColor: 'gray',
+            color: colors.primary,
+            borderColor: colors.grey8,
             borderRadius: 5,
             borderWidth: 1,
             marginRight: 6,
@@ -120,19 +121,19 @@ export default props =>{
                 <RowView>
                     <TouchableOpacity onPress={confirmStockChange}>
                         <HPadding>
-                            <Icon name="check" type="font-awesome" size={26} color="#40a843"/>
+                            <Icon name="check" type="font-awesome" size={26} color={colors.ok}/>
                         </HPadding>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={cancelStockChange}>
                         <HPadding>
-                            <Icon name="close" type="font-awesome" size={26} color="#fc6464"/>
+                            <Icon name="close" type="font-awesome" size={26} color={colors.alert}/>
                         </HPadding>
                     </TouchableOpacity>
                 </RowView>
                 :
                 <TouchableOpacity onPress={() => setEditingStock(true)}>
                     <HPadding>
-                        <Icon name="pencil" type="material-community" size={26} color="#63488c"/>
+                        <Icon name="pencil" type="material-community" size={26} color={colors.primary}/>
                     </HPadding>
                 </TouchableOpacity>
                 }
@@ -246,7 +247,7 @@ export default props =>{
                                     ToastAndroid.TOP,
                                     0, 180)
                                 }}>
-                                <Icon name="new" type="entypo" size={30} color="#eb6134"/>
+                                <Icon name="new" type="entypo" size={30} color={colors.notification}/>
                             </Pressable>
                         </HPadding>}
                         

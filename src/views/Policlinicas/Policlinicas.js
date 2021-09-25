@@ -4,6 +4,7 @@ import { Platform } from 'react-native'
 import {FlatList, View} from 'react-native'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
 import AppContext from '../../context/context'
+import colors from '../../styles/colors'
 import { CardBox, CardContent, Container, Name, LightText,
     Text, Phones, VPadding, HPadding, InfoSide, IconSide,
     PhoneNumber } from './styles'
@@ -60,7 +61,7 @@ export default props =>{
                     <IconSide>
                         <TouchableOpacity
                             onPress={ () => __openMaps(poli)}>
-                            <Icon name="map" type="entype" size={50} color="#63488c"/>
+                            <Icon name="map" type="entype" size={50} color={colors.primary}/>
                             <Text style={{ textAlign: 'center'}}>Ver no mapa</Text>
                         </TouchableOpacity>
                     </IconSide>

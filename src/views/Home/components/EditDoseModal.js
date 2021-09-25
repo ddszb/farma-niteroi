@@ -5,6 +5,7 @@ import doseStatus from '../../../constants/doseStatus'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import moment from 'moment'
 import 'moment/locale/pt-br'
+import colors from '../../../styles/colors'
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -89,7 +90,7 @@ export default props =>{
                             <Text style={styles.buttonText}>
                                 Cancelar
                             </Text>
-                            <Icon name="cancel" type="material-icons" size={20} color="#fff"/>
+                            <Icon name="cancel" type="material-icons" size={20} color={colors.white}/>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.confirmButton}
@@ -99,7 +100,7 @@ export default props =>{
                             <Text style={styles.buttonText}>
                                 {confirmLabel}
                             </Text>
-                            <Icon name="check-circle" type="font-awesome" size={20} color="#fff"/>
+                            <Icon name="check-circle" type="font-awesome" size={20} color={colors.white}/>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -139,7 +140,7 @@ export default props =>{
                     mode="time"
                     is24Hour={true}
                     display="spinner"
-                    textColor="#63488c"
+                    textColor={colors.primary}
                     timeZoneOffsetInMinutes={-180}
                     minuteInterval={5}
                     onChange={changeTime}/>)
@@ -154,15 +155,15 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#00000080'
+        backgroundColor: colors.blackOpacity
     },
     modalView: {
         width: windowWidth * 0.7,
         height: windowHeight * 0.5,
-        backgroundColor: "white",
+        backgroundColor: colors.white,
         borderRadius: 5,
         alignItems: "center",
-        shadowColor: "#000",
+        shadowColor: colors.blackOpacity,
         shadowOffset: {
             width: 0,
             height: 2
@@ -183,17 +184,17 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontSize: 22,
         fontWeight: 'bold',
-        color: '#63488c'
+        color: colors.primary
     },
     text: {
         textAlign: "justify",
         marginBottom: 2,
         marginLeft: 8,
         fontSize: 20,
-        color: '#777'
+        color: colors.grey8
     },
     hourText:{
-        color:'#63488c',
+        color: colors.primary,
         fontWeight: 'bold', 
         fontSize: 22,
         marginVertical: 10
@@ -201,12 +202,12 @@ const styles = StyleSheet.create({
     input: {
         overflow: 'hidden' ,
         textAlign: 'center',
-        color:'#63488c',
+        color: colors.primary,
         fontWeight: 'bold',
         fontSize: 18,
         borderWidth: 1,
         borderRadius: 5,
-        borderColor: '#bbb',
+        borderColor: colors.grey10,
         width: 60,
         marginHorizontal: 6,
         marginTop: 12, 
@@ -216,7 +217,7 @@ const styles = StyleSheet.create({
         marginBottom: 2,
         marginLeft: 8,
         fontSize: 14,
-        color: '#63488c'
+        color: colors.primary
     },
     form:{
         flex: 1,
@@ -226,11 +227,10 @@ const styles = StyleSheet.create({
     buttonView:{
         flex: 0.2,
         justifyContent: 'center',
-        backgroundColor: 'red'
     },
     cancelButton:{
         flex: 1,
-        backgroundColor: '#bbb',
+        backgroundColor: colors.grey10,
         justifyContent: 'center',
         alignItems: 'center',
         height: 60,
@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
       },
     confirmButton: {
         flex: 1,
-        backgroundColor: '#40a843',
+        backgroundColor: colors.ok,
         justifyContent: 'center',
         alignItems: 'center',
         height: 60,
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
     },
     buttonText:{
         fontSize: 18,
-        color: 'white',
+        color: colors.white,
         fontWeight: 'bold',
         margin: 5,
     }
