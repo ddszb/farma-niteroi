@@ -8,6 +8,7 @@ import {
     TouchableOpacity,
     Keyboard
 }  from 'react-native'
+import colors from '../styles/colors'
 
 
 export default props =>{
@@ -67,7 +68,7 @@ export default props =>{
     return(
         <View style={styles.container}>
             <TextInput style={[styles.inputBox, props.styles ? props.styles : {}]}
-                placeholderTextColor="#666" 
+                placeholderTextColor={colors.grey6} 
                 onChangeText={onChangeText}
                 editable={props.editable != null ? props.editable : true}
                 placeholder={props.placeholder}
@@ -92,8 +93,8 @@ const styles = StyleSheet.create({
     },
     inputBox:{
         height: 40,
-        borderColor: 'gray',
-        color: '#444',
+        borderColor: colors.grey8,
+        color: colors.grey4,
         borderRadius: 5,
         borderBottomRightRadius: 0,
         borderBottomLeftRadius: 0,
@@ -103,13 +104,13 @@ const styles = StyleSheet.create({
     },
     listItem:{
         borderBottomWidth: 1,
-        backgroundColor: '#e7e7e7',
-        borderColor: '#ccc',
+        backgroundColor: colors.grey13,
+        borderColor: colors.grey12,
         minHeight: 30, 
         justifyContent: 'center'
     },
     text:{
-        color: '#333',
+        color: colors.grey4,
         fontSize: 14,
         margin: 5
     },

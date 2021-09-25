@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import colors from '../../styles/colors'
 
 export const Container = styled.View`
     flex: 0.8;
@@ -6,13 +7,13 @@ export const Container = styled.View`
 `
 
 export const FormFieldLabel = styled.Text`
-    color: #63488c;
+    color: ${colors.primary};
     font-weight: bold;
     font-size: 26px;
     text-align: center;
 `
 export const HourText = styled.Text`
-    color:#777;
+    color:${colors.grey8};
     font-weight: bold; 
     font-size: 23px;
     text-align: center;
@@ -22,8 +23,8 @@ export const HourText = styled.Text`
 
 export const LargeFormInputTextField = styled.TextInput`
     height: 40px;
-    border-color: gray;
-    color: #444;
+    border-color: ${colors.grey8};
+    color: ${colors.grey4};
     border-radius: 5px;
     border-width: 1px;
     margin-bottom: 10px;
@@ -36,8 +37,8 @@ export const LargeFormInputTextField = styled.TextInput`
 
 export const FormInputTextField = styled.TextInput`
     height: 40px;
-    border-color: gray;
-    color: #444;
+    border-color: ${colors.grey8};
+    color: ${colors.grey4};
     border-radius: 5px;
     border-width: 1px;
     margin-bottom: 10px;
@@ -46,9 +47,9 @@ export const FormInputTextField = styled.TextInput`
 `
 
 export const CardBox = styled.View`
-    background-color: #eaeaea;
-    border-right-color: #bbb;
-    border-bottom-color: #bbb;
+    background-color: ${colors.grey14};
+    border-right-color: ${colors.grey10};
+    border-bottom-color: ${colors.grey10};
     border-right-width: 1px;
     border-bottom-width: 1px;
     border-radius: 5px;
@@ -79,14 +80,14 @@ export const CenteredView = styled.View`
 export const AmountInput = styled.TextInput`
     overflow: hidden ;
     text-align: center;
-    color:#777;
+    color:${colors.grey8};
     font-weight: bold;
     font-size: 20px;
     margin-vertical: 16px;
     margin-bottom: 1px;
     border-width: 1px;
     border-radius: 5px;
-    border-color: #bbb;
+    border-color: ${colors.grey10};
     width: 60px;
 `
 
@@ -96,14 +97,14 @@ export const AmountText = styled.Text`
     margin-bottom: 5px;
     font-size: 18px;
     font-weight: bold;
-    color: #777;
+    color: ${colors.grey8};
 `
 export const PickerView = styled.View`
     justify-content: center;
     align-items:center;
     border-width: 1px;
     border-radius: 5px;
-    border-color: #ccc;
+    border-color: ${colors.grey12};
     margin-vertical: 16px;
 `
 
@@ -113,7 +114,7 @@ export const ButtonView = styled.View`
 `
 export const ConfirmButton = styled.TouchableOpacity`
     flex: 1;
-    background-color: #40a843;
+    background-color: ${colors.ok};
     justify-content: center;
     align-items: center;
     height: 110px;
@@ -121,7 +122,7 @@ export const ConfirmButton = styled.TouchableOpacity`
 
 export const CancelButton = styled.TouchableOpacity`
     flex: 1;
-    background-color: #bbb;
+    background-color: ${colors.grey13};
     justify-content: center;
     align-items: center;
     height: 110px;
@@ -129,7 +130,7 @@ export const CancelButton = styled.TouchableOpacity`
 
 export const ButtonText = styled.Text`
     font-size: 24px;
-    color: white;
+    color: ${colors.white};
     font-weight: bold;
     margin: 12px;
 `

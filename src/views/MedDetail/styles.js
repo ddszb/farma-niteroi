@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import colors from '../../styles/colors'
 
 export const Container = styled.View`
     flex: 1;
@@ -30,17 +31,17 @@ export const HPadding = styled.View`
 export const InfoTitle = styled.Text`
     font-size: 20px;
     font-weight: bold;
-    color: #555;
+    color: ${colors.grey4};
     text-align: center;
     `
 export const InfoText = styled.Text`
     font-size: 16px;
-    color: #888;
+    color: ${colors.grey8};
     text-align: left;
 `
 export const InfoTextSmall = styled.Text`
     font-size: 16px;
-    color: #888;
+    color: ${colors.grey8};
 `
 
 export const Bottom = styled.View`
@@ -59,7 +60,7 @@ export const ButtonView = styled.View`
 
 export const Button = styled.View`
     border-width: 1px;
-    border-color: #ccc;
+    border-color: ${colors.grey12};
     border-radius: 25px;
     padding-left: 15px;
     padding-right: 15px;
@@ -70,15 +71,8 @@ export const Button = styled.View`
     margin-left: 10px;
     margin-right: 10px;
 `
-
-export const ButtonBlueText = styled.Text`
-    color: #3489eb;
-    font-size: 16px;
-    text-align: center;
-    `
-    
 export const ButtonPurpleText = styled.Text`
-    color: #63488c;
+    color: ${colors.primary};
     font-size: 16px;
     text-align: center;
 `
@@ -91,5 +85,5 @@ export const StockInput = styled.TextInput`
     font-size: 20px;
     margin-top: 2px;
     margin-right: 6px;
-    color: #999;
+    color: ${colors.grey10};
 `

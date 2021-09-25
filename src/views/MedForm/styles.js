@@ -1,13 +1,14 @@
 import styled from "styled-components/native"
+import colors from "../../styles/colors"
 
 export const FormFieldLabel = styled.Text`
-    color: #63488c;
+    color: ${colors.primary};
     font-weight: bold;
 `
 export const FormInputTextField = styled.TextInput`
     height: 40px;
-    border-color: gray;
-    color: #444;
+    border-color: ${colors.grey8};
+    color: ${colors.grey6};
     border-radius: 5px;
     border-width: 1px;
     margin-bottom: 10px;
@@ -19,7 +20,7 @@ export const FormInputTextField = styled.TextInput`
 
 export const FormInputAsLabel = styled.TextInput`
    font-size: 20px;
-   color: #63488c;
+   color: ${colors.primary};
    font-weight: bold;
    margin-top: 5px; 
    margin-left: 5px;
@@ -29,8 +30,8 @@ export const FormInputAsLabel = styled.TextInput`
 
 export const LargeFormInputTextField = styled.TextInput`
     height: 40px;
-    border-color: gray;
-    color: #444;
+    border-color: ${colors.grey8};
+    color: ${colors.grey4};
     border-radius: 5px;
     border-width: 1px;
     margin-bottom: 10px;
@@ -42,14 +43,14 @@ export const LargeFormInputTextField = styled.TextInput`
 `
 
 export const FormFieldLabelLight = styled.Text`
-    color: #666;
+    color: ${colors.grey6};
     padding-top: 9px;
     padding-bottom: 6px;
 `
 export const CardBox = styled.View`
-    background-color: #eaeaea;
-    border-right-color: #bbb;
-    border-bottom-color: #bbb;
+    background-color: ${colors.grey13b};
+    border-right-color: ${colors.grey10};
+    border-bottom-color: ${colors.grey10};
     border-right-width: 1px;
     border-bottom-width: 1px;
     border-radius: 5px;
@@ -85,9 +86,9 @@ export const SmallInputText = styled.TextInput`
     height: 40px;
     width: 60px;
     overflow: hidden;
-    border-color: gray;
+    border-color: ${colors.grey8};
     text-align: center;
-    color: #444;
+    color: ${colors.grey4};
     border-radius: 5px;
     border-width: 1px;
     margin-bottom: 10px;
@@ -102,8 +103,8 @@ export const BorderInputText = styled.TextInput`
     text-align: center;
     border-width: 1px;
     border-radius: 5px;
-    color: #444;
-    border-color: #bbb
+    color: ${colors.grey4};
+    border-color: ${colors.grey10}
     margin-left: 30px;
 `
 
@@ -118,12 +119,12 @@ export const Button = styled.View`
     margin-left: 10px;
     margin-right: 10px;
     align-self: flex-end;
-    color: #63488c;
-    background: #63488c;
+    color: ${colors.primary};
+    background: ${colors.primary};
 `
 
 export const ButtonText = styled.Text`
-    color: white;
+    color: ${colors.white};
     font-size: 22px;
     text-align: center;
 `
@@ -131,5 +132,5 @@ export const ButtonText = styled.Text`
 export const DatePickerText = styled.Text`
     margin: 10px;
     font-size: 20px;
-    color: #666;
+    color: ${colors.grey6};
 `

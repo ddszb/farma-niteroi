@@ -1,10 +1,11 @@
 import styled from "styled-components/native"
 
 import {ListItem} from 'react-native-elements'
+import colors from "../../styles/colors"
 
 export const HeaderTitle = styled.View`
     flex-direction: row;
-    background-color: #63488c;
+    background-color: ${colors.primary}
     justify-content: center;
     align-items: center;
     height: 60px;
@@ -12,7 +13,7 @@ export const HeaderTitle = styled.View`
 export const HeaderTitleText = styled.Text`
     font-size: 22px;
     text-align: left;
-    color: #FFF;
+    color: ${colors.white};
     margin-left: 15px;
     text-align: center;
 `
@@ -32,7 +33,7 @@ export const RightTitle = styled(ListItem.Title)`
 export const RightSubtitle = styled(ListItem.Subtitle)`
     font-weight: bold;
     font-size: 16px;
-    color: #aaa;
+    color: ${colors.grey10};
     text-align: right;
 `
 export const RightContainer = styled(ListItem.Content)`
@@ -59,8 +60,25 @@ export const EmptyListContainer = styled.View`
 
 export const LightText = styled.Text`
     font-size: 18px;
-    color: #777;
+    color: ${colors.grey8};
     margin-horizontal: 5px;
     text-align: left;
     flex-wrap: wrap;
+`
+export const FooterButton = styled.TouchableOpacity`
+    flex: 2;
+    margin-vertical: 10px;
+    margin-horizontal: 20px;
+    background-color:${colors.primary}
+    justify-content: center;
+    max-height: 52px;
+    border-radius: 30px;
+`
+
+export const FooterButtonText = styled.Text`
+    font-size: 23px;
+    font-weight:bold;
+    text-align: left;
+    color: ${colors.white};
+    text-align: center;
 `

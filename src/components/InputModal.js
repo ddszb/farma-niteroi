@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import Spinner from "./Spinner";
+import colors from "../styles/colors";
 
 export default props =>{
 
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
       justifyContent: "center",
       alignItems: "center",
       marginTop: 22,
-      backgroundColor: 'rgba(0, 0, 0, 0.5)'
+      backgroundColor: colors.blackOpacity
     },
     modalView: {
       margin: 10,
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
       borderRadius: 5,
       padding: 15,
       alignItems: "center",
-      shadowColor: "#000",
+      shadowColor: colors.black,
       shadowOffset: {
         width: 0,
         height: 2
@@ -111,7 +112,7 @@ const styles = StyleSheet.create({
       marginRight: 5,
       padding: 6,
       elevation: 1,
-      backgroundColor: "#dfdfdf",
+      backgroundColor: colors.grey12,
     },
     buttonConfirm: {
       borderRadius: 5,
@@ -120,14 +121,14 @@ const styles = StyleSheet.create({
       width: 80,
       padding: 6,
       elevation: 1,
-      backgroundColor: "#63488c"
+      backgroundColor: colors.primary
     },
     cancelText:{
-      color: '#63488c',
+      color: colors.primary,
       textAlign: 'center'
     },
     confirmText:{
-      color: '#fff',
+      color: colors.white,
       textAlign: 'center',
       fontWeight: 'bold'
     },
@@ -140,9 +141,9 @@ const styles = StyleSheet.create({
       height: 40,
       width: 70,
       overflow: 'hidden' ,
-      borderColor: 'gray',
+      borderColor: colors.grey8,
       textAlign: 'center',
-      color:'#444',
+      color: colors.grey4,
       borderRadius: 5,
       borderWidth: 1,
       marginBottom: 10,
@@ -154,14 +155,14 @@ const styles = StyleSheet.create({
       textAlign: "center",
       fontSize: 20,
       fontWeight: 'bold',
-      color: '#63488c'
+      color: colors.primary
     },
     text: {
       textAlign: "center",
       marginBottom: 5,
       marginLeft: 8,
       fontSize: 16,
-      color: '#63488c'
+      color: colors.primary
     }
   });
   

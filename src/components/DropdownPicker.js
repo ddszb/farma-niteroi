@@ -7,6 +7,7 @@ import {
     TouchableOpacity
 }  from 'react-native'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
+import colors from '../styles/colors'
 
 export default props =>{
     
@@ -47,7 +48,7 @@ export default props =>{
                     <Text style={[props.styles ? props.styles : styles.input]}>
                         {props.title}
                     </Text>
-                    <Icon name={showList ? "up" : "down"} type="ant-design" size={20} color="#aaa"/>
+                    <Icon name={showList ? "up" : "down"} type="ant-design" size={20} color={colors.grey10}/>
                 </View>
                 {!!text &&
                 <Text style={styles.selectedText}>
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
     input:{
         fontSize: 26,
         fontWeight: 'bold',
-        color: '#63488c',
+        color: colors.primary,
         marginRight: 7,
     },
     row:{
@@ -85,20 +86,20 @@ const styles = StyleSheet.create({
     },
     selectedText:{
         fontSize: 18,
-        color:'#777',
+        color: colors.grey8,
         fontWeight: 'bold',
         textAlign: 'center',
         marginVertical: 16
     },
     listItem:{
         borderBottomWidth: 1,
-        borderColor: '#ccc',
+        borderColor: colors.grey12,
         minHeight: 40, 
         justifyContent: 'center',
         alignItems: 'center'
     },
     text:{
-        color: '#333',
+        color: colors.grey4,
         fontSize: 18,
         margin: 5,
         textAlign: 'left'

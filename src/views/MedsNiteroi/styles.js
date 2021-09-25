@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import colors from '../../styles/colors'
 
 export const Container = styled.View`
     flex: 1;
@@ -8,7 +9,7 @@ export const Container = styled.View`
 export const ItemBox = styled.View`
     flex-direction: row;
     border-bottom-width: 1px;
-    border-bottom-color: lightgrey;
+    border-bottom-color: ${colors.grey13};
     justify-content: space-between;
     padding: 10px;
 `
@@ -20,19 +21,19 @@ export const TextView = styled.View`
 
 
 export const MedName = styled.Text`
-    color: #63488c;
+    color: ${colors.primary};
     font-weight: bold;
     text-align: left;
 `
 
 export const MedDosage = styled.Text`
-    color: #63488c;
+    color: ${colors.primary};
     text-align: left;
 `
 export const SearchBox = styled.TextInput`
     height: 40px;
-    border-color: gray;
-    color: #444;
+    border-color: ${colors.grey8};
+    color: ${colors.grey4};
     border-radius: 5px;
     border-width: 1px;
     margin-bottom: 10px;
@@ -41,7 +42,7 @@ export const SearchBox = styled.TextInput`
 `
 
 export const Description = styled.Text`
-    color: #666;
+    color: ${colors.grey6};
     font-size: 16px;
     text-align: center;
     padding-bottom: 12px;
@@ -58,14 +59,14 @@ export const MedNameTitle = styled.Text`
     font-size: 22px;
     font-weight: bold;
     text-align: center;
-    color: #63488c;
+    color: ${colors.primary};
 `
 
 export const InfoText = styled.Text`
     font-size: 18px;
     font-weight: bold;
     text-align: center;
-    color: #666;
+    color: ${colors.grey6};
     padding: 8px;
 `
 export const DetailContainer = styled.View`

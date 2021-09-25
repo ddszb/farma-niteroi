@@ -27,7 +27,7 @@ export default props =>{
                 </Button>
             </TouchableOpacity>
             <Text>
-                Veja a relação de políclinicas que oferecem medicamentos gratuitamente
+                Veja a relação de policlínicas que oferecem medicamentos gratuitamente
             </Text>
             <TouchableOpacity
                 onPress={navigateToPoli}>

@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import colors from '../../styles/colors'
 
 export const Container = styled.View`
     flex: 1;
@@ -9,7 +10,7 @@ export const Container = styled.View`
 
 export const Button = styled.View`
     border-width: 1px;
-    border-color: #ccc;
+    border-color: ${colors.grey12};
     border-radius: 50px;
     padding-left: 25px;
     padding-right: 25px;
@@ -19,16 +20,18 @@ export const Button = styled.View`
     justify-content: center;
     margin-top: 20px;
     margin-bottom: 20px;
+    background-color: ${colors.primary};
 `
     
 export const ButtonText = styled.Text`
-    color: #63488c;
+    color: ${colors.white};
     font-size: 20px;
+    font-weight: bold;
     text-align: center;
 `
 
 export const Text = styled.Text`
     font-size: 18px;
-    color: #666;
+    color: ${colors.grey6};
     text-align: center;
 `

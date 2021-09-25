@@ -1,5 +1,6 @@
 import React from 'react'
 import DatePicker from 'react-native-datepicker'
+import colors from '../styles/colors'
 
 export default props =>{
     return (
@@ -16,20 +17,20 @@ export default props =>{
             androidMode="spinner"
             customStyles={{
                 placeholderText: {
-                    color:'#999',
+                    color: colors.grey10,
                     textAlign: 'left',
                     alignItems: 'flex-start',
                     paddingLeft: 6
                 },
                 dateText:{
-                    color:'#444',
+                    color: colors.grey4,
                     textAlign: 'left',
                     alignItems: 'flex-start',
                     paddingLeft: 6
                 },
                 dateInput:{
                     borderRadius: 5,
-                    borderColor: '#aaa',
+                    borderColor: colors.grey10,
                     alignItems: 'flex-start',
                     marginTop: 5,
                 }

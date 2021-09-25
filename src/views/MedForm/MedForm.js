@@ -33,6 +33,7 @@ import moment from 'moment'
 import 'moment/locale/pt-br'
 import storageKeys from '../../constants/storageKeys'
 import doseUnits from '../../constants/doseUnits'
+import colors from '../../styles/colors'
 
 
 const initialDoseTime = new Date();
@@ -275,7 +276,7 @@ export default ({navigation, route}) => {
                     />
                     {medPicked &&
                     <TouchableOpacity onPress={onPressReset}>
-                        <Icon name={"eraser"} type={"font-awesome-5"} size={25} color={'#63488c'}/>
+                        <Icon name={"eraser"} type={"font-awesome-5"} size={25} color={colors.primary}/>
                     </TouchableOpacity>}
                     </ViewFlexRow>
                 </CardContent>
@@ -337,7 +338,7 @@ export default ({navigation, route}) => {
                         <FormInputAsLabel
                             onChangeText={ amount => setMed({...med , stock: {...med.stock, amount}})}
                             placeholder="0"
-                            placeholderTextColor="#666" 
+                            placeholderTextColor={colors.grey6}
                             value={med.stock.amount}
                             keyboardType="numeric"
                             maxLength={4}></FormInputAsLabel>
@@ -368,9 +369,9 @@ export default ({navigation, route}) => {
                     <ViewFlexRow>
                         <FormFieldLabel>Doses Marcadas</FormFieldLabel>
                         <Switch
-                            trackColor={{ false: '#888', true:'#a163ff' }}
-                            thumbColor={med.scheduledDoses ? "#63488c" : "#d4d3d4"}
-                            ios_backgroundColor="#3e3e3e"
+                            trackColor={{ false: colors.grey8, true: colors.purpleBright }}
+                            thumbColor={med.scheduledDoses ? colors.primary : colors.grey12}
+                            ios_backgroundColor={colors.grey4}
                             onValueChange={ (scheduledDoses) => setMed( {...med, scheduledDoses})}
                             value={med.scheduledDoses}
                         />

@@ -6,13 +6,14 @@ import FAB from '../../components/FloatActionButton'
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons'
 import iconMoonConfig from '../../selection.json'
 import {LeftTitle, RightTitle, LeftSubtitle, RightSubtitle, RightContainer,
-     MedListView, IconPadding, HeaderTitle, HeaderTitleText, ToggleView, EmptyListContainer, LightText} from './styles'
+     MedListView, IconPadding, HeaderTitle, HeaderTitleText, ToggleView, EmptyListContainer, LightText, FooterButton, FooterButtonText} from './styles'
 import {useFocusEffect} from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import medStatus from '../../constants/medStatus'
 import doseStatus from '../../constants/doseStatus'
 import storageKeys from '../../constants/storageKeys'
 import { View } from 'react-native'
+import colors from '../../styles/colors'
 
 export default props =>{
     
@@ -76,7 +77,7 @@ export default props =>{
                     <LightText>
                         {'Toque no'}
                     </LightText>
-                    <Icon name='add-circle' type={'ionicons'} size={25} color='#63488c'/>
+                    <Icon name='add-circle' type={'ionicons'} size={25} color={colors.primary}/>
                     <LightText>
                         {'Para adicionar um novo '}
                     </LightText>
@@ -175,12 +176,18 @@ export default props =>{
                             name={showFinishedMeds ? "eye" : "eye-slash"}
                             type={"font-awesome"}
                             size={25}
-                            color={"#FFFFFF"}/>
+                            color={colors.white}/>
                     </TouchableOpacity>
                 </ToggleView>
             </HeaderTitle>
             {getMedsList()}
-            <FAB onClick={navigateToNew}/>
+            <FooterButton
+                onPress={navigateToNew}
+                activeOpacity={0.9}>
+                <FooterButtonText>
+                    Novo Medicamento
+                </FooterButtonText>
+            </FooterButton>
         </MedListView>
         
     )

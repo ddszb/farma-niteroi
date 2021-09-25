@@ -11,6 +11,7 @@ import doseStatus from '../../constants/doseStatus'
 import storageKeys from '../../constants/storageKeys'
 import MedPicker from '../../components/DropdownPicker'
 import * as Calculate from '../../util/UtilitarioCalculo'
+import colors from '../../styles/colors'
 
 export default props =>{
     
@@ -133,8 +134,8 @@ export default props =>{
                         {moment(time).format("HH:mm")}
                     </HourText>
                     {taken
-                    ?<Icon name="check" type="font-awesome" size={28} color="#40a843"/>
-                    :<Icon name="clock-o" type="font-awesome" size={28} color="#777"/>
+                    ?<Icon name="check" type="font-awesome" size={28} color={colors.ok}/>
+                    :<Icon name="clock-o" type="font-awesome" size={28} color={colors.grey8}/>
                     }
                 </RowView>
             </TouchableOpacity>
@@ -162,7 +163,7 @@ export default props =>{
                     mode="time"
                     is24Hour={true}
                     display="spinner"
-                    textColor="#63488c"
+                    textColor={colors.primary}
                     timeZoneOffsetInMinutes={-180}
                     minuteInterval={5}
                     onChange={changeTime}/>)
@@ -177,7 +178,7 @@ export default props =>{
                         <ButtonText>
                             Cancelar
                         </ButtonText>
-                        <Icon name="cancel" type="material-icons" size={36} color="#fff"/>
+                        <Icon name="cancel" type="material-icons" size={36} color={colors.white}/>
                     </RowView>
                 </CancelButton>
                 <ConfirmButton
@@ -187,7 +188,7 @@ export default props =>{
                         <ButtonText>
                             Confirmar
                         </ButtonText>
-                        <Icon name="check-circle" type="font-awesome" size={36} color="#fff"/>
+                        <Icon name="check-circle" type="font-awesome" size={36} color={colors.white}/>
                     </RowView>
                 </ConfirmButton>
             </RowView>
