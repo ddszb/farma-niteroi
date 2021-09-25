@@ -23,11 +23,11 @@ const texts = [
     "basta tocar nas setas ou na data para selecionar uma data qualquer. Para voltar ao dia atual, basta clicar no ícone de calendário",
     //2
     "Para registrar uma dose tomada, basta deslizar a dose do dia desejada para a esquerda para confirmar ou pressionar na dose para marcar corretamente o horário tomado." +
-    "Só é possível marcar doses tomadas se estiverem no dia correto.",
+    "Só é possível marcar doses tomadas se estiverem no dia correto. Para adicionar uma nova dose, só clicar no botão \"nova dose\" localizado na parte inferior da tela.",
     //3
     "Para ver todos os medicamentos atuais, basta tocar na segunda aba, \"Medicamentos\". Para ver mais detalhes do medicamento, basta tocar nele na lista.",
     //4
-    "Nos detalhes é possível adicionar medicamentos ao estoque bem como finalizar o tratamento atual.",
+    "Nos detalhes é possível editar seu estoque do medicamento bem como finalizar o tratamento atual.",
     //5
     "Para adicionar um medicamento, basta tocar no botão + e preencher as informações corretamente.",
     //6
