@@ -25,7 +25,7 @@ const HomeStack = createStackNavigator()
 function HomeStackScreen(){
     return(
         <HomeStack.Navigator>
-            <HomeStack.Screen options={{headerShown: false}} name="Home" component={Home}/>
+            <HomeStack.Screen options={{headerShown: false}} name="Doses" component={Home}/>
             <HomeStack.Screen name="Adicionar Dose" component={NewDoseForm}/>
         </HomeStack.Navigator>
     )
@@ -64,7 +64,7 @@ export default props =>(
         tabBarIcon: ({ focused, color, size }) => {
             let iconName
             switch (route.name){
-                case 'Home':
+                case 'Doses':
                     iconName = focused
                     ? 'home'
                     : 'home-outline'
@@ -94,9 +94,9 @@ export default props =>(
         inactiveTintColor: '#5f5f5f',
         showLabel: true,
         labelStyle: {fontSize: 10}
-    }} initialRouteName="Home">
+    }} initialRouteName="Doses">
         <Tab.Screen 
-            name="Home"
+            name="Doses"
             component={HomeStackScreen}             
             options={({ route }) => ({
                 tabBarVisible: __getTabBarVisiblity(route)
