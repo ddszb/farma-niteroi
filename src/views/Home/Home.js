@@ -114,12 +114,12 @@ export default props =>{
     const filterDoses = () =>{
         var allDoses = [].concat.apply([], meds.map( m => m.doses)) // Concatena todas as doses de todos os medicamentos
         let dayDoses = allDoses.filter( d => (moment(d.date).isSame(filterDay, 'day') || moment(d.dateTaken).isSame(filterDay, 'day')) && d.status !== doseStatus.ENCERRADA)
-        let sporadic = dayDoses.filter( d => d.sporadic)
-        let scheduled = dayDoses.filter( d => !d.sporadic)
+        let taken = dayDoses.filter( d => d.dateTaken)
+        let notTaken = dayDoses.filter( d => !d.dateTaken)
 
-        scheduled.sort((a, b) => new Date(a.date) - new Date(b.date))
-        sporadic.sort((a,b) => new Date(a.dateTaken) - new Date(b.dateTaken))
-        let visible = scheduled.concat(sporadic)
+        notTaken.sort((a, b) => new Date(a.date) - new Date(b.date))
+        taken.sort((a,b) => new Date(a.dateTaken) - new Date(b.dateTaken))
+        let visible = notTaken.concat(taken)
         
         if(filterOption == filterOptions.TAKEN){
             visible = visible.filter( d => d.status == doseStatus.TOMADA )
@@ -154,7 +154,11 @@ export default props =>{
                 updateDose(dose, doseActions.EDITAR_DOSE_TOMADA)
                 break
             case doseStatus.NAO_TOMADA:
-                updateDose(dose, doseActions.TOMAR_DOSE)
+                if(dose.newDate){
+                    updateDose(dose, doseActions.EDITAR_DOSE_NAO_TOMADA)    
+                }else{
+                    updateDose(dose, doseActions.TOMAR_DOSE)
+                }
                 break
         }
         setShowEditDoseModal(false)
@@ -175,6 +179,9 @@ export default props =>{
                     break
                 case doseActions.EDITAR_DOSE_TOMADA:  
                     updatedMed.stock.amount = newStock + + updatedDose.amount
+                    break
+                case doseActions.EDITAR_DOSE_NAO_TOMADA:
+                    dose.date = dose.newDate
                     break
             }
         }
@@ -252,7 +259,7 @@ export default props =>{
                 )
                 break
             case doseStatus.NAO_TOMADA:
-                if(moment(dose.date) < now ){
+                if(moment(dose.date).isBefore(now, 'minute') ){
                     status = (
                         <RowView>
                             <HPadding>

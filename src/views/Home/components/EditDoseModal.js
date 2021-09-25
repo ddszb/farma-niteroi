@@ -1,9 +1,13 @@
 import React, {useState} from 'react'
-import { Modal, View, Text, TouchableOpacity, StyleSheet, TextInput }  from 'react-native'
+import { Dimensions, Modal, View, Text, TouchableOpacity, StyleSheet, TextInput }  from 'react-native'
+import { Icon } from 'react-native-elements/dist/icons/Icon'
 import doseStatus from '../../../constants/doseStatus'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import moment from 'moment'
 import 'moment/locale/pt-br'
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 export default props =>{
 
@@ -34,60 +38,78 @@ export default props =>{
 
     const confirm = () =>{
         var d = {...dose}
+        if(d.status == doseStatus.NAO_TOMADA && moment(dialogTime) > moment()){
+            d.newDate = dialogTime
+        }else{
+            d.dateTaken = dialogTime
+        }
         d.amount = dialogAmount
-        d.dateTaken = dialogTime
         props.onSet(d)
     }
 
     const timeAmountContent = () =>{
         let time = moment(dialogTime).format("HH:mm")
+        var confirmLabel = "Ajustar"
+        if(dose.status == doseStatus.NAO_TOMADA && moment(dialogTime).isSameOrBefore(moment())){
+            confirmLabel = "Tomar"
+        }
         return(
             <>
-            <Text style={styles.text}>
-                Horário
-            </Text>
-            <View>
-                <TouchableOpacity onPress={() => setShowPicker(true)}>
-                    <Text style={styles.hourText}>
-                        {time}
-                    </Text>
-                </TouchableOpacity>
-            </View>
-            <Text style={styles.text}>
-                Quantidade
-            </Text>
-                <TextInput 
-                    style={styles.input}
-                    keyboardType="numeric"
-                    onChangeText={changeAmount}
-                    value={dialogAmount}
-                    maxLength={4}/>
+            <View style={styles.form}>
                 <Text style={styles.text}>
-                    {dose.unit.label}(s)
+                    Horário
                 </Text>
-            <View style={styles.row}>
-                <TouchableOpacity
-                    onPress={() => props.close()}
-                    style={styles.buttonCancel}>
-                    <Text style={styles.cancelText}>
-                        Cancelar
+                <View>
+                    <TouchableOpacity onPress={() => setShowPicker(true)}>
+                        <Text style={styles.hourText}>
+                            {time}
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+                <Text style={styles.text}>
+                    Quantidade
+                </Text>
+                <View style={[styles.row, styles.centerItems]}>
+                    <TextInput 
+                        style={styles.input}
+                        keyboardType="numeric"
+                        onChangeText={changeAmount}
+                        value={dialogAmount}
+                        maxLength={4}/>
+                    <Text style={[styles.text, {marginTop: 6}]}>
+                        {dose.unit.label}(s)
                     </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={confirm}
-                    style={styles.buttonConfirm}>
-                    <Text style={styles.confirmText}>
-                        {dose.status == doseStatus.TOMADA ? "Ajustar" : "Tomar" }
-                    </Text>
-                </TouchableOpacity>
+                </View>
             </View>
+                <View style={styles.row}>
+                    <TouchableOpacity style={styles.cancelButton}
+                        activeOpacity={0.5}
+                        onPress={() => props.close()}>
+                        <View style={[styles.row, styles.centerItems]}>
+                            <Text style={styles.buttonText}>
+                                Cancelar
+                            </Text>
+                            <Icon name="cancel" type="material-icons" size={20} color="#fff"/>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.confirmButton}
+                        activeOpacity={0.7}
+                        onPress={confirm}>
+                        <View style={[styles.row, styles.centerItems]}>
+                            <Text style={styles.buttonText}>
+                                {confirmLabel}
+                            </Text>
+                            <Icon name="check-circle" type="font-awesome" size={20} color="#fff"/>
+                        </View>
+                    </TouchableOpacity>
+                </View>
             </>
         )
     }
 
     const modalContent = () =>{
 
-        var title = dose.status == doseStatus.TOMADA ? "Ajustar dose" : "Tomar dose" 
+        var title = "Ajustar dose"
         var content = timeAmountContent()
 
         return(
@@ -132,14 +154,13 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 22,
+        backgroundColor: '#00000080'
     },
     modalView: {
-        margin: 10,
-        width: 210,
+        width: windowWidth * 0.7,
+        height: windowHeight * 0.5,
         backgroundColor: "white",
         borderRadius: 5,
-        padding: 15,
         alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {
@@ -153,10 +174,14 @@ const styles = StyleSheet.create({
     row:{
         flexDirection: 'row'
     },
+    centerItems:{
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
     title:{
-        marginBottom: 15,
+        marginVertical: 10,
         textAlign: "center",
-        fontSize: 16,
+        fontSize: 22,
         fontWeight: 'bold',
         color: '#63488c'
     },
@@ -164,13 +189,13 @@ const styles = StyleSheet.create({
         textAlign: "justify",
         marginBottom: 2,
         marginLeft: 8,
-        fontSize: 16,
-        color: '#63488c'
+        fontSize: 20,
+        color: '#777'
     },
     hourText:{
         color:'#63488c',
         fontWeight: 'bold', 
-        fontSize: 20,
+        fontSize: 22,
         marginVertical: 10
     },
     input: {
@@ -183,7 +208,8 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         borderColor: '#bbb',
         width: 60,
-        margin: 12
+        marginHorizontal: 6,
+        marginTop: 12, 
     },
     amountText: {
         textAlign: "justify",
@@ -192,32 +218,36 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#63488c'
     },
-    buttonCancel:{
-        borderRadius: 5,
-        marginTop: 15,
-        marginRight: 5,
-        padding: 6,
-        elevation: 1,
-        backgroundColor: "#e8e8e8",
+    form:{
+        flex: 1,
+        padding: 15,
+        alignItems:"center"
+    },
+    buttonView:{
+        flex: 0.2,
+        justifyContent: 'center',
+        backgroundColor: 'red'
+    },
+    cancelButton:{
+        flex: 1,
+        backgroundColor: '#bbb',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 60,
+        borderBottomLeftRadius: 5,
       },
-    buttonConfirm: {
-        borderRadius: 5,
-        marginTop: 15,
-        marginLeft: 5,
-        width: 80,
-        padding: 6,
-        elevation: 1,
-        backgroundColor: "#40a843"
+    confirmButton: {
+        flex: 1,
+        backgroundColor: '#40a843',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 60,
+        borderBottomRightRadius: 5,
     },
-    cancelText:{
-        color: '#63488c',
-        textAlign: 'center',
-        margin: 5,
-    },
-    confirmText:{
-        color: '#fff',
-        textAlign: 'center',
+    buttonText:{
+        fontSize: 18,
+        color: 'white',
         fontWeight: 'bold',
         margin: 5,
-    },
+    }
 })
