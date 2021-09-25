@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import colors from '../../styles/colors'
 
 export const Container = styled.View`
     flex: 1;
@@ -6,7 +7,7 @@ export const Container = styled.View`
 
 export const Title = styled.Text`
     font-size: 26px;
-    color: #63488c;
+    color: ${colors.primary};
     font-weight: bold;
     font-family: Lato;
     text-align: center;
@@ -15,7 +16,7 @@ export const Title = styled.Text`
 
 export const Subtitle = styled.Text`
     font-size: 16px;
-    color: #63488c;
+    color: ${colors.primary};
     font-family: OpenSans-SemiBold
     text-align: center;
     margin: 6px;
@@ -28,7 +29,7 @@ export const TipView = styled.View`
 
 export const TipText = styled.Text`
     font-size: 16px;
-    color: #444;
+    color: ${colors.grey4};
     text-align: left;
     font-family: OpenSans-Regular;
     margin-horizontal: 10px;
@@ -42,12 +43,12 @@ export const TipRow = styled.View`
 
 export const TopBackground = styled.View`
     flex: 2.5;
-    background-color: #ddd;    
+    background-color: ${colors.grey13};    
     border-bottom-width: 2px;
-    border-bottom-color: #bbb;
+    border-bottom-color: ${colors.grey10};
 `
 
 export const BottomBackground = styled.View`
     flex: 7.5;
-    background-color: #e9e9e9;  
+    background-color: ${colors.grey13b};  
 `

@@ -14,6 +14,7 @@ import MedsNiteroi from '../views/MedsNiteroi/MedsNiteroi'
 import Policlinicas from '../views/Policlinicas/Policlinicas'
 import MedNiteroiDetalhe from '../views/MedsNiteroi/MedNiteroiDetalhe'
 import NewDoseForm from '../views/DoseForm/NewDoseForm';
+import colors from '../styles/colors';
 
 
 const Tab = createBottomTabNavigator()
@@ -90,10 +91,11 @@ export default props =>(
         },
       })}
     tabBarOptions={{
-        activeTintColor: '#63488c',
-        inactiveTintColor: '#5f5f5f',
+        activeTintColor: colors.primary,
+        inactiveTintColor: colors.grey6,
         showLabel: true,
-        labelStyle: {fontSize: 10}
+        labelStyle: {fontSize: 12},
+        style:{ height: 50}
     }} initialRouteName="Doses">
         <Tab.Screen 
             name="Doses"

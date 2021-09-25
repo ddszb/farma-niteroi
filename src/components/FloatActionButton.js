@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, TouchableHighlight} from 'react-native'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
-
+import colors from '../styles/colors'
 
 export default props => (
     <View style={{
@@ -12,12 +12,12 @@ export default props => (
 
         <TouchableHighlight 
             onPress={ () => props.onClick()}
-            underlayColor="#4440">
+            underlayColor={colors.grey4Opacity}>
             <Icon 
                 name='add-circle'
                 size={56}
                 type={'ionicons'}
-                color='#63488c'
+                color={colors.primary}
                 />
         </TouchableHighlight>
     </View>

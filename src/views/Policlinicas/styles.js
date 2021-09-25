@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import colors from '../../styles/colors'
 
 export const Container = styled.View`
     flex: 1;
@@ -6,9 +7,9 @@ export const Container = styled.View`
 `
 
 export const CardBox = styled.View`
-    background-color: #eaeaea;
-    border-right-color: #bbb;
-    border-bottom-color: #bbb;
+    background-color: ${colors.grey13};
+    border-right-color: ${colors.grey10};
+    border-bottom-color: ${colors.grey10};
     border-right-width: 1px;
     border-bottom-width: 1px;
     border-radius: 5px;
@@ -19,24 +20,24 @@ export const CardContent = styled.View`
     flex-direction: row;
 `
 export const Name = styled.Text`
-    color: #63488c;
+    color: ${colors.primary};
     font-weight: bold;
     font-size: 16px;
 `
 
 export const LightText = styled.Text`
-    color: #888;
+    color: ${colors.grey8};
     font-size: 16px;
     text-align: left;
 `
 export const Text = styled.Text`
-    color: #888;
+    color: ${colors.grey8};
     font-weight: bold;
     font-size: 16px;
     text-align: left;
 `
 export const PhoneNumber = styled.Text`
-    color: #63488c;
+    color: ${colors.primary}
     font-size: 16px;
     text-align: left;
 `

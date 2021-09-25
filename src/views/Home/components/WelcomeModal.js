@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import { Modal, View, Text, TouchableOpacity, StyleSheet, Image }  from 'react-native'
+import colors from '../../../styles/colors'
 
 
 
@@ -106,15 +107,15 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         marginTop: 22,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)'
+        backgroundColor: colors.blackOpacity
       },
     modalView: {
         margin: 10,
-        backgroundColor: "white",
+        backgroundColor: colors.white,
         borderRadius: 5,
         padding: 15,
         alignItems: "center",
-        shadowColor: "#000",
+        shadowColor: colors.black,
         shadowOffset: {
             width: 0,
             height: 2
@@ -133,7 +134,7 @@ const styles = StyleSheet.create({
         marginRight: 5,
         padding: 6,
         elevation: 1,
-        backgroundColor: "#ddd",
+        backgroundColor: colors.grey12,
       },
       buttonNext: {
         borderRadius: 5,
@@ -142,14 +143,14 @@ const styles = StyleSheet.create({
         width: 80,
         padding: 6,
         elevation: 1,
-        backgroundColor: "#63488c"
+        backgroundColor: colors.primary
       },
       backText:{
-        color: '#63488c',
+        color: colors.primary,
         textAlign: 'center'
       },
       nextText:{
-        color: '#fff',
+        color: colors.white,
         textAlign: 'center'
       },
       container:{
@@ -161,9 +162,9 @@ const styles = StyleSheet.create({
         height: 40,
         width: 70,
         overflow: 'hidden' ,
-        borderColor: 'gray',
+        borderColor: colors.grey8,
         textAlign: 'center',
-        color:'#444',
+        color: colors.grey4,
         borderRadius: 5,
         borderWidth: 1,
         marginBottom: 10,
@@ -175,14 +176,14 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontSize: 16,
         fontWeight: 'bold',
-        color: '#63488c'
+        color: colors.primary
       },
       text: {
         textAlign: "justify",
         marginBottom: 5,
         marginLeft: 8,
         fontSize: 14,
-        color: '#63488c'
+        color: colors.primary
       },
       image:{
           width: 230,
@@ -191,7 +192,7 @@ const styles = StyleSheet.create({
       },
       border:{
         marginTop: 10,
-        borderColor: 'gray',
+        borderColor: colors.grey8,
         borderWidth: 3
       }
 

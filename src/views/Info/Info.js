@@ -3,6 +3,7 @@ import { Container, TipRow, TipText, TipView, Title, Subtitle, TopBackground, Bo
 import mensagens from './mensagens'
 import { FlatList } from 'react-native-gesture-handler'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
+import colors from '../../styles/colors'
 
 export default props => {
     
@@ -10,7 +11,7 @@ export default props => {
         return(
             <TipView>
                 <TipRow>
-                    <Icon name="info" type="feather" size={20} color="#63488c"/>
+                    <Icon name="info" type="feather" size={20} color={colors.primary}/>
                     <TipText>
                         {dica}
                     </TipText>

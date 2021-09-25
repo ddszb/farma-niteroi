@@ -3,9 +3,9 @@ import {
     View,
     Text,
     StyleSheet,
-    TouchableOpacity,
     TouchableWithoutFeedback,
 }  from 'react-native'
+import colors from '../../../styles/colors'
 
 
 export default props =>{
@@ -55,17 +55,17 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     buttonOn:{
-        backgroundColor: "#63488c",
+        backgroundColor: colors.primary,
     },
     buttonOff:{
-        backgroundColor: "#CCC",
+        backgroundColor: colors.grey12,
     },
     textOn:{
-        color: "#FFF",
+        color: colors.white,
         margin: 5,
     },
     textOff:{
-        color: "#63488c",
+        color: colors.primary,
         margin: 5,
     }
 })

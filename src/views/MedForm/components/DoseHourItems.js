@@ -15,6 +15,7 @@ import 'moment/locale/pt-br'
 import InputModal from '../../../components/InputModal'
 import doseUnits from '../../../constants/doseUnits'
 import { RowView } from '../../DoseForm/styles'
+import colors from '../../../styles/colors'
 
 export default props =>{
     
@@ -244,7 +245,7 @@ export default props =>{
                     mode="time"
                     is24Hour={true}
                     display="spinner"
-                    textColor="#63488c"
+                    textColor={colors.primary}
                     timeZoneOffsetInMinutes={-180}
                     minuteInterval={5}
                     onChange={__updateDoseItem}/>)
@@ -255,12 +256,12 @@ export default props =>{
 
 const style = StyleSheet.create({
     doseHourText:{
-        color:'#63488c',
+        color: colors.primary,
         fontWeight: 'bold', 
         fontSize: 20
     },
     doseHourAmount:{
-        color:'#63488c',
+        color: colors.primary,
         fontSize: 18
     },
     pickers:{

@@ -28,6 +28,7 @@ import EditDoseModal from './components/EditDoseModal'
 import doseActions from '../../constants/doseActions'
 import storageKeys from '../../constants/storageKeys'
 import * as Calculate from '../../util/UtilitarioCalculo'
+import colors from '../../styles/colors'
 
 
 const filterOptions = { ALL: 0, TAKEN: 1, NOT_TAKEN: 2}
@@ -213,19 +214,19 @@ export default props =>{
                 {!moment().isSame(filterDay, 'date') &&
                 <ResetDateButton>
                     <TouchableOpacity onPress={() => setFilterDay(new Date())}>
-                        <Icon name="calendar-day" type="font-awesome-5" size={26} color="#fff"/>
+                        <Icon name="calendar-day" type="font-awesome-5" size={26} color={colors.white}/>
                     </TouchableOpacity>
                 </ResetDateButton>
                 }
                 <DatePickerView>
                     <TouchableOpacity onPress={() => shiftDate(-1)}>
-                        <Icon name="chevron-with-circle-left" type="entypo" size={28} color="#63488c"/>
+                        <Icon name="chevron-with-circle-left" type="entypo" size={28} color={colors.primary}/>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={ () => setShowDatePicker(true)}>
                             <DateText>{dateString}</DateText>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => shiftDate(1)}>
-                        <Icon name="chevron-with-circle-right" type="entypo" size={28} color="#63488c"/>
+                        <Icon name="chevron-with-circle-right" type="entypo" size={28} color={colors.primary}/>
                     </TouchableOpacity>
                 </DatePickerView>
                 {showDatePicker && datePicker}
@@ -237,11 +238,11 @@ export default props =>{
     const getRightSwipe = (dose) => {
         if (dose.status == doseStatus.NAO_TOMADA && moment().isSame(dose.date, 'day')){
             return (
-                <RightSwipe style={{backgroundColor: '#038f00'}}>
+                <RightSwipe style={{backgroundColor: colors.ok}}>
                     <RightSwipeText>
                         Tomar dose
                     </RightSwipeText>
-                    <Icon name="check" size={30} color='#FFF'/>
+                    <Icon name="check" size={30} color={colors.white}/>
                 </RightSwipe>
             )
         }   
@@ -267,7 +268,7 @@ export default props =>{
                                     {moment(dose.date).format('HH:mm')}
                                 </WarningText>
                             </HPadding>
-                            <Icon name="warning" type={"font-awesome"} size={24} color='#f03622'/>
+                            <Icon name="warning" type={"font-awesome"} size={24} color={colors.alert}/>
                         </RowView>
                     )
                 }else{
@@ -278,7 +279,7 @@ export default props =>{
                                     {moment(dose.date).format('HH:mm')}
                                 </WaitingText>
                             </HPadding>
-                            <Icon name="clock-o" type="font-awesome" size={24} color="#666"/>
+                            <Icon name="clock-o" type="font-awesome" size={24} color={colors.grey6}/>
                         </RowView>
                     )
                 }
@@ -291,7 +292,7 @@ export default props =>{
                                 {moment(dose.dateTaken).format('HH:mm')}
                             </OkText>
                         </HPadding>
-                        <Icon name="check-circle" type={"font-awesome"} size={24} color='#40a843'/>
+                        <Icon name="check-circle" type={"font-awesome"} size={24} color={colors.ok}/>
                     </RowView>
             )
                 break
@@ -367,7 +368,7 @@ export default props =>{
                     </HeaderTitleText>
                     <TouchableOpacity
                         onPress={toggleFilter}>
-                        <Icon name={filterIcons[filterOption]} type="material-community" size={32} color="#fff"/>
+                        <Icon name={filterIcons[filterOption]} type="material-community" size={32} color={colors.white}/>
                     </TouchableOpacity>
                 </HeaderTitle>
                 {getDateFilter()}
