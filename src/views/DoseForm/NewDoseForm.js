@@ -35,6 +35,8 @@ export default props =>{
     }
 
     const onConfirm = () =>{
+
+        var taken = moment(time) < moment()
         var error = ''
         if(amount == '0' || amount == ''){
             error = "Por favor informe a quantidade tomada."
@@ -50,14 +52,14 @@ export default props =>{
         }
         let dose = {
             medName: medName,
-            date: null, 
+            date: taken ? null : time, 
             unit: selectedMed.doseUnit,
             amount: amount,
-            dateTaken: time,
+            dateTaken: taken ? time : null,
             newDate: null,
-            status: doseStatus.TOMADA,
+            status: taken ? doseStatus.TOMADA : doseStatus.NAO_TOMADA,
             icon: selectedMed.icon,
-            iconColor: selectedMed.scheduledDoses ? "#888" : selectedMed.iconColor,
+            iconColor: selectedMed.iconColor,
             index: selectedMed.doses.length,
             sporadic: true
         }
@@ -71,9 +73,7 @@ export default props =>{
     }
 
     const onSelectMed = med =>{
-        console.log("med", med) 
         if(med){
-            console.log(JSON.stringify(med, 0,2))
             setSelectedMed(med)
             setMedName(med.name)
         }else{
@@ -90,8 +90,17 @@ export default props =>{
         setAmount(amount)
     }
 
+    
+    const changeTime = (event, date) =>{
+        setShowTimePicker(false)
+        if(event.type === "set"){
+            setTime(date)
+        }
+    }
+
     const getAmountContent = () =>{
         let unit = selectedMed ? selectedMed.doseUnit.label + "(s)" : "Comprimido(s)"
+
         return (              
             <>
             <FormFieldLabel>
@@ -111,17 +120,32 @@ export default props =>{
         )
     }
 
-    return(
-        <>
-        <Form>
+    const getTimeContent = () =>{
+        var taken = moment(time).isSameOrBefore(moment(), 'minute')
+        return(
+            <>
             <FormFieldLabel>
                 Horário
             </FormFieldLabel>
             <TouchableOpacity onPress={() => setShowTimePicker(true)}>
-                <HourText>
-                    {moment(time).format("HH:mm")}
-                </HourText>
+                <RowView>
+                    <HourText>
+                        {moment(time).format("HH:mm")}
+                    </HourText>
+                    {taken
+                    ?<Icon name="check" type="font-awesome" size={28} color="#40a843"/>
+                    :<Icon name="clock-o" type="font-awesome" size={28} color="#777"/>
+                    }
+                </RowView>
             </TouchableOpacity>
+            </>
+        )
+    }
+
+    return(
+        <>
+        <Form>
+            {getTimeContent()}
             {getAmountContent()}
             <CenteredView>
                 <MedPicker 
@@ -141,12 +165,7 @@ export default props =>{
                     textColor="#63488c"
                     timeZoneOffsetInMinutes={-180}
                     minuteInterval={5}
-                    onChange={(_, date) => {
-                        let hours = date.getHours() - (date.getTimezoneOffset() / 60)
-                        date.setHours(hours)
-                        setShowTimePicker(false)
-                        setTime(new Date(date))
-                    }}/>)
+                    onChange={changeTime}/>)
             }
         </Form>
         <ButtonView>

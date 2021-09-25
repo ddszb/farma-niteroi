@@ -17,6 +17,7 @@ export const HourText = styled.Text`
     font-size: 23px;
     text-align: center;
     margin-vertical: 16px;
+    margin-right: 10px;
 `
 
 export const LargeFormInputTextField = styled.TextInput`
