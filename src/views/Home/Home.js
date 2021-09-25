@@ -191,10 +191,12 @@ export default props =>{
 
     const getDateFilter = () =>{
         let datePicker = <DateTimePicker value={filterDay}
-        onChange ={ (_, date) => {
+        onChange ={ (event, date) => {
             setShowDatePicker(false)
-            setFilterDay(date)
-            filterDoses()
+            if(event.type == "set"){
+                setFilterDay(date)
+                filterDoses()
+            }
         }}
         mode='date'/>
         var dateString = moment(filterDay).isSame(moment(), 'date') ? 'Hoje, ' : moment(filterDay).format('ddd, ')
