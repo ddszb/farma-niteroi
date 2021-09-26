@@ -7,7 +7,9 @@ import {
     TouchableOpacity,
     ToastAndroid,
     Alert,
+    Dimensions,
 } from "react-native"
+
 
 import * as UtilitarioFormatacao from '../../util/UtilitarioFormatacao'
 import DatePicker from '../../components/DatePicker'
@@ -21,7 +23,7 @@ import iconColors from '../../constants/iconColors'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
 import meds_niteroi from '../../data/meds_niteroi'
 import { FormFieldLabel, LargeFormInputTextField, FormFieldLabelLight,
-    ViewFlexRow, CardBox, CardContent, ButtonText, Button, Form, FormInputAsLabel, DatePickerText} from './styles'
+    ViewFlexRow, CardBox, CardContent, ButtonText, Button, Form, FormInputAsLabel, DatePickerText, ResetButton} from './styles'
 import IconPicker from './components/IconPicker'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import DateTimePicker from '@react-native-community/datetimepicker'
@@ -60,6 +62,7 @@ const initialState =
         doses:[]
     }
 
+const windowWidth = Dimensions.get('window').width;
 
 export default ({navigation, route}) => {
 
@@ -272,12 +275,12 @@ export default ({navigation, route}) => {
                         onChange={ name => setMed({...med , name})}
                         placeholder="Nome do medicamento"
                         value={med.name}
-                        styles={{width: 300}}
+                        styles={{width: windowWidth * 0.75}}
                     />
                     {medPicked &&
-                    <TouchableOpacity onPress={onPressReset}>
+                    <ResetButton onPress={onPressReset}>
                         <Icon name={"eraser"} type={"font-awesome-5"} size={25} color={colors.primary}/>
-                    </TouchableOpacity>}
+                    </ResetButton>}
                     </ViewFlexRow>
                 </CardContent>
             </CardBox>

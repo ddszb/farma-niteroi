@@ -15,7 +15,9 @@ import { Body, CardBox, ColorTag, Container,
      FooterButton,
      FooterButtonText,
      OkText,
-     WaitingText} from './styles'
+     WaitingText,
+     TopView,
+     ButtonView} from './styles'
 import { FlatList, Swipeable } from 'react-native-gesture-handler'
 import DateTimePicker from '@react-native-community/datetimepicker'
 
@@ -208,25 +210,25 @@ export default props =>{
         }}
         mode='date'/>
         var dateString = moment(filterDay).isSame(moment(), 'date') ? 'Hoje, ' : moment(filterDay).format('ddd, ')
-        dateString += moment(filterDay).format('D [de] MMMM [de] YYYY')
+        dateString += moment(filterDay).format('D/MM/YYYY')
         datePicker = (
             <View>
                 {!moment().isSame(filterDay, 'date') &&
                 <ResetDateButton>
                     <TouchableOpacity onPress={() => setFilterDay(new Date())}>
-                        <Icon name="calendar-day" type="font-awesome-5" size={26} color={colors.white}/>
+                        <Icon name="calendar-refresh" type="material-community" size={32} color={colors.primary}/>
                     </TouchableOpacity>
                 </ResetDateButton>
                 }
                 <DatePickerView>
                     <TouchableOpacity onPress={() => shiftDate(-1)}>
-                        <Icon name="chevron-with-circle-left" type="entypo" size={28} color={colors.primary}/>
+                        <Icon name="leftcircle" type="ant-design" size={32} color={colors.primary}/>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={ () => setShowDatePicker(true)}>
                             <DateText>{dateString}</DateText>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => shiftDate(1)}>
-                        <Icon name="chevron-with-circle-right" type="entypo" size={28} color={colors.primary}/>
+                        <Icon name="rightcircle" type="ant-design" size={32} color={colors.primary}/>
                     </TouchableOpacity>
                 </DatePickerView>
                 {showDatePicker && datePicker}
@@ -361,46 +363,50 @@ export default props =>{
                 visible={showWelcomeModal}
                 close={closeWelcomeModal}
             />
-            <Header>
-                <HeaderTitle>
-                    <HeaderTitleText>
-                        Doses do dia
-                    </HeaderTitleText>
-                    <TouchableOpacity
-                        onPress={toggleFilter}>
-                        <Icon name={filterIcons[filterOption]} type="material-community" size={32} color={colors.white}/>
-                    </TouchableOpacity>
-                </HeaderTitle>
-                {getDateFilter()}
-            </Header>
-            <Body>
-                {visibleDoses && visibleDoses.length > 0 &&
-                <FlatList
-                    data={visibleDoses}
-                    keyExtractor={ (item, index) => `${index}`}
-                    renderItem={getDoseItem}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={refreshing}
-                            onRefresh={onRefresh}/>
-                    }/>
-                }
-                {!visibleDoses || visibleDoses.length == 0 &&
-                <EmptyListContainer>
-                    <LightText>
-                        Nenhuma dose para a data selecionada!
-                    </LightText>
-                </EmptyListContainer>
-                }
-            </Body>
+            <TopView>
+                <Header>
+                    <HeaderTitle>
+                        <HeaderTitleText>
+                            Doses do dia
+                        </HeaderTitleText>
+                        <TouchableOpacity
+                            onPress={toggleFilter}>
+                            <Icon name="filter" type="material-community" size={32} color={colors.primary}/>
+                        </TouchableOpacity>
+                    </HeaderTitle>
+                    {getDateFilter()}
+                </Header>
+                <Body>
+                    {visibleDoses && visibleDoses.length > 0 &&
+                    <FlatList
+                        data={visibleDoses}
+                        keyExtractor={ (item, index) => `${index}`}
+                        renderItem={getDoseItem}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={refreshing}
+                                onRefresh={onRefresh}/>
+                        }/>
+                    }
+                    {!visibleDoses || visibleDoses.length == 0 &&
+                    <EmptyListContainer>
+                        <LightText>
+                            Nenhuma dose para a data selecionada!
+                        </LightText>
+                    </EmptyListContainer>
+                    }
+                </Body>
+            </TopView>  
             {meds.length > 0 &&
-            <FooterButton
-                onPress={navigateToNew}
-                activeOpacity={0.9}>
-                <FooterButtonText>
-                    Nova Dose
-                </FooterButtonText>
-            </FooterButton>}
+            <ButtonView>
+                <FooterButton
+                    onPress={navigateToNew}
+                    activeOpacity={0.9}>
+                    <FooterButtonText>
+                        Nova Dose
+                    </FooterButtonText>
+                </FooterButton>
+            </ButtonView>}
         </Container>
 
     )

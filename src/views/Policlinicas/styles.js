@@ -7,7 +7,7 @@ export const Container = styled.View`
 `
 
 export const CardBox = styled.View`
-    background-color: ${colors.grey13};
+    background-color: ${colors.grey13b};
     border-right-color: ${colors.grey10};
     border-bottom-color: ${colors.grey10};
     border-right-width: 1px;
