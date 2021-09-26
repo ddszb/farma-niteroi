@@ -2,19 +2,23 @@ import styled from "styled-components/native"
 
 import {ListItem} from 'react-native-elements'
 import colors from "../../styles/colors"
+import { Dimensions } from "react-native";
+
+const windowHeight = Dimensions.get('window').height;
 
 export const HeaderTitle = styled.View`
     flex-direction: row;
-    background-color: ${colors.primary}
+    background-color: ${colors.grey14}
     justify-content: center;
     align-items: center;
+    border-color: ${colors.grey10};
+    border-bottom-width: 1px;
     height: 60px;
 `
 export const HeaderTitleText = styled.Text`
     font-size: 22px;
-    text-align: left;
-    color: ${colors.white};
-    margin-left: 15px;
+    font-weight: bold;
+    color: ${colors.primary};
     text-align: center;
 `
 export const LeftTitle = styled(ListItem.Title)`
@@ -54,7 +58,8 @@ export const ToggleView = styled.View`
 `
 
 export const EmptyListContainer = styled.View`
-    margin-top: 100px;
+    margin-top: ${windowHeight * 0.3}px;
+    justify-content: center;
     align-items: center;
 `
 
@@ -62,7 +67,7 @@ export const LightText = styled.Text`
     font-size: 18px;
     color: ${colors.grey8};
     margin-horizontal: 5px;
-    text-align: left;
+    text-align: center;
     flex-wrap: wrap;
 `
 export const FooterButton = styled.TouchableOpacity`
@@ -71,8 +76,8 @@ export const FooterButton = styled.TouchableOpacity`
     margin-horizontal: 20px;
     background-color:${colors.primary}
     justify-content: center;
-    max-height: 52px;
-    border-radius: 30px;
+    height: 54px;
+    border-radius: 6px;
 `
 
 export const FooterButtonText = styled.Text`
@@ -81,4 +86,10 @@ export const FooterButtonText = styled.Text`
     text-align: left;
     color: ${colors.white};
     text-align: center;
+`
+export const ListView = styled.View`
+    flex: 0.9;
+`
+export const ButtonView = styled.View`
+    flex: 0.1;
 `

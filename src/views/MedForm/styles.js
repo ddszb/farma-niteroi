@@ -1,5 +1,8 @@
 import styled from "styled-components/native"
 import colors from "../../styles/colors"
+import { Dimensions } from "react-native";
+
+const windowWidth = Dimensions.get('window').width;
 
 export const FormFieldLabel = styled.Text`
     color: ${colors.primary};
@@ -37,7 +40,7 @@ export const LargeFormInputTextField = styled.TextInput`
     margin-bottom: 10px;
     margin-top: 5px;
     padding: 10px;
-    height: 94px;
+    height: 80px;
     text-align: left;
     justify-content: flex-start;
 `
@@ -108,8 +111,13 @@ export const BorderInputText = styled.TextInput`
     margin-left: 30px;
 `
 
+export const ResetButton = styled.TouchableOpacity`
+    margin-right: ${windowWidth * 0.02}px;
+    margin-top: 7px;
+`
+
 export const Button = styled.View`
-    border-radius: 25px;
+    border-radius: 5px;
     padding-left: 15px;
     padding-right: 15px;
     padding-top: 5px;
@@ -125,8 +133,11 @@ export const Button = styled.View`
 
 export const ButtonText = styled.Text`
     color: ${colors.white};
-    font-size: 22px;
+    font-size: 20px;
     text-align: center;
+    font-weight: bold;
+    margin-vertical: 4px;
+    margin-horizontal: 10px;
 `
 
 export const DatePickerText = styled.Text`

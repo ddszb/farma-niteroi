@@ -22,6 +22,6 @@ export default{
 
     //Opacity
     grey4Opacity: '#4440',
-    blackOpacity: 'rgba(0, 0, 0, 0.5)',
+    blackOpacity: 'rgba(0, 0, 0, 0.7)',
     
 }

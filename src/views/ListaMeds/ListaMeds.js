@@ -1,19 +1,18 @@
 import React, {useState, useEffect} from 'react'
-import {FlatList, TouchableOpacity, Button, ToastAndroid} from 'react-native'
+import {FlatList, TouchableOpacity, ToastAndroid} from 'react-native'
 import { ListItem } from 'react-native-elements'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
-import FAB from '../../components/FloatActionButton'
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons'
 import iconMoonConfig from '../../selection.json'
 import {LeftTitle, RightTitle, LeftSubtitle, RightSubtitle, RightContainer,
-     MedListView, IconPadding, HeaderTitle, HeaderTitleText, ToggleView, EmptyListContainer, LightText, FooterButton, FooterButtonText} from './styles'
+     MedListView, IconPadding, HeaderTitle, HeaderTitleText, ToggleView, EmptyListContainer, LightText, FooterButton, FooterButtonText, ListView, ButtonView} from './styles'
 import {useFocusEffect} from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import medStatus from '../../constants/medStatus'
 import doseStatus from '../../constants/doseStatus'
 import storageKeys from '../../constants/storageKeys'
-import { View } from 'react-native'
 import colors from '../../styles/colors'
+
 
 export default props =>{
     
@@ -73,17 +72,8 @@ export default props =>{
                     <LightText>
                         {'Nenhum medicamento adicionado!\n'}
                     </LightText>
-                    <View style={{flexDirection: 'row'}}>
                     <LightText>
-                        {'Toque no'}
-                    </LightText>
-                    <Icon name='add-circle' type={'ionicons'} size={25} color={colors.primary}/>
-                    <LightText>
-                        {'Para adicionar um novo '}
-                    </LightText>
-                    </View>
-                    <LightText>
-                        {'medicamento à sua farmácia pessoal.'}
+                        {'Toque no botão abaixo para adicionar um novo\nmedicamento à sua farmácia pessoal.'}
                     </LightText>
                 </EmptyListContainer>
             )
@@ -166,6 +156,7 @@ export default props =>{
     
     return (
         <MedListView>
+            <ListView>
             <HeaderTitle>
                 <HeaderTitleText>
                     Meus Medicamentos
@@ -173,14 +164,16 @@ export default props =>{
                 <ToggleView>
                     <TouchableOpacity onPress={toggleFilter}> 
                         <Icon 
-                            name={showFinishedMeds ? "eye" : "eye-slash"}
-                            type={"font-awesome"}
-                            size={25}
-                            color={colors.white}/>
+                            name={"filter"}
+                            type={"material-community"}
+                            size={32}
+                            color={colors.primary}/>
                     </TouchableOpacity>
                 </ToggleView>
             </HeaderTitle>
             {getMedsList()}
+            </ListView>
+            <ButtonView>
             <FooterButton
                 onPress={navigateToNew}
                 activeOpacity={0.9}>
@@ -188,6 +181,7 @@ export default props =>{
                     Novo Medicamento
                 </FooterButtonText>
             </FooterButton>
+            </ButtonView>
         </MedListView>
         
     )
