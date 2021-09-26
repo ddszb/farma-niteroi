@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { Modal, View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
 import Spinner from "./Spinner";
+import { Icon } from 'react-native-elements/dist/icons/Icon'
 import colors from "../styles/colors";
+
+const windowWidth = Dimensions.get('window').width;
 
 export default props =>{
 
@@ -31,47 +34,55 @@ export default props =>{
 
     return (
         <Modal
-                animationType="fade"
-                transparent={true}
-                visible={props.visible}
-                onRequestClose={() => {
-                    props.close()
-                }}>
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
-                      <Text style={styles.modalText}>{props.title}</Text>
-                      {props.subtitle && <Text style={styles.text}>{props.subtitle}</Text>}
-                      <View style={styles.selectionContainer}>
-                      <TextInput
-                              style={styles.input}
-                              onChangeText={onChangeText}
-                              value={value}
-                              maxLength={props.inputLength}
-                              keyboardType={props.inputType}/>
-                      {props.pickerOptions 
-                      ? <>
-                        <Spinner 
-                          items={props.pickerOptions} 
-                          value={1}
-                          onChangeValue={onChangePicker}
-                          styles={{width: 140}}/> 
-                        </>
-                      : <Text style={styles.text}>{props.inputText}</Text>
-                    }
-                      
-
+          animationType="fade"
+          transparent={true}
+          visible={props.visible}
+          onRequestClose={() => {
+              props.close()
+          }}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalText}>{props.title}</Text>
+                {props.subtitle && <Text style={styles.text}>{props.subtitle}</Text>}
+                <View style={styles.selectionContainer}>
+                  <TextInput
+                    style={styles.input}
+                    onChangeText={onChangeText}
+                    value={value}
+                    maxLength={props.inputLength}
+                    keyboardType={props.inputType}/>
+                  {props.pickerOptions 
+                  ? <>
+                    <Spinner 
+                      items={props.pickerOptions} 
+                      value={1}
+                      onChangeValue={onChangePicker}
+                      styles={{width: 140}}/> 
+                    </>
+                  : <Text style={styles.text}>{props.inputText}</Text>
+                  }
+                </View>
+                <View style={styles.row}>
+                  <TouchableOpacity style={styles.cancelButton}
+                      activeOpacity={0.5}
+                      onPress={() => props.close()}>
+                      <View style={[styles.row, styles.centerItems]}>
+                        <Text style={styles.buttonText}>
+                          {props.cancelText ? props.cancelText : 'Cancelar'}
+                        </Text>
+                          <Icon name="cancel" type="material-icons" size={20} color={colors.white}/>
                       </View>
-                      <View style={styles.buttonsRow}>
-                      <TouchableOpacity
-                          onPress={() => props.close()}
-                          style={styles.buttonCancel}>
-                          <Text style={styles.cancelText}>{props.cancelText ? props.cancelText : 'Cancelar'}</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                          onPress={onConfirm}
-                          style={styles.buttonConfirm}>
-                          <Text style={styles.confirmText}>{props.confirmText? props.confirmText : 'Ok'}</Text>
-                      </TouchableOpacity>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.confirmButton}
+                      activeOpacity={0.7}
+                      onPress={onConfirm}>
+                      <View style={[styles.row, styles.centerItems]}>
+                          <Text style={styles.buttonText}>
+                              {props.confirmText? props.confirmText : 'Ok'}
+                          </Text>
+                          <Icon name="check-circle" type="font-awesome" size={20} color={colors.white}/>
+                      </View>
+                  </TouchableOpacity>
                       </View>
                   </View>
                 </View>
@@ -88,10 +99,9 @@ const styles = StyleSheet.create({
       backgroundColor: colors.blackOpacity
     },
     modalView: {
-      margin: 10,
+      width: windowWidth * 0.7,
       backgroundColor: "white",
       borderRadius: 5,
-      padding: 15,
       alignItems: "center",
       shadowColor: colors.black,
       shadowOffset: {
@@ -123,19 +133,40 @@ const styles = StyleSheet.create({
       elevation: 1,
       backgroundColor: colors.primary
     },
-    cancelText:{
-      color: colors.primary,
-      textAlign: 'center'
+    row:{
+      flexDirection: 'row'
     },
-    confirmText:{
+    centerItems:{
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    cancelButton:{
+      flex: 1,
+      backgroundColor: colors.grey10,
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: 60,
+      borderBottomLeftRadius: 5,
+    },
+    confirmButton: {
+        flex: 1,
+        backgroundColor: colors.ok,
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 60,
+        borderBottomRightRadius: 5,
+    },
+    buttonText:{
+      fontSize: 18,
       color: colors.white,
-      textAlign: 'center',
-      fontWeight: 'bold'
+      fontWeight: 'bold',
+      margin: 5,
     },
     selectionContainer:{
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'center'
+      alignItems: 'center',
+      marginBottom: 20
     },
     input: {
       height: 40,
@@ -152,8 +183,9 @@ const styles = StyleSheet.create({
     },
     modalText: {
       marginBottom: 15,
+      marginTop: 5,
       textAlign: "center",
-      fontSize: 20,
+      fontSize: 22,
       fontWeight: 'bold',
       color: colors.primary
     },

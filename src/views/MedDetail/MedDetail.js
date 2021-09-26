@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ScrollView, TouchableOpacity } from 'react-native'
+import { ScrollView, TouchableOpacity, Dimensions} from 'react-native'
 import { ToastAndroid , Pressable, View, Alert} from 'react-native'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons'
@@ -15,13 +15,16 @@ import medStatus from '../../constants/medStatus'
 import storageKeys from '../../constants/storageKeys'
 import colors from '../../styles/colors'
 
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 export default props =>{
     
     const {med, screen} = props.route.params
     const [editingStock, setEditingStock] = useState(false)
     const [tempStock, setTempStock] = useState(Math.round(med.stock.amount).toString())
     const MedIcon = createIconSetFromIcoMoon(iconMoonConfig)
-
+    console.log("h: ", windowHeight , "w:", windowWidth )
     
     const __endTreatment = async () =>{        
         var medEnded = {...med}

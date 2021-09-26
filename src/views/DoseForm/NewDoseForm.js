@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { TouchableOpacity, ToastAndroid }  from 'react-native'
+import { TouchableOpacity, ToastAndroid, Alert }  from 'react-native'
 
 import moment from 'moment'
 import 'moment/locale/pt-br'
@@ -64,13 +64,17 @@ export default props =>{
             index: selectedMed.doses.length,
             sporadic: true
         }
-        if(selectedMed){
-            med = {...selectedMed}
-            med.doses.push(dose)
-            let newStock = Calculate.newStockAfterDose(med, dose)
-            med.stock.amount = newStock
-            saveMed(med)
+        med = {...selectedMed}
+        let newStock = Calculate.newStockAfterDose(med, dose)
+        if(newStock < 0){
+            let msg = "Seu estoque atual para o medicamento é insuficiente, Deseja confirmar a dose mesmo assim?\n Lembre-se de atualizar o estoque depois."
+            Alert.alert('Aviso de estoque', msg,
+            [{ text: 'Não', onPress(){ return }}, 
+             { text:'Sim'}])
         }
+        med.doses.push(dose)
+        med.stock.amount = newStock
+        saveMed(med)
     }
 
     const onSelectMed = med =>{

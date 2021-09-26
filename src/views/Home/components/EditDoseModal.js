@@ -137,6 +137,7 @@ export default props =>{
             { showPicker && 
                 (<DateTimePicker
                     value={dialogTime}
+                    maximumDate={new Date()}
                     mode="time"
                     is24Hour={true}
                     display="spinner"
@@ -159,7 +160,7 @@ const styles = StyleSheet.create({
     },
     modalView: {
         width: windowWidth * 0.7,
-        height: windowHeight * 0.5,
+        height: windowHeight * 0.4,
         backgroundColor: colors.white,
         borderRadius: 5,
         alignItems: "center",

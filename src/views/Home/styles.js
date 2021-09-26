@@ -1,5 +1,8 @@
 import styled from 'styled-components'
 import colors from '../../styles/colors'
+import { Dimensions } from "react-native";
+
+const windowHeight = Dimensions.get('window').height;
 
 export const Container = styled.View`
     flex: 1;
@@ -11,6 +14,14 @@ export const Header = styled.View`
 
 export const Body = styled.View`
     flex: 8;
+`
+
+export const TopView = styled.View`
+    flex: 0.9;
+`
+export const ButtonView = styled.View`
+    margin-top: 45px;
+    flex: 0.1;
 `
 
 export const CardBox = styled.View`
@@ -109,24 +120,28 @@ export const DateText = styled.Text`
 
 export const HeaderTitle = styled.View`
     flex-direction: row;
-    background-color: ${colors.primary};
+    background-color: ${colors.grey14};
     align-items: center;
     justify-content: space-around;
+    border-color: ${colors.grey10};
+    border-bottom-width: 1px;
     height: 60px;
 `
 
 export const HeaderTitleText = styled.Text`
     font-size: 22px;
+    font-weight: bold;
     text-align: left;
-    color: ${colors.white};
+    color: ${colors.primary};
     margin-left: 105px;
     text-align: center;
 `
 
 export const DatePickerView = styled.View`
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
+    margin-horizontal:20px;
 `
 
 export const ResetDateButton = styled.View`
@@ -138,7 +153,7 @@ export const ResetDateButton = styled.View`
 export const EmptyListContainer = styled.View`
     justify-content: flex-end;
     align-items: center;
-    margin-top: 100px;
+    margin-top: ${windowHeight * 0.3}px;
 `
 
 export const RightSwipe = styled.View`
@@ -175,12 +190,12 @@ export const RowView = styled.View`
 export const FooterButton = styled.TouchableOpacity`
     flex: 2;
     margin-top: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 11px;
     margin-horizontal: 20px;
     background-color:${colors.primary};
     justify-content: center;
-    max-height: 52px;
-    border-radius: 30px;
+    height: 54px;
+    border-radius: 6px;
 `
 
 export const FooterButtonText = styled.Text`

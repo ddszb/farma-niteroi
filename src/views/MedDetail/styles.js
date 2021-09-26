@@ -1,5 +1,9 @@
 import styled from 'styled-components'
 import colors from '../../styles/colors'
+import { Dimensions } from "react-native";
+
+const windowHeight = Dimensions.get('window').height;
+const windowWidth  = Dimensions.get('window').width;
 
 export const Container = styled.View`
     flex: 1;
@@ -10,11 +14,12 @@ export const Container = styled.View`
 export const RowView = styled.View`
     flex-direction: row;
     align-items: center;
+    justify-content: flex-start;
 
 `
 
 export const MedName = styled.Text`
-    font-size: 26px;
+    font-size: ${windowWidth > 500 ? 26 : 20}px;
     font-weight: bold;
 `
 export const VPadding = styled.View`
@@ -35,7 +40,7 @@ export const InfoTitle = styled.Text`
     text-align: center;
     `
 export const InfoText = styled.Text`
-    font-size: 16px;
+    font-size: ${windowWidth > 500 ? 22 : 20}px;
     color: ${colors.grey8};
     text-align: left;
 `
@@ -61,19 +66,21 @@ export const ButtonView = styled.View`
 export const Button = styled.View`
     border-width: 1px;
     border-color: ${colors.grey12};
-    border-radius: 25px;
+    background-color: ${colors.primary};
+    border-radius: 6px;
     padding-left: 15px;
     padding-right: 15px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     max-width: 190px;
     justify-content: center;
     margin-left: 10px;
     margin-right: 10px;
 `
 export const ButtonPurpleText = styled.Text`
-    color: ${colors.primary};
+    color: ${colors.white};
     font-size: 16px;
+    font-weight: bold;
     text-align: center;
 `
 
