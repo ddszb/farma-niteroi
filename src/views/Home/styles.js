@@ -13,6 +13,9 @@ export const Header = styled.View`
 `
 
 export const Body = styled.View`
+    border-top-width: 1px;
+    border-color: ${colors.grey12}
+    padding-top: 8px;
     flex: 8;
 `
 
@@ -25,7 +28,7 @@ export const ButtonView = styled.View`
 `
 
 export const CardBox = styled.View`
-    background-color: ${colors.grey13b};
+    background-color: ${colors.white};
     border-right-color: ${colors.grey10};
     border-bottom-color: ${colors.grey10};
     border-bottom-width: 1px;
@@ -142,6 +145,7 @@ export const DatePickerView = styled.View`
     justify-content: space-around;
     align-items: center;
     margin-horizontal:20px;
+    margin-top: 4
 `
 
 export const ResetDateButton = styled.View`

@@ -15,10 +15,10 @@ export function newStockAfterDose(med, dose){
                         var mlTaken = dose.amount / dropsToMlRate
                         return + Math.max(currStock - mlTaken, 0)
                 }else{
-                        return + Math.max(currStock - dose.amount)
+                        return + Math.max(currStock - dose.amount, 0)
                 }
         }else{
-                return + Math.max(currStock - dose.amount)
+                return + Math.max(currStock - dose.amount, 0)
         }
 }
 
