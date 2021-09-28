@@ -66,15 +66,18 @@ export default props =>{
         }
         med = {...selectedMed}
         let newStock = Calculate.newStockAfterDose(med, dose)
-        if(newStock < 0){
-            let msg = "Seu estoque atual para o medicamento é insuficiente, Deseja confirmar a dose mesmo assim?\n Lembre-se de atualizar o estoque depois."
-            Alert.alert('Aviso de estoque', msg,
-            [{ text: 'Não', onPress(){ return }}, 
-             { text:'Sim'}])
-        }
         med.doses.push(dose)
         med.stock.amount = newStock
-        saveMed(med)
+        if(newStock <= 0){
+            let msg = "Seu estoque atual para o medicamento acabou, lembre-se de atualizar o estoque depois. Confirmar dose?"
+            Alert.alert('Aviso de estoque', msg,
+            [{ text: 'Não', onPress(){ return }}, 
+             { text:'Sim', onPress() { saveMed(med)}}])
+            return
+        }else{
+            saveMed(med)
+        }
+
     }
 
     const onSelectMed = med =>{
