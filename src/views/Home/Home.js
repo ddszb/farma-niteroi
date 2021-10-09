@@ -6,18 +6,17 @@ import iconMoonConfig from '../../selection.json'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
 import { Body, CardBox, ColorTag, Container,
-     Detail, Header, Buttons, DarkText, LightText, ResetDateButton,
-     TopContent, BottomContent, DateText, HeaderTitle, HeaderTitleText,
+     Detail, Buttons, DarkText, LightText, ResetDateButton,
+     TopContent, BottomContent, DateText, 
      DatePickerView, EmptyListContainer, RightSwipe, RightSwipeText,
      WarningText, 
      RowView,
      HPadding,
-     FooterButton,
-     FooterButtonText,
      OkText,
      WaitingText,
      TopView,
-     ButtonView} from './styles'
+     ResetDatetext,
+     DateFilterContainer} from './styles'
 import { FlatList, Swipeable } from 'react-native-gesture-handler'
 import DateTimePicker from '@react-native-community/datetimepicker'
 
@@ -31,10 +30,13 @@ import doseActions from '../../constants/doseActions'
 import storageKeys from '../../constants/storageKeys'
 import * as Calculate from '../../util/UtilitarioCalculo'
 import colors from '../../styles/colors'
+import Header from '../../components/Header'
+import { color } from 'react-native-reanimated'
+import PrimaryButton from '../../components/PrimaryButton'
 
 
 const filterOptions = { ALL: 0, TAKEN: 1, NOT_TAKEN: 2}
-const filterIcons = ['alarm-plus', 'alarm-check', 'alarm-off']
+// const filterIcons = ['alarm-plus', 'alarm-check', 'alarm-off']
 const filterMsgs = ['Exibindo todas as doses', 'Exibindo apenas doses tomadas', 'Exibindo apenas doses não tomadas',]
 
 export default props =>{
@@ -62,9 +64,9 @@ export default props =>{
     }
 
     const checkFirstTime = async () =>{
-        const firstLogin = await AsyncStorage.getItem(storageKeys.FIRST_LOGIN)
-        if(!firstLogin){
-            setShowWelcomeModal(true)
+        const hideTutorial = await AsyncStorage.getItem(storageKeys.FIRST_LOGIN)
+        if(!hideTutorial){
+            props.navigation.navigate("Tutorial")
         }
     }
 
@@ -73,6 +75,7 @@ export default props =>{
     }
 
     const getMeds = async () =>{
+        console.log("props", Object.keys(props))
         const medsString = await AsyncStorage.getItem(storageKeys.MEDS)
         const meds = JSON.parse(medsString) || []
         setMeds(meds)
@@ -201,6 +204,7 @@ export default props =>{
 
     const getDateFilter = () =>{
         let datePicker = <DateTimePicker value={filterDay}
+        
         onChange ={ (event, date) => {
             setShowDatePicker(false)
             if(event.type == "set"){
@@ -209,30 +213,36 @@ export default props =>{
             }
         }}
         mode='date'/>
+        let showReset = !moment().isSame(filterDay, 'date')
         var dateString = moment(filterDay).isSame(moment(), 'date') ? 'Hoje, ' : moment(filterDay).format('ddd, ')
-        dateString += moment(filterDay).format('D/MM/YYYY')
+        dateString += moment(filterDay).format('D/MM/YY')
         datePicker = (
-            <View>
-                {!moment().isSame(filterDay, 'date') &&
+            <DateFilterContainer>
+                <DatePickerView>
+                    <TouchableOpacity style={{marginTop: showReset ? 20 : 12}} onPress={() => shiftDate(-1)}>
+                        <Icon name="leftcircle" type="ant-design" size={32} color={colors.white}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={showReset ? {} : {marginTop: 10}} onPress={ () => setShowDatePicker(true)}>
+                            <DateText>{dateString}</DateText>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{marginTop: showReset ? 20 : 12}} onPress={() => shiftDate(1)}>
+                        <Icon name="rightcircle" type="ant-design" size={32} color={colors.white}/>
+                    </TouchableOpacity>
+                </DatePickerView>
+                {showReset &&
                 <ResetDateButton>
                     <TouchableOpacity onPress={() => setFilterDay(new Date())}>
-                        <Icon name="calendar-refresh" type="material-community" size={32} color={colors.primary}/>
+                        <RowView>
+                            <Icon name="calendar-refresh" type="material-community" size={22} color={colors.white}/>
+                            <ResetDatetext>
+                                Hoje
+                            </ResetDatetext>
+                        </RowView>
                     </TouchableOpacity>
                 </ResetDateButton>
                 }
-                <DatePickerView>
-                    <TouchableOpacity onPress={() => shiftDate(-1)}>
-                        <Icon name="leftcircle" type="ant-design" size={32} color={colors.primary}/>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={ () => setShowDatePicker(true)}>
-                            <DateText>{dateString}</DateText>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => shiftDate(1)}>
-                        <Icon name="rightcircle" type="ant-design" size={32} color={colors.primary}/>
-                    </TouchableOpacity>
-                </DatePickerView>
                 {showDatePicker && datePicker}
-            </View>
+            </DateFilterContainer>
         )
         return datePicker
     }
@@ -363,19 +373,13 @@ export default props =>{
                 visible={showWelcomeModal}
                 close={closeWelcomeModal}
             />
+            <Header 
+                title="Doses do Dia"
+                rightButton="filter"
+                onPressRight={() => console.warn("pressed")}
+                onPressLeft={() => props.navigation.toggleDrawer()}/>
             <TopView>
-                <Header>
-                    <HeaderTitle>
-                        <HeaderTitleText>
-                            Doses do dia
-                        </HeaderTitleText>
-                        <TouchableOpacity
-                            onPress={toggleFilter}>
-                            <Icon name="filter" type="material-community" size={32} color={colors.primary}/>
-                        </TouchableOpacity>
-                    </HeaderTitle>
-                    {getDateFilter()}
-                </Header>
+            {getDateFilter()}
                 <Body>
                     {visibleDoses && visibleDoses.length > 0 &&
                     <FlatList
@@ -397,16 +401,12 @@ export default props =>{
                     }
                 </Body>
             </TopView>  
-            {meds.length > 0 &&
-            <ButtonView>
-                <FooterButton
-                    onPress={navigateToNew}
-                    activeOpacity={0.9}>
-                    <FooterButtonText>
-                        Nova Dose
-                    </FooterButtonText>
-                </FooterButton>
-            </ButtonView>}
+            <PrimaryButton
+                bottom
+                text="Nova Dose"
+                visible={meds.length > 0 && moment().isSameOrAfter(filterDay, 'date')}
+                onClick={navigateToNew}/>
+
         </Container>
 
     )
