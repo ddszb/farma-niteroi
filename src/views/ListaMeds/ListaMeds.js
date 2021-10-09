@@ -11,7 +11,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import medStatus from '../../constants/medStatus'
 import doseStatus from '../../constants/doseStatus'
 import storageKeys from '../../constants/storageKeys'
-import colors from '../../styles/colors'
+import Header from '../../components/Header'
+import PrimaryButton from '../../components/PrimaryButton'
 
 
 export default props =>{
@@ -156,32 +157,20 @@ export default props =>{
     
     return (
         <MedListView>
+            <Header 
+                title="Meus Medicamentos"
+                rightButton="filter"
+                onPressRight={() => toggleFilter()}
+                onPressLeft={() => props.navigation.toggleDrawer()}/>
             <ListView>
-            <HeaderTitle>
-                <HeaderTitleText>
-                    Meus Medicamentos
-                </HeaderTitleText>
-                <ToggleView>
-                    <TouchableOpacity onPress={toggleFilter}> 
-                        <Icon 
-                            name={"filter"}
-                            type={"material-community"}
-                            size={32}
-                            color={colors.primary}/>
-                    </TouchableOpacity>
-                </ToggleView>
-            </HeaderTitle>
             {getMedsList()}
             </ListView>
-            <ButtonView>
-            <FooterButton
-                onPress={navigateToNew}
-                activeOpacity={0.9}>
-                <FooterButtonText>
-                    Novo Medicamento
-                </FooterButtonText>
-            </FooterButton>
-            </ButtonView>
+            <PrimaryButton
+                bottom
+                text="Novo Medicamento"
+                visible={true}
+                onClick={navigateToNew}/>
+
         </MedListView>
         
     )

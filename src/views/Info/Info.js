@@ -3,6 +3,7 @@ import { Container, TipRow, TipText, TipView, Title, Subtitle, TopBackground, Bo
 import mensagens from './mensagens'
 import { FlatList } from 'react-native-gesture-handler'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
+import Header from '../../components/Header'
 import colors from '../../styles/colors'
 
 export default props => {
@@ -21,11 +22,12 @@ export default props => {
     }
 
     return (
+        <>
+        <Header 
+        title="Dicas de Saúde"
+        onPressLeft={() => props.navigation.toggleDrawer()}/>
         <Container>
             <TopBackground>
-                <Title>
-                    {mensagens.titulo}
-                </Title>
                 <Subtitle>
                     {mensagens.subtitulo}
                 </Subtitle>
@@ -38,6 +40,7 @@ export default props => {
                 />
             </BottomBackground>
         </Container>
+        </>
     )
 }
 

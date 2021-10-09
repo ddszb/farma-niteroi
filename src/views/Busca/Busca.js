@@ -2,7 +2,7 @@ import React from 'react'
 import { TouchableOpacity } from 'react-native'
 
 import {Button, ButtonText, Container, Text} from './styles'
-
+import Header from '../../components/Header'
 export default props =>{
     
     
@@ -16,6 +16,10 @@ export default props =>{
 
 
     return(
+        <>
+        <Header 
+            title="Procurar"
+            onPressLeft={() => props.navigation.toggleDrawer()}/>
         <Container>
             <Text>
                 Veja a relação de medicamentos oferecidos gratuitamente pela prefeitura de niterói
@@ -35,6 +39,7 @@ export default props =>{
                     <ButtonText> Policlínicas</ButtonText>
                 </Button>
             </TouchableOpacity>
-        </Container>   
+        </Container>
+        </>
     )
 }
