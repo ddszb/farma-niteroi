@@ -2,66 +2,32 @@ import React from 'react'
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { createStackNavigator } from '@react-navigation/stack'
 import { getFocusedRouteNameFromRoute } from '@react-navigation/core';
-import Home from '../views/Home/Home'
+
+import  {DosesStackNavigator, MedStackNavigator, SearchStackNavigator} from './StackNavigator'
+
 import Info from '../views/Info/Info'
-import ListaMeds from '../views/ListaMeds/ListaMeds'
-import MedForm from '../views/MedForm/MedForm'
-import MedDetail from '../views/MedDetail/MedDetail'
-import Search from '../views/Busca/Busca'
-import MedsNiteroi from '../views/MedsNiteroi/MedsNiteroi'
-import Policlinicas from '../views/Policlinicas/Policlinicas'
-import MedNiteroiDetalhe from '../views/MedsNiteroi/MedNiteroiDetalhe'
-import NewDoseForm from '../views/DoseForm/NewDoseForm';
+
 import colors from '../styles/colors';
 
 
 const Tab = createBottomTabNavigator()
 
-const MedsStack = createStackNavigator()
-const SearchStack = createStackNavigator()
-const HomeStack = createStackNavigator()
-
-function HomeStackScreen(){
-    return(
-        <HomeStack.Navigator>
-            <HomeStack.Screen options={{headerShown: false}} name="Doses" component={Home}/>
-            <HomeStack.Screen name="Adicionar Dose" component={NewDoseForm}/>
-        </HomeStack.Navigator>
-    )
-}
-
-function MedStackScreen() {
-    return (
-        <MedsStack.Navigator>
-            <MedsStack.Screen options={{headerShown: false}} name="Meus Medicamentos" component={ListaMeds}/>
-            <MedsStack.Screen name="Adicionar Medicamento" component={MedForm}/>
-            <MedsStack.Screen name="Meu Medicamento" component={MedDetail}/>
-        </MedsStack.Navigator>
-    )
-}
-
-function SearchStackScreen(){
-    return(
-        <SearchStack.Navigator>
-            <SearchStack.Screen options={{headerShown: false}} name="Procurar" component={Search}/>
-            <SearchStack.Screen options={{headerTitle: "voltar"}} name="Medicamento Niteroi Detalhe" component={MedNiteroiDetalhe}/>
-            <SearchStack.Screen options={{headerTitle:"Medicamentos da Prefeitura"}} name="Medicamentos Niterói" component={MedsNiteroi}/>
-            <SearchStack.Screen  name="Policlínicas" component={Policlinicas}/>
-        </SearchStack.Navigator>
-    )
-}
 
 function __getTabBarVisiblity(route){
-    noTabRoutes = ["Adicionar Medicamento", "Adicionar Dose"]
+    noTabRoutes = ["Adicionar Medicamento", "Adicionar Dose", "Tutorial", "Sobre", "Medicamentos da Prefeitura", "Policlínicas", "Medicamentos Niterói"]
     const routeName = getFocusedRouteNameFromRoute(route)
-    return !noTabRoutes.includes(routeName)
+    return noTabRoutes.includes(routeName) ? 'none' : 'flex'
 }
 
 export default props =>(
     <Tab.Navigator 
     screenOptions={({ route }) => ({
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.grey6,
+        tabBarShowLabel: true,
+        tabBarLabelStyle: {fontSize: 12},
+        tabBarStyle:{ height: 50},
         tabBarIcon: ({ focused, color, size }) => {
             let iconName
             switch (route.name){
@@ -90,30 +56,36 @@ export default props =>(
             return <Ionicons name={iconName} size={size} color={color} />;
         },
       })}
-    tabBarOptions={{
-        activeTintColor: colors.primary,
-        inactiveTintColor: colors.grey6,
-        showLabel: true,
-        labelStyle: {fontSize: 12},
-        style:{ height: 50}
-    }} initialRouteName="Doses">
+     initialRouteName="Doses">
         <Tab.Screen 
             name="Doses"
-            component={HomeStackScreen}             
+            component={DosesStackNavigator}             
             options={({ route }) => ({
-                tabBarVisible: __getTabBarVisiblity(route)
+                headerShown: false,
+                tabBarStyle: {display: __getTabBarVisiblity(route)}
             })}/>
         <Tab.Screen 
             name="Medicamentos" 
-            component={MedStackScreen} 
+            component={MedStackNavigator} 
             options={({ route }) => ({
-                tabBarVisible: __getTabBarVisiblity(route)
+                headerShown: false,
+                tabBarStyle: {display: __getTabBarVisiblity(route)}
             })}/>
         <Tab.Screen 
             name="Procurar" 
-            component={SearchStackScreen}/>
+            options={({ route }) => ({
+                headerShown: false,
+                tabBarStyle: {display: __getTabBarVisiblity(route)}
+            })}
+            component={SearchStackNavigator}/>
         <Tab.Screen 
             name="Informação"
+            
+            options={({ route }) => ({
+                headerShown: false,
+                title: "Dicas de Saúde",
+                tabBarStyle: {display: __getTabBarVisiblity(route)}
+            })}
             component={Info}/>
     </Tab.Navigator>
 )
