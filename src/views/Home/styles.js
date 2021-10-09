@@ -8,23 +8,13 @@ export const Container = styled.View`
     flex: 1;
 `
 
-export const Header = styled.View`
-    height: 130px;
-`
-
 export const Body = styled.View`
-    border-top-width: 1px;
-    border-color: ${colors.grey12}
     padding-top: 8px;
     flex: 8;
 `
 
 export const TopView = styled.View`
     flex: 0.9;
-`
-export const ButtonView = styled.View`
-    margin-top: 45px;
-    flex: 0.1;
 `
 
 export const CardBox = styled.View`
@@ -112,32 +102,21 @@ export const WaitingText = styled.Text`
 `
 
 export const DateText = styled.Text`
-    font-size: 23px;
+    font-size: 22px;
+    width: 160px;
     margin-horizontal: 10px;
-    margin-vertical: 16px;
-    color: ${colors.primary};
+    margin-vertical: 10px;
+    color: ${colors.white};
     font-weight: bold;
     font-family: Lato;
     text-align: center;
 `
 
-export const HeaderTitle = styled.View`
-    flex-direction: row;
-    background-color: ${colors.grey14};
-    align-items: center;
-    justify-content: space-around;
-    border-color: ${colors.grey10};
+export const DateFilterContainer = styled.View`
+    height: 80px;
+    border-color: ${colors.grey12};
     border-bottom-width: 1px;
-    height: 60px;
-`
-
-export const HeaderTitleText = styled.Text`
-    font-size: 22px;
-    font-weight: bold;
-    text-align: left;
-    color: ${colors.primary};
-    margin-left: 105px;
-    text-align: center;
+    background-color: ${colors.primary};
 `
 
 export const DatePickerView = styled.View`
@@ -145,13 +124,16 @@ export const DatePickerView = styled.View`
     justify-content: space-around;
     align-items: center;
     margin-horizontal:20px;
-    margin-top: 4
 `
 
 export const ResetDateButton = styled.View`
-    position: absolute;
-    left: 25px;
-    top: -44px;
+    align-items: center;
+    font-style: italic;
+`
+
+export const ResetDatetext = styled.Text`
+    font-size: 15px;
+    color:${colors.white};
 `
 
 export const EmptyListContainer = styled.View`
@@ -189,23 +171,4 @@ export const RowView = styled.View`
     align-items: center;
     justify-content: center;
     
-`
-
-export const FooterButton = styled.TouchableOpacity`
-    flex: 2;
-    margin-top: 5px;
-    margin-bottom: 11px;
-    margin-horizontal: 20px;
-    background-color:${colors.primary};
-    justify-content: center;
-    height: 54px;
-    border-radius: 6px;
-`
-
-export const FooterButtonText = styled.Text`
-    font-size: 23px;
-    font-weight:bold;
-    text-align: left;
-    color: ${colors.white};
-    text-align: center;
 `

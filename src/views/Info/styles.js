@@ -42,13 +42,14 @@ export const TipRow = styled.View`
 `
 
 export const TopBackground = styled.View`
-    flex: 2.5;
-    background-color: ${colors.grey13};    
+    flex: 2;
+    background-color: ${colors.grey13b};    
     border-bottom-width: 2px;
     border-bottom-color: ${colors.grey10};
+    justify-content: center;
 `
 
 export const BottomBackground = styled.View`
     flex: 7.5;
-    background-color: ${colors.grey13b};  
+    background-color: ${colors.grey14};  
 `
