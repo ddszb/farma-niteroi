@@ -44,7 +44,6 @@ export default props =>{
     const MedIcon = createIconSetFromIcoMoon(iconMoonConfig)
 
     const [meds, setMeds] = useState([])
-    const [sporadicDoses, setSporadicDoses] = useState([])
     const [visibleDoses, setVisibleDoses] = useState([])
     const [filterOption, setFilterOption] = useState(filterOptions.ALL)
     const [showDatePicker, setShowDatePicker] = useState(false)
@@ -57,6 +56,8 @@ export default props =>{
     
     clearAsyncStorage = async() => {
         AsyncStorage.clear();
+        setMeds([])
+        setVisibleDoses([])
     }
 
     const updateMeds = async () =>{
@@ -65,7 +66,7 @@ export default props =>{
 
     const checkFirstTime = async () =>{
         const hideTutorial = await AsyncStorage.getItem(storageKeys.FIRST_LOGIN)
-        if(!hideTutorial){
+        if(hideTutorial){
             props.navigation.navigate("Tutorial")
         }
     }
@@ -75,7 +76,6 @@ export default props =>{
     }
 
     const getMeds = async () =>{
-        console.log("props", Object.keys(props))
         const medsString = await AsyncStorage.getItem(storageKeys.MEDS)
         const meds = JSON.parse(medsString) || []
         setMeds(meds)
@@ -117,16 +117,17 @@ export default props =>{
         ToastAndroid.showWithGravityAndOffset(filterMsgs[n], ToastAndroid.SHORT, ToastAndroid.TOP, 0 , 30)        
     }
 
-    const filterDoses = () =>{
+    const filterDoses = (reorder) =>{
         var allDoses = [].concat.apply([], meds.map( m => m.doses)) // Concatena todas as doses de todos os medicamentos
         let dayDoses = allDoses.filter( d => (moment(d.date).isSame(filterDay, 'day') || moment(d.dateTaken).isSame(filterDay, 'day')) && d.status !== doseStatus.ENCERRADA)
         let taken = dayDoses.filter( d => d.dateTaken)
         let notTaken = dayDoses.filter( d => !d.dateTaken)
-
-        notTaken.sort((a, b) => new Date(a.date) - new Date(b.date))
-        taken.sort((a,b) => new Date(a.dateTaken) - new Date(b.dateTaken))
+        if(reorder){
+            notTaken.sort((a, b) => new Date(a.date) - new Date(b.date))
+            taken.sort((a,b) => new Date(a.dateTaken) - new Date(b.dateTaken))
+        }
         let visible = notTaken.concat(taken)
-        
+
         if(filterOption == filterOptions.TAKEN){
             visible = visible.filter( d => d.status == doseStatus.TOMADA )
         }else if(filterOption == filterOptions.NOT_TAKEN){
@@ -160,7 +161,7 @@ export default props =>{
                 updateDose(dose, doseActions.EDITAR_DOSE_TOMADA)
                 break
             case doseStatus.NAO_TOMADA:
-                if(dose.newDate){
+                if(dose.newDate && !dose.dateTaken){
                     updateDose(dose, doseActions.EDITAR_DOSE_NAO_TOMADA)    
                 }else{
                     updateDose(dose, doseActions.TOMAR_DOSE)
@@ -248,7 +249,7 @@ export default props =>{
     }
 
     const getRightSwipe = (dose) => {
-        if (dose.status == doseStatus.NAO_TOMADA && moment().isSame(dose.date, 'day')){
+        if (false && dose.status == doseStatus.NAO_TOMADA && moment().isSame(dose.date, 'day')){
             return (
                 <RightSwipe style={{backgroundColor: colors.ok}}>
                     <RightSwipeText>
@@ -327,9 +328,8 @@ export default props =>{
         return(
             <>
             <TouchableOpacity
-                activeOpacity={0.5}
-                delayPressIn={200}
-                onPressIn={() => onPressDose(dose)}>
+                activeOpacity={0.3}
+                onPress={() => onPressDose(dose)}>
                 <Swipeable
                     ref={swipeableRef}
                     renderRightActions={() => getRightSwipe(dose)}

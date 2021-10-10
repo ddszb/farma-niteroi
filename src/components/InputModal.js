@@ -78,7 +78,7 @@ export default props =>{
                       onPress={onConfirm}>
                       <View style={[styles.row, styles.centerItems]}>
                           <Text style={styles.buttonText}>
-                              {props.confirmText? props.confirmText : 'Ok'}
+                              {props.confirmText? props.confirmText : 'Confirmar'}
                           </Text>
                           <Icon name="check-circle" type="font-awesome" size={20} color={colors.white}/>
                       </View>
