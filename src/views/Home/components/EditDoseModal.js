@@ -12,12 +12,12 @@ const windowHeight = Dimensions.get('window').height;
 
 export default props =>{
 
+    const originalDose = {...props.dose}
     const [dose, setDose] = useState(props.dose)
     const [dialogTime, setDialogTime] = useState(props.dose.dateTaken ? new Date(props.dose.dateTaken) : new Date(props.dose.date))
     const [dialogAmount, setDialogAmount] = useState(props.dose.amount ? '' + props.dose.amount : '1')
     const [showPicker, setShowPicker] = useState(false)
-
-
+    const [onEdit, setOnEdit] = useState(props.dose.status == doseStatus.TOMADA)
     const changeTime = (event, date) =>{
         if(date === undefined){
             setShowPicker(false)
@@ -37,12 +37,30 @@ export default props =>{
         setDialogAmount(amount)
     }
 
-    const confirm = () =>{
-        var d = {...dose}
-        if(d.status == doseStatus.NAO_TOMADA && moment(dialogTime) > moment()){
-            d.newDate = dialogTime
+    const leftClick = () =>{
+        if(dose.status !== doseStatus.TOMADA){
+            if(onEdit){
+            setDose(originalDose)
+            setDialogTime(originalDose.dateTaken ? new Date(originalDose.dateTaken) : new Date(originalDose.date))
+            setDialogAmount(originalDose.amount ? '' + originalDose.amount : '1')
+            }
+            setOnEdit(!onEdit)
         }else{
+            props.close()
+        }
+    
+    }
+
+    const rightClick = () =>{
+        var d = {...dose}
+        if(!onEdit){
             d.dateTaken = dialogTime
+        }else{
+            if(d.status == doseStatus.NAO_TOMADA){
+                d.newDate = dialogTime
+            }else{
+                d.dateTaken = dialogTime
+            }
         }
         d.amount = dialogAmount
         props.onSet(d)
@@ -50,19 +68,21 @@ export default props =>{
 
     const timeAmountContent = () =>{
         let time = moment(dialogTime).format("HH:mm")
-        var confirmLabel = "Ajustar"
-        if(dose.status == doseStatus.NAO_TOMADA && moment(dialogTime).isSameOrBefore(moment())){
-            confirmLabel = "Tomar"
-        }
+        var leftButtonLabel = onEdit || dose.dateTaken ? "Cancelar" : "Ajustar"
+        let rightButtonLabel = onEdit || dose.dateTaken ? "Confirmar" : "Tomar"
+        let leftIconName = onEdit || dose.dateTaken ? "cancel" : "more-time"
         return(
             <>
             <View style={styles.form}>
+                <Text style={styles.title}>
+                    {dose.medName}
+                </Text>
                 <Text style={styles.text}>
                     Horário
                 </Text>
                 <View>
-                    <TouchableOpacity onPress={() => setShowPicker(true)}>
-                        <Text style={styles.hourText}>
+                    <TouchableOpacity disabled={!onEdit} onPress={() => setShowPicker(true)}>
+                        <Text style={onEdit ? styles.hourText : styles.text}>
                             {time}
                         </Text>
                     </TouchableOpacity>
@@ -72,7 +92,8 @@ export default props =>{
                 </Text>
                 <View style={[styles.row, styles.centerItems]}>
                     <TextInput 
-                        style={styles.input}
+                        editable={onEdit}
+                        style={onEdit ? styles.input : styles.text}
                         keyboardType="numeric"
                         onChangeText={changeAmount}
                         value={dialogAmount}
@@ -85,20 +106,20 @@ export default props =>{
                 <View style={styles.row}>
                     <TouchableOpacity style={styles.cancelButton}
                         activeOpacity={0.5}
-                        onPress={() => props.close()}>
+                        onPress={leftClick}>
                         <View style={[styles.row, styles.centerItems]}>
                             <Text style={styles.buttonText}>
-                                Cancelar
+                                {leftButtonLabel}
                             </Text>
-                            <Icon name="cancel" type="material-icons" size={20} color={colors.white}/>
+                            <Icon name={leftIconName} type="material-icons" size={20} color={colors.white}/>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.confirmButton}
                         activeOpacity={0.7}
-                        onPress={confirm}>
+                        onPress={rightClick}>
                         <View style={[styles.row, styles.centerItems]}>
                             <Text style={styles.buttonText}>
-                                {confirmLabel}
+                                {rightButtonLabel}
                             </Text>
                             <Icon name="check-circle" type="font-awesome" size={20} color={colors.white}/>
                         </View>
@@ -110,14 +131,16 @@ export default props =>{
 
     const modalContent = () =>{
 
-        var title = "Ajustar dose"
         var content = timeAmountContent()
 
         return(
             <>
-            <Text style={styles.title}>
-                {title}
-            </Text>
+            <View style={{alignItems: 'flex-end', width: '100%'}}>
+                <TouchableOpacity style={{marginRight: 8, marginTop: 4}}
+                    onPress={() => props.close()}>
+                    <Icon name="cancel" type="material-icons" size={36} color={colors.primary}/>
+                </TouchableOpacity>
+            </View>
             {content}
             </>
         )
@@ -181,23 +204,23 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     title:{
-        marginVertical: 10,
+        marginBottom: 10,
+        overflow: "hidden",
         textAlign: "center",
-        fontSize: 22,
-        fontWeight: 'bold',
+        fontSize: 20,
         color: colors.primary
     },
     text: {
         textAlign: "justify",
         marginBottom: 2,
         marginLeft: 8,
-        fontSize: 20,
+        fontSize: 18,
         color: colors.grey8
     },
     hourText:{
         color: colors.primary,
         fontWeight: 'bold', 
-        fontSize: 22,
+        fontSize: 20,
         marginVertical: 10
     },
     input: {
