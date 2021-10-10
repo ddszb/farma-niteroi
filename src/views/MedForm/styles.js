@@ -54,8 +54,8 @@ export const CardBox = styled.View`
     background-color: ${colors.grey13b};
     border-right-color: ${colors.grey10};
     border-bottom-color: ${colors.grey10};
-    border-right-width: 1px;
-    border-bottom-width: 1px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
     border-radius: 5px;
     margin-bottom: 8px;
 `
