@@ -1,6 +1,6 @@
 import React, {useState, useEffect,  useRef} from 'react'
 
-import { TouchableOpacity, View, RefreshControl, ToastAndroid, Button } from 'react-native'
+import { TouchableOpacity, RefreshControl, ToastAndroid } from 'react-native'
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons'
 import iconMoonConfig from '../../selection.json'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -24,7 +24,6 @@ import {useFocusEffect} from '@react-navigation/native'
 import moment from 'moment'
 import 'moment/locale/pt-br'
 import doseStatus from '../../constants/doseStatus'
-import WelcomeModal from './components/WelcomeModal'
 import EditDoseModal from './components/EditDoseModal'
 import doseActions from '../../constants/doseActions'
 import storageKeys from '../../constants/storageKeys'
@@ -50,7 +49,6 @@ export default props =>{
     const [filterDay, setFilterDay] = useState(new Date())
     const [refreshing, setRefreshing] = useState(false)
     const [editedDose, setEditedDose] = useState()
-    const [showWelcomeModal, setShowWelcomeModal] = useState(false)
     const [showEditDoseModal, setShowEditDoseModal] = useState(false)
     const swipeableRef = useRef(null);
     
@@ -66,13 +64,9 @@ export default props =>{
 
     const checkFirstTime = async () =>{
         const hideTutorial = await AsyncStorage.getItem(storageKeys.FIRST_LOGIN)
-        if(hideTutorial){
+        if(!hideTutorial){
             props.navigation.navigate("Tutorial")
         }
-    }
-
-    const saveFirstVisit = async () =>{
-        await AsyncStorage.setItem(storageKeys.FIRST_LOGIN, '1')
     }
 
     const getMeds = async () =>{
@@ -85,10 +79,6 @@ export default props =>{
         setShowEditDoseModal(false)
     }
 
-    const closeWelcomeModal = () =>{
-        setShowWelcomeModal(false)
-        saveFirstVisit()
-    }
 
     useFocusEffect(
         React.useCallback(() =>{
@@ -369,10 +359,6 @@ export default props =>{
                 onSet={onEditDose}
                 close={closeEditModal}
             />}
-            <WelcomeModal
-                visible={showWelcomeModal}
-                close={closeWelcomeModal}
-            />
             <Header 
                 title="Doses do Dia"
                 rightButton="filter"
