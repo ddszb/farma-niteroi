@@ -3,4 +3,7 @@ export default{
     MED_SEQUENCE: "medsListSequence",
     SPORADIC_DOSES: "sporadicDoses",
     FIRST_LOGIN: "firstLogin",
+    
+    HOME_FILTER: "homeFilter",
+    
 }

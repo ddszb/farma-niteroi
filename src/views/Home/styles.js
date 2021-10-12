@@ -81,6 +81,7 @@ export const OkText = styled.Text`
     text-align:center;
     margin-left: 46px;
     margin-right: 5px;
+    padding: 5px;
 `
 
 export const WarningText = styled.Text`
@@ -90,6 +91,7 @@ export const WarningText = styled.Text`
     margin-horizontal: 5px;
     margin-left: 46px;
     text-align: center;
+    padding: 5px;
 `
 
 export const WaitingText = styled.Text`
@@ -98,7 +100,8 @@ export const WaitingText = styled.Text`
     font-weight: bold;
     margin-horizontal: 5px;
     margin-left: 46px;
-    text-align: center;
+    text-align: center
+    padding: 5px;;
 `
 
 export const DateText = styled.Text`
