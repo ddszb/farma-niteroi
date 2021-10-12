@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 // Screens
 import Home from '../views/Home/Home'
-import ListaMeds from '../views/ListaMeds/ListaMeds'
+import ListaMeds from '../views/ListaMeds/MyMeds'
 import MedForm from '../views/MedForm/MedForm'
 import MedDetail from '../views/MedDetail/MedDetail'
 import Search from '../views/Busca/Busca'
