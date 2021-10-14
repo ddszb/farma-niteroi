@@ -58,7 +58,6 @@ export default props => {
         isActive={props.visible}
         onClose={props.onClose}
         showCloseButton={true}
-        style={{height: 510}}
         noBar
         closeOnTouchOutside={true}>
             <View>
