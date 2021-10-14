@@ -17,7 +17,7 @@ import MedFilter from '../../components/Filter'
  */
 export default props =>{
     
-    const [showFinishedMeds, setShowFinishedMeds] = useState(true)
+    const [showFinishedMeds, setShowFinishedMeds] = useState(false)
     const [meds, setMeds] = useState([])
     const [visibleMeds, setVisibleMeds] = useState([])
     const [showFilter, setShowFilter] = useState(false)

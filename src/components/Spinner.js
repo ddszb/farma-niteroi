@@ -25,7 +25,7 @@ export default props =>{
             selectedValue={selectedValue}
             value={props.value}
             style={[defaultStyles, props.styles ? props.styles : {}]}
-            mode="dropdown"
+            mode="dialog"
             onValueChange={onValueChange}>
             {getList()}
           </Picker>
