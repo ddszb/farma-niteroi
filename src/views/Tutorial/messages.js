@@ -34,7 +34,7 @@ export default [
         },
         {
             img: require('./7.gif'),
-            text: "Também possível acessar este tutorial e todas as outras páginas novamente tocando no ícone superior esquerdo ou deslizando a partir do.",
+            text: "Também possível acessar este tutorial e todas as outras páginas novamente tocando no ícone superior esquerdo ou deslizando da esquerda para a direita.",
         },
     
 ]
