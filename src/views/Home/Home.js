@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import moment from 'moment'
 import 'moment/locale/pt-br'
 // Estilos
-import { Container, TopView} from './styles'
+import {Container, TopView} from './styles'
 // Enums
 import doseStatus from '../../constants/doseStatus'
 import doseActions from '../../constants/doseActions'
@@ -20,6 +20,7 @@ import PrimaryButton from '../../components/PrimaryButton'
 import DoseFilter from '../../components/Filter'
 import DateFilter from './components/DateFilter'
 import DoseList from './components/DoseList'
+import { Button } from 'react-native'
 
 const filterOptions = { ALL: '0', NOT_TAKEN: '1', TAKEN: '2'}
 
@@ -207,7 +208,7 @@ export default props =>{
                 dose={editedDose}
                 onSet={onEditDose}
                 close={() => setShowEditDoseModal(false)}
-            />}
+                />}
             <DoseFilter
                 visible={showFilter}
                 options={getFilterOptions()}

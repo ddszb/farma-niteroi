@@ -54,7 +54,7 @@ export default props =>{
                     Tratamento Encerrado
                 </RightSubtitle>
         }else if(med.scheduledDoses){
-            if(med.days > 0 && med.doses && med.doses.length > 0){
+            if(med.totalDays > 0 && med.doses && med.doses.length > 0){
                 var dosesLeft = med.doses.filter(d => d.status == doseStatus.NAO_TOMADA || d.status == doseStatus.ADIADA).length
                 statusRender = <>
                     <RightTitle style={{color: med.iconColor}}>
