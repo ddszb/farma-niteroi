@@ -161,7 +161,7 @@ export default props =>{
         
         if(med.scheduledDoses){
             untakenDoses = med.doses.filter(d => d.status == doseStatus.ADIADA || d.status == doseStatus.NAO_TOMADA).length
-            if(med.days > 0 && untakenDoses > 0){
+            if(med.totalDays > 0 && untakenDoses > 0){
                 return(
                 <>
                     <InfoTitle>
