@@ -32,12 +32,12 @@ export default props =>{
     }
 
     const __createDosesList = (medPersist) => {
-        if(!medPersist.scheduledDoses || medPersist.days == 0){
+        if(!medPersist.scheduledDoses || medPersist.totalDays == 0){
             medPersist.doses = []
         }else{
             var doseDay = new Date(medPersist.startDate)
             var currentTime = new Date()
-            var totalIntakes = medPersist.days * medPersist.doseHours.length
+            var totalIntakes = medPersist.totalDays * medPersist.doseHours.length
             var daysArray = Object.keys(medPersist.weekdays).map(d => medPersist.weekdays[d])
             var doses = []
             while(doses.length < totalIntakes){
