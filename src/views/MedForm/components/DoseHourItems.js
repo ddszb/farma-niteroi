@@ -13,8 +13,6 @@ import DateTimePicker from '@react-native-community/datetimepicker'
 import moment from 'moment'
 import 'moment/locale/pt-br'
 import InputModal from '../../../components/InputModal'
-import doseUnits from '../../../constants/doseUnits'
-import { RowView } from '../../DoseForm/styles'
 import colors from '../../../styles/colors'
 
 export default props =>{
@@ -247,7 +245,7 @@ export default props =>{
                     display="spinner"
                     textColor={colors.primary}
                     timeZoneOffsetInMinutes={-180}
-                    minuteInterval={5}
+                    minuteInterval={2}
                     onChange={__updateDoseItem}/>)
             }
         </>
