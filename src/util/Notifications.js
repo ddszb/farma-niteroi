@@ -1,5 +1,7 @@
 
 import PushNotification from 'react-native-push-notification'
+import moment from 'moment'
+import 'moment/locale/pt-br'
 
 /**
  * Cria ou atualiza uma notificação agendada para uma dose 
@@ -11,6 +13,8 @@ const scheduleDoseNotification = (dose) =>{
         title: "Tomar medicamento",
         id: dose.id,
         message: `${dose.medName} - ${dose.amount} ${dose.unit.label} ${dose.amount == 1 ? "" : "s"}`,
+        bigText: `<b><font color=\"${dose.iconColor}\">${dose.medName}</b></font> - ${dose.amount} ${dose.unit.label}${dose.amount == 1 ? "" : "s"}`,
+        subText: `${moment(dose.date).format("HH:mm")}`,
         tag: dose.medName,
         date: dose.date
     }
@@ -21,7 +25,10 @@ const createNotification = async (params) =>{
     PushNotification.localNotificationSchedule({
         ...params,
         allowWhileIdle: true,
-        playSound: false,
+        vibrate: true,
+        largeIcon: "",
+        vibration: 300,
+        playSound: false, //todo ativar
         repeatTime: 1
     })
 

@@ -74,7 +74,7 @@ export default props =>{
         return(
             <>
             <View style={styles.form}>
-                <Text style={styles.title}>
+                <Text style={styles.title} numberOfLines={1}>
                     {dose.medName}
                 </Text>
                 <Text style={styles.text}>
