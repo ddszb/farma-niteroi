@@ -5,6 +5,7 @@ import doseStatus from "../../../constants/doseStatus";
 import storageKeys from "../../../constants/storageKeys";
 import { Button, ButtonText } from "../styles";
 import * as UtilitarioFormatacao from '../../../util/UtilitarioFormatacao';
+import { scheduleDoseNotification } from "../../../util/Notifications";
 
 export default props =>{
 
@@ -12,7 +13,9 @@ export default props =>{
         medPersist.doseHours.forEach( doseTime =>{
             day.setHours(doseTime.time.getHours(), doseTime.time.getMinutes())
             if(day > currentTime){
+                let doseId = '' + medPersist.id + '000' + doses.length
                 var doseDate = new Date(day)
+                doseDate.setSeconds(0)
                 let dose = {
                     medName: medPersist.name,
                     date: doseDate, 
@@ -24,8 +27,10 @@ export default props =>{
                     icon: medPersist.icon,
                     iconColor: medPersist.iconColor,
                     index: doses.length,
+                    id: doseId,
                     sporadic: false
                 }
+                scheduleDoseNotification(dose)
                 doses.push(dose)
             }
         })
@@ -68,16 +73,16 @@ export default props =>{
 
     const saveMed = async () =>{
         var medPersist = {...props.med}
+        var medSequence = await AsyncStorage.getItem(storageKeys.MED_SEQUENCE)
+        var medSequence = medSequence !== null ? parseInt(medSequence) + 1 : 1
+        medPersist.id = medSequence
         medPersist = __fillMedInfo(medPersist)
         const medsString = await AsyncStorage.getItem(storageKeys.MEDS)
         const meds = medsString !== null ? JSON.parse(medsString) : []
         
-        const medSequence = await AsyncStorage.getItem(storageKeys.MED_SEQUENCE)
-        const medId = medSequence !== null ? parseInt(medSequence) + 1 : 1
-        medPersist.id = medId
         
         meds.push(medPersist)
-        AsyncStorage.setItem(storageKeys.MED_SEQUENCE, medId.toString())
+        AsyncStorage.setItem(storageKeys.MED_SEQUENCE, medSequence.toString())
         AsyncStorage.setItem(storageKeys.MEDS, JSON.stringify(meds))
 
         props.navigation.goBack()

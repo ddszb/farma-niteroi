@@ -18,31 +18,30 @@ import colors from '../../../styles/colors';
  */
 export default props =>{
 
-    const [filterDay, setFilterDay] = useState(new Date())
     const [showDatePicker, setShowDatePicker] = useState(false)
 
     const onChange = (event, date) =>{
         setShowDatePicker(false)
         if(event.type == "set"){
-            setFilterDay(date)
+            // setFilterDay(date)
             props.onChangeDate(date)
         }
     }
     
     const shiftDate = offset =>{
-        let newDate = new Date(filterDay)
+        let newDate = new Date(props.date)
         newDate.setDate(newDate.getDate() + offset)
-        setFilterDay(newDate)
+        // setFilterDay(newDate)
         props.onChangeDate(newDate)
     }
 
     const showReset = () =>{
-        return !moment().isSame(filterDay, 'date')
+        return !moment().isSame(props.date, 'date')
     }
     
     const getDateStr = () =>{
-        let dateString = moment(filterDay).isSame(moment(), 'date') ? 'Hoje, ' : moment(filterDay).format('ddd, ')
-        dateString += moment(filterDay).format('D/MM/YY')
+        let dateString = moment(props.date).isSame(moment(), 'date') ? 'Hoje, ' : moment(props.date).format('ddd, ')
+        dateString += moment(props.date).format('D/MM/YY')
         return dateString
     }
     
@@ -61,7 +60,7 @@ export default props =>{
             </DatePickerView>
             {showReset() &&
             <ResetDateButton>
-                <TouchableOpacity onPress={() => setFilterDay(new Date())}>
+                <TouchableOpacity onPress={() => props.onChangeDate(new Date())}>
                     <RowView>
                         <Icon name="calendar-refresh" type="material-community" size={22} color={colors.white}/>
                         <ResetDatetext>
@@ -73,7 +72,7 @@ export default props =>{
             }
             {showDatePicker && 
             <DateTimePicker 
-                value={filterDay}
+                value={props.date}
                 onChange ={onChange}
                 mode='date'/>}
         </DateFilterContainer>

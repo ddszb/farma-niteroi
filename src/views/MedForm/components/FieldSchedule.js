@@ -55,6 +55,8 @@ export default props =>{
     }
 
     return(
+        <>
+        {props.med.scheduledDoses &&
         <CardBox>
             <CardContent>
                 <View>
@@ -80,6 +82,7 @@ export default props =>{
                     onChange={onChangeStartDate}
                     mode="date"/>}
             </CardContent>
-        </CardBox>
+        </CardBox>}
+        </>
     )
 }
