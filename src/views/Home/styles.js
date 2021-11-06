@@ -142,7 +142,7 @@ export const ResetDatetext = styled.Text`
 export const EmptyListContainer = styled.View`
     justify-content: flex-end;
     align-items: center;
-    margin-top: ${windowHeight * 0.3}px;
+    margin-top: ${windowHeight * 0.25}px;
 `
 
 export const RightSwipe = styled.View`

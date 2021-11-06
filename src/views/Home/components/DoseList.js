@@ -88,6 +88,7 @@ export default props =>{
                 renderItem={getDoseItem}/>
             :
             <EmptyListContainer>
+                <Icon name="calendar-check-o" type="font-awesome" size={50} color={colors.grey10}/>
                 <LightText>
                     Nenhuma dose para a data selecionada!
                 </LightText>
