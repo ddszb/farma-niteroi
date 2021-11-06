@@ -21,9 +21,9 @@ export default props => {
      */
     const getSavedFilter = async () =>{
         const value = await AsyncStorage.getItem(props.storageKey)
-        let filter = value || '0'
+        let filter = value != null ? value : '0'
         setValue(filter)
-        props.onChangeValue(value)
+        props.onChangeValue(filter)
     }
 
     /**

@@ -21,6 +21,8 @@ import DoseFilter from '../../components/Filter'
 import DateFilter from './components/DateFilter'
 import DoseList from './components/DoseList'
 import { Button } from 'react-native'
+import { scheduleDoseNotification, createNotification } from '../../util/Notifications'
+import PushNotification from 'react-native-push-notification'
 
 const filterOptions = { ALL: '0', NOT_TAKEN: '1', TAKEN: '2'}
 
@@ -111,6 +113,7 @@ export default props =>{
         var allDoses = [].concat.apply([], meds.map( m => m.doses)) // Concatena todas as doses de todos os medicamentos
         let visible = allDoses.filter( d => (moment(d.date).isSame(filterDay, 'day') || moment(d.dateTaken).isSame(filterDay, 'day')) && d.status !== doseStatus.ENCERRADA)
         visible = visible.sort((a,b) => a.dateTaken ? a.dateTaken : a.date  - b.dateTaken ? b.dateTaken : b.date)
+        
         if(filterOption == filterOptions.TAKEN){
             visible = visible.filter( d => d.status == doseStatus.TOMADA )
         }else if(filterOption == filterOptions.NOT_TAKEN){
@@ -148,7 +151,7 @@ export default props =>{
         setFilterDay(date)
         filterDoses()
     }
-        
+
     /**
      * Direciona a dose editada para ser atualiza de acordo com 
      * o que foi feito na modal de ajuste de dose.
@@ -189,6 +192,7 @@ export default props =>{
                     break
                 case doseActions.EDITAR_DOSE_NAO_TOMADA:
                     dose.date = dose.newDate
+                    scheduleDoseNotification(dose)
                     break
             }
         }
@@ -224,6 +228,7 @@ export default props =>{
                 onPressLeft={() => props.navigation.toggleDrawer()}/>
             <TopView>
                 <DateFilter
+                date={filterDay}
                 onChangeDate={onChangeDate}/>
                 <DoseList 
                     visibleDoses={visibleDoses}
