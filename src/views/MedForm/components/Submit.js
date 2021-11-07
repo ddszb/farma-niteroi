@@ -1,11 +1,12 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import React from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert, ToastAndroid, TouchableOpacity } from "react-native";
 import doseStatus from "../../../constants/doseStatus";
 import storageKeys from "../../../constants/storageKeys";
 import { Button, ButtonText } from "../styles";
 import * as UtilitarioFormatacao from '../../../util/UtilitarioFormatacao';
 import { scheduleDoseNotification } from "../../../util/Notifications";
+import medStatus from "../../../constants/medStatus";
 
 export default props =>{
 
@@ -91,17 +92,6 @@ export default props =>{
     const validateMed = async () =>{
         var invalid = false
         var errors  = []
-        if(!props.med.name){
-            invalid = true
-            errors.push("Nome de medicamento obrigatório")
-        }else{
-            const medsString = await AsyncStorage.getItem(storageKeys.MEDS)
-            const meds = medsString !== null ? JSON.parse(medsString) : []
-            if(meds.map(m => m.name).includes(props.med.name)){
-                invalid = true
-                errors.push("Você já cadastrou um medicamento com esse nome.")
-            }
-        }
         
         if(!props.med.stock.amount || props.med.stock.amount <= 0){
             invalid = true
