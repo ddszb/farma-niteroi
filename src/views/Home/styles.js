@@ -74,6 +74,19 @@ export const LightText = styled.Text`
     text-align: center;
 `
 
+export const HourView = styled.View`
+    align-items: center;
+    justify-content: flex-end;
+`
+
+export const DoseHourText = styled.Text`
+    font-size: 16px;
+    color: ${colors.grey8};
+    text-align:center;
+    margin-left: 46px;
+    margin-right: 5px;
+`
+
 export const OkText = styled.Text`
     font-size: 23px;
     font-weight: bold;
@@ -81,7 +94,7 @@ export const OkText = styled.Text`
     text-align:center;
     margin-left: 46px;
     margin-right: 5px;
-    padding: 5px;
+    padding: 2px;
 `
 
 export const WarningText = styled.Text`
