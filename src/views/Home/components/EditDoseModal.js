@@ -54,7 +54,7 @@ export default props =>{
     const rightClick = () =>{
         var d = {...dose}
         if(!onEdit){
-            d.dateTaken = dialogTime
+            d.dateTaken = Date.now()
         }else{
             if(d.status == doseStatus.NAO_TOMADA){
                 d.newDate = dialogTime
