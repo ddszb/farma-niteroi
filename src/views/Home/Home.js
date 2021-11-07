@@ -178,8 +178,13 @@ export default props =>{
      */
     const updateDose = (dose, action) =>{
         var medList = [...meds]
-        var updatedMed = medList.filter(m => m.name == dose.medName && m.status == medStatus.ATIVO )[0]
-        var updatedDose = updatedMed.doses.filter(d => dose.medName == d.medName && d.index == dose.index )[0]
+        var updatedMed = medList.filter(m => m.id == dose.medId && m.status == medStatus.ATIVO )[0]
+        if( updatedMed.doses){
+            var updatedDose = updatedMed.doses.filter(d => dose.medId == d.medId && d.id == dose.id )[0]
+        }else{
+            var updatedDose = dose
+            updatedMed.doses = [updateDose]
+        }
 
         if(updatedDose){
             let newStock = Calculate.newStockAfterDose(updatedMed, dose)
@@ -238,7 +243,7 @@ export default props =>{
             <PrimaryButton
                 bottom
                 text="Nova Dose"
-                visible={meds.length > 0 && moment().isSameOrAfter(filterDay, 'date')}
+                visible={meds.filter( m => m.status == medStatus.ATIVO && !m.scheduledDoses).length > 0 && moment().isSameOrAfter(filterDay, 'date')}
                 onClick={navigateToNew}/>
         </Container>
     )

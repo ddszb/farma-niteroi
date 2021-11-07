@@ -18,6 +18,7 @@ export default props =>{
                 doseDate.setSeconds(0)
                 let dose = {
                     medName: medPersist.name,
+                    medId: medPersist.id,
                     date: doseDate, 
                     unit: doseTime.unit,
                     amount: doseTime.amount,

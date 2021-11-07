@@ -1,7 +1,7 @@
 import React from 'react';
 
 //Libs
-import { FlatList, TouchableOpacity, View } from 'react-native';
+import { FlatList, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons'
 import iconMoonConfig from '../../../selection.json'
@@ -38,9 +38,10 @@ export default props =>{
         if(dose.status == doseStatus.TOMADA){
             return(<RowView>
                     <HourView>
+                        {dose.date &&
                         <DoseHourText>
                             {moment(dose.date).format('HH:mm')}
-                        </DoseHourText>
+                        </DoseHourText>}
                         <OkText>
                             {moment(dose.dateTaken).format('HH:mm')}
                         </OkText>            
