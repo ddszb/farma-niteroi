@@ -16,11 +16,17 @@ const scheduleDoseNotification = (dose) =>{
         bigText: `<b><font color=\"${dose.iconColor}\">${dose.medName}</b></font> - ${dose.amount} ${dose.unit.label}${dose.amount == 1 ? "" : "s"}`,
         subText: `${moment(dose.date).format("HH:mm")}`,
         tag: dose.medName,
-        date: dose.date
+        date: dose.date,
+        userInfo: dose,
     }
     createNotification(params)
 }
 
+/**
+ * Cria uma notificação agendada com parâmetros de configuração.
+ * @param {Object} params Os parametros da notificação.
+ * @returns 
+ */
 const createNotification = async (params) =>{
     PushNotification.localNotificationSchedule({
         ...params,
@@ -32,11 +38,19 @@ const createNotification = async (params) =>{
         repeatTime: 1
     })
 
-    return PushNotification.getScheduledLocalNotifications((notifications) => {
-        console.log(notifications.slice(-1)[0] )
-        return notifications.slice(-1)[0]        
+    PushNotification.getScheduledLocalNotifications((notifications) => {
+        console.log(notifications.slice(-1)[0] )      
     })
-    
 }
 
-export {scheduleDoseNotification, createNotification}
+/**
+ * Remove uma lista de notificações pelos identificadores.
+ * @param {List<Number>} ids  Lista de ids de notificações que devem ser removidas.
+ */
+const cancelNotification = async (ids) =>{
+    ids.forEach( id =>{
+        PushNotification.cancelLocalNotification(id.toString())
+    })
+}
+
+export {scheduleDoseNotification, createNotification, cancelNotification}

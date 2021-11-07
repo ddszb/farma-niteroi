@@ -4,6 +4,7 @@ import { ToastAndroid , Pressable, View, Alert} from 'react-native'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons'
 import iconMoonConfig from '../../selection.json'
+import { cancelNotification } from '../../util/Notifications'
 import {Container, RowView, MedName, HPadding,
     VPadding, InfoTitle, InfoText, Bottom, ButtonView,
     ButtonPurpleText, Button, StockInput} from './styles'
@@ -28,13 +29,15 @@ export default props =>{
     
     const __endTreatment = async () =>{        
         var medEnded = {...med}
+        var dosesIds = []
         medEnded.doses.forEach(d =>{
             if(d.status != doseStatus.TOMADA || !d.dateTaken){
                 d.status = doseStatus.ENCERRADA
+                dosesIds.push(d.id)
             }
         })
         medEnded.status = medStatus.INATIVO;
-        
+        cancelNotification(dosesIds)
         const medsString = await AsyncStorage.getItem(storageKeys.MEDS)
         var meds = medsString !== null ? JSON.parse(medsString) : []
         var meds = meds.map( m => m.name == medEnded.name ? medEnded : m)
@@ -67,7 +70,7 @@ export default props =>{
 
         const medsString = await AsyncStorage.getItem(storageKeys.MEDS)
         var meds = medsString !== null ? JSON.parse(medsString) : []
-        var meds = meds.map( m => m.name == updatedMed.name ? updatedMed : m)
+        var meds = meds.map( m => m.name == updatedMed.name && m.id == updatedMed.id ? updatedMed : m)
         AsyncStorage.setItem(storageKeys.MEDS, JSON.stringify(meds))
         ToastAndroid.showWithGravityAndOffset("Estoque atualizado!",
             ToastAndroid.SHORT,
