@@ -6,7 +6,6 @@ import storageKeys from "../../../constants/storageKeys";
 import { Button, ButtonText } from "../styles";
 import * as UtilitarioFormatacao from '../../../util/UtilitarioFormatacao';
 import { scheduleDoseNotification } from "../../../util/Notifications";
-import medStatus from "../../../constants/medStatus";
 
 export default props =>{
 
