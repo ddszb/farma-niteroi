@@ -1,10 +1,13 @@
 import React from "react";
-import { Alert, Dimensions, TouchableOpacity } from "react-native";
+import { Alert, Dimensions, TouchableOpacity, ToastAndroid } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import AutoCompleteInput from "../../../components/AutoCompleteInput";
 import meds_niteroi from "../../../data/meds_niteroi";
 import { Button, ButtonText, CardBox, CardContent, FormFieldLabel, ResetButton, ViewFlexRow } from "../styles";
 import { Icon } from 'react-native-elements/dist/icons/Icon'
 import colors from "../../../styles/colors";
+import storageKeys from "../../../constants/storageKeys";
+import medStatus from "../../../constants/medStatus";
 
 /**
  * Componente para nome do medicamento no cadastro de medicamentos.
@@ -21,8 +24,16 @@ export default props =>{
      * Verifica se o nome do medicamento foi preenchido. 
      * Se sim, exibirá os próximos campos
      */
-    const onConfirm = () =>{
-        if(props.med.name){ 
+    const onConfirm = async () =>{
+        if(props.med.name){
+            const medsString = await AsyncStorage.getItem(storageKeys.MEDS)
+            const meds = medsString !== null ? JSON.parse(medsString) : []
+            if(meds.filter( m => m.name.toLowerCase() == props.med.name.toLowerCase() && m.status == medStatus.ATIVO).length > 0){  
+                ToastAndroid.showWithGravityAndOffset("Você já iniciou um tratamento com este medicamento.",
+                    ToastAndroid.SHORT,
+                    ToastAndroid.BOTTOM, 0 , 90)
+                return
+            } 
             props.onConfirm()
         }
     }
