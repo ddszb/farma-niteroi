@@ -25,7 +25,7 @@ export default props =>{
     const [selectedMed, setSelectedMed] = useState()
 
     const saveMed = async (med)=>{
-        var newMeds = meds.map( m => m.name == med.name ? med : m)
+        var newMeds = meds.map( m => m.id == med.id ? med : m)
         AsyncStorage.setItem(storageKeys.MEDS, JSON.stringify(newMeds))
         props.navigation.goBack()
     }
@@ -53,6 +53,7 @@ export default props =>{
         }
         let dose = {
             medName: medName,
+            medId: selectedMed.id,
             date: taken ? null : time, 
             unit: selectedMed.doseUnit,
             amount: amount,
