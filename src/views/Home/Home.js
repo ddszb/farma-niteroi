@@ -11,6 +11,7 @@ import {Container, TopView} from './styles'
 import doseStatus from '../../constants/doseStatus'
 import doseActions from '../../constants/doseActions'
 import storageKeys from '../../constants/storageKeys'
+import medStatus from '../../constants/medStatus'
 //Utilitário
 import * as Calculate from '../../util/UtilitarioCalculo'
 // Componentes
@@ -177,7 +178,7 @@ export default props =>{
      */
     const updateDose = (dose, action) =>{
         var medList = [...meds]
-        var updatedMed = medList.filter(m => m.name == dose.medName)[0]
+        var updatedMed = medList.filter(m => m.name == dose.medName && m.status == medStatus.ATIVO )[0]
         var updatedDose = updatedMed.doses.filter(d => dose.medName == d.medName && d.index == dose.index )[0]
 
         if(updatedDose){

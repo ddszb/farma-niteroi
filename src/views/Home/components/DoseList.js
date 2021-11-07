@@ -1,14 +1,14 @@
 import React from 'react';
 
 //Libs
-import { FlatList, TouchableOpacity } from 'react-native';
+import { FlatList, TouchableOpacity, View } from 'react-native';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons'
 import iconMoonConfig from '../../../selection.json'
 import moment from 'moment'
 import 'moment/locale/pt-br'
 import doseStatus from '../../../constants/doseStatus';
-import { Body, BottomContent, Buttons, CardBox, ColorTag, DarkText, Detail, EmptyListContainer, HPadding, LightText, OkText, RowView, TopContent, WaitingText, WarningText } from '../styles';
+import { Body, BottomContent, Buttons, CardBox, ColorTag, DarkText, Detail, DoseHourText, EmptyListContainer, HourView, HPadding, LightText, OkText, RowView, TopContent, WaitingText, WarningText } from '../styles';
 import colors from '../../../styles/colors';
 
 export default props =>{
@@ -37,9 +37,14 @@ export default props =>{
         }
         if(dose.status == doseStatus.TOMADA){
             return(<RowView>
-                    <OkText>
-                        {moment(dose.dateTaken).format('HH:mm')}
-                    </OkText>            
+                    <HourView>
+                        <DoseHourText>
+                            {moment(dose.date).format('HH:mm')}
+                        </DoseHourText>
+                        <OkText>
+                            {moment(dose.dateTaken).format('HH:mm')}
+                        </OkText>            
+                    </HourView>
                     <Icon name="check-circle" type={"font-awesome"} size={24} color={colors.ok}/></RowView>)
         }
     }
@@ -68,9 +73,7 @@ export default props =>{
                         </BottomContent>
                     </Detail>
                     <Buttons>
-                          
                         {statusRender}
-                        
                     </Buttons>
                 </CardBox>
             </TouchableOpacity>
