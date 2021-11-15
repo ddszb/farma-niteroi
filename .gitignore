@@ -97,3 +97,7 @@ android/app/src/main/res/raw/node_modules_reactnativevectoricons_glyphmaps_octic
 android/app/src/main/res/raw/node_modules_reactnativevectoricons_glyphmaps_simplelineicons.json
 android/app/src/main/res/raw/node_modules_reactnativevectoricons_glyphmaps_zocial.json
 android/app/src/main/res/raw/src_selection.json
+
+
+android/app/google-services.json
+android/app/farmaapp.keystore
