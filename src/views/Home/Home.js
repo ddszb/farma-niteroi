@@ -96,7 +96,8 @@ export default props =>{
      * Navega para a tela de Adicionar Dose.
      */
     const navigateToNew = () =>{
-        props.navigation.navigate('Adicionar Dose', {screen: 'Adicionar Dose', meds: meds})
+        var medsList = meds.filter(m => m.status == medStatus.ATIVO && !m.scheduledDoses)
+        props.navigation.navigate('Adicionar Dose', {screen: 'Adicionar Dose', meds: medsList})
     }
 
     /**
