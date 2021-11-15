@@ -44,6 +44,8 @@ export default props =>{
         AsyncStorage.clear();
         setMeds([])
         setVisibleDoses([])
+        PushNotification.removeAllDeliveredNotifications()
+        PushNotification.cancelAllLocalNotifications()
     }
 
     /**
