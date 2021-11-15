@@ -3,7 +3,8 @@ import {
     Text,
     StyleSheet,
     View,
-    TouchableOpacity
+    TouchableOpacity,
+    ToastAndroid
 } from "react-native"
 
 import doseTimes from '../../../constants/doseTimesSelection'
@@ -57,16 +58,17 @@ export default props =>{
             var doses = [...doseHoursItems]
             var index = selectedDose
             var dose = doses[index]
-            var invalidDate = false
             doses.forEach( d =>{
+                // Para evitar duas doses no mesmo horário
                 if(d.time.getHours() == date.getHours() && d.time.getMinutes() == date.getMinutes()){
-                    invalidDate = true
+                    ToastAndroid.showWithGravityAndOffset("Você já marcou uma dose para este horário.",
+                    ToastAndroid.SHORT,
+                    ToastAndroid.BOTTOM, 0 , 90)                
+                    setShowPicker(false)
+                    return
                 }
             })
-            if(invalidDate){
-                setShowPicker(true)
-                return
-            }
+
             dose.time = new Date(date)
             
             // Atualizando lista
@@ -245,7 +247,7 @@ export default props =>{
                     display="spinner"
                     textColor={colors.primary}
                     timeZoneOffsetInMinutes={-180}
-                    minuteInterval={2}
+                    minuteInterval={5}
                     onChange={__updateDoseItem}/>)
             }
         </>
