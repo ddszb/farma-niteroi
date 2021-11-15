@@ -21,11 +21,14 @@ import FieldIcon from './components/FieldIcon'
 import FieldSchedule from './components/FieldSchedule'
 import FieldDoseHours from './components/FieldDoseHours'
 
-const initialDoseTime = moment().hours(8).minutes(0).toDate();
 
-const defaultMed = 
+export default ({navigation, route}) => {
+
+    const initialDoseTime = moment().hours(8).minutes(0).toDate();
+
+    const defaultMed = 
     {
-        name:'',
+        name: route.params.med ? route.params.med : '',
         weekdays: { 0:1, 1:1, 2:1, 3:1, 4:1, 5:1, 6:1},
         totalDays: 7,
         startDate: new Date(),
@@ -44,10 +47,8 @@ const defaultMed =
         doses:[]
     }
 
-export default ({navigation, route}) => {
-
     const [med, setMed] = useState(defaultMed)
-    const [medPicked, setMedPicked] = useState(false)
+    const [medPicked, setMedPicked] = useState(!!route.params.med)
 
     return (
         <Form>
@@ -55,7 +56,7 @@ export default ({navigation, route}) => {
                 onChangeName={ name => setMed({...med , name})}
                 med={med}
                 onReset={() =>{
-                    setMed(defaultMed)
+                    setMed({...defaultMed, name: ''})
                     setMedPicked(false)}}
                 medPicked={medPicked}
                 onConfirm={() => setMedPicked(true)}

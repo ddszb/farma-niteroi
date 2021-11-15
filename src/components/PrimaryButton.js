@@ -9,6 +9,10 @@ export default props => {
         <>
         {props.visible &&
         <View style={props.bottom ? styles.bottom : styles.container}>
+            {props.outerText &&
+            <Text style={styles.outerText}>
+                {props.outerText}
+            </Text>}
             <TouchableOpacity 
             style={styles.button}
             onPress={() => props.onClick()}>
@@ -44,6 +48,12 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         textAlign: "center",
         color: colors.white,
+    },
+    outerText:{
+        fontSize: 17,
+        color: colors.grey6,
+        textAlign: 'center',
+        paddingBottom: 10,
     }
     
 })
