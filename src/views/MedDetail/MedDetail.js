@@ -25,7 +25,6 @@ export default props =>{
     const [editingStock, setEditingStock] = useState(false)
     const [tempStock, setTempStock] = useState(Math.round(med.stock.amount).toString())
     const MedIcon = createIconSetFromIcoMoon(iconMoonConfig)
-    console.log("h: ", windowHeight , "w:", windowWidth )
     
     const __endTreatment = async () =>{        
         var medEnded = {...med}
