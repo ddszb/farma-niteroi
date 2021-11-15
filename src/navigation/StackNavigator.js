@@ -51,9 +51,10 @@ const SearchStackNavigator = () => {
     return(
         <Stack.Navigator>
             <Stack.Screen options={{headerShown: false}} name="ProcurarStack" component={Search}/>
-            <Stack.Screen options={{headerTitle: "voltar"}} name="Medicamento Niteroi Detalhe" component={MedNiteroiDetalhe}/>
+            <Stack.Screen options={{headerTitle: "Medicamento"}} name="Medicamento Niteroi Detalhe" component={MedNiteroiDetalhe}/>
             <Stack.Screen options={{headerTitle:"Medicamentos da Prefeitura"}} name="Medicamentos Niterói" component={MedsNiteroi}/>
             <Stack.Screen  name="Policlínicas" component={Policlinicas}/>
+            <Stack.Screen name="Adicionar Medicamento" component={MedForm}/>
         </Stack.Navigator>
     )
 }
