@@ -138,3 +138,10 @@ export const ButtonText = styled.Text`
 export const LeftPadding = styled.View`
     padding-left: 51px;
 `
+
+export const LightText = styled.Text`
+    font-size: 18px;
+    color: ${colors.grey8};
+    margin-horizontal: 5px;
+    text-align: center;
+`

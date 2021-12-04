@@ -14,7 +14,7 @@ export const Body = styled.View`
 `
 
 export const TopView = styled.View`
-    flex: 0.9;
+    flex: 0.88;
 `
 
 export const CardBox = styled.View`

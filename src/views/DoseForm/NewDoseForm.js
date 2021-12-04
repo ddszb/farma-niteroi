@@ -3,7 +3,7 @@ import { TouchableOpacity, ToastAndroid, Alert }  from 'react-native'
 
 import moment from 'moment'
 import 'moment/locale/pt-br'
-import { AmountInput, AmountText, ButtonText, ButtonView, CancelButton, CenteredView, ConfirmButton, Form, FormFieldLabel, HourText, LeftPadding, PickerView, RowView } from './styles'
+import { AmountInput, AmountText, ButtonText, ButtonView, CancelButton, CenteredView, ConfirmButton, Form, FormFieldLabel, HourText, LeftPadding, LightText, PickerView, RowView } from './styles'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -155,6 +155,9 @@ export default props =>{
     return(
         <>
         <Form>
+            <LightText>
+                Registre doses de seus medicamentos sem horário marcado.
+            </LightText>
             {getTimeContent()}
             {getAmountContent()}
             <CenteredView>

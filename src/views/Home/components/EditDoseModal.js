@@ -138,7 +138,7 @@ export default props =>{
             <View style={{alignItems: 'flex-end', width: '100%'}}>
                 <TouchableOpacity style={{marginRight: 8, marginTop: 4}}
                     onPress={() => props.close()}>
-                    <Icon name="cancel" type="material-icons" size={36} color={colors.primary}/>
+                    <Icon name="cancel" type="material-icons" size={36} color={colors.grey13}/>
                 </TouchableOpacity>
             </View>
             {content}
