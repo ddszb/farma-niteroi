@@ -23,4 +23,8 @@ export function newStockAfterDose(med, dose){
 }
 
 
+export function generateId(){
+        return Math.random().toString().substr(2,9)
+}
+
 
