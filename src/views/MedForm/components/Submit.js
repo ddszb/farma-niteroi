@@ -6,6 +6,7 @@ import storageKeys from "../../../constants/storageKeys";
 import { Button, ButtonText } from "../styles";
 import * as UtilitarioFormatacao from '../../../util/UtilitarioFormatacao';
 import { scheduleDoseNotification } from "../../../util/Notifications";
+import { generateId } from "../../../util/UtilitarioCalculo";
 
 export default props =>{
 
@@ -13,7 +14,7 @@ export default props =>{
         medPersist.doseHours.forEach( doseTime =>{
             day.setHours(doseTime.time.getHours(), doseTime.time.getMinutes())
             if(day > currentTime){
-                let doseId = Math.random().toString().substring(2)
+                let doseId = generateId()
                 var doseDate = new Date(day)
                 doseDate.setSeconds(0)
                 let dose = {
@@ -74,7 +75,7 @@ export default props =>{
 
     const saveMed = async () =>{
         var medPersist = {...props.med}
-        medPersist.id = Math.random().toString().substring(2)
+        medPersist.id = generateId()
         medPersist = __fillMedInfo(medPersist)
         const medsString = await AsyncStorage.getItem(storageKeys.MEDS)
         const meds = medsString !== null ? JSON.parse(medsString) : []
