@@ -12,12 +12,13 @@ import storageKeys from '../../constants/storageKeys'
 import MedPicker from '../../components/DropdownPicker'
 import * as Calculate from '../../util/UtilitarioCalculo'
 import colors from '../../styles/colors'
+import medStatus from '../../constants/medStatus'
 
 export default props =>{
     
     const {meds} = props.route.params
 
-    const options = meds.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1)
+    const options = meds.filter(m => m.status == medStatus.ATIVO && !m.scheduledDoses).sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1)
     const [time, setTime] = useState(new Date())
     const [amount, setAmount] = useState('0')
     const [showTimePicker, setShowTimePicker] = useState(false)

@@ -38,9 +38,9 @@ const createNotification = async (params) =>{
         repeatTime: 1
     })
 
-    PushNotification.getScheduledLocalNotifications((notifications) => {
-        console.log(notifications.slice(-1)[0] )      
-    })
+    // PushNotification.getScheduledLocalNotifications((notifications) => {
+    //     console.log(notifications.slice(-1)[0] )      
+    // })
 }
 
 /**

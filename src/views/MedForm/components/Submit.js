@@ -13,7 +13,7 @@ export default props =>{
         medPersist.doseHours.forEach( doseTime =>{
             day.setHours(doseTime.time.getHours(), doseTime.time.getMinutes())
             if(day > currentTime){
-                let doseId = '' + medPersist.id + '000' + doses.length
+                let doseId = Math.random().toString().substring(2)
                 var doseDate = new Date(day)
                 doseDate.setSeconds(0)
                 let dose = {
@@ -74,16 +74,12 @@ export default props =>{
 
     const saveMed = async () =>{
         var medPersist = {...props.med}
-        var medSequence = await AsyncStorage.getItem(storageKeys.MED_SEQUENCE)
-        var medSequence = medSequence !== null ? parseInt(medSequence) + 1 : 1
-        medPersist.id = medSequence
+        medPersist.id = Math.random().toString().substring(2)
         medPersist = __fillMedInfo(medPersist)
         const medsString = await AsyncStorage.getItem(storageKeys.MEDS)
         const meds = medsString !== null ? JSON.parse(medsString) : []
         
-        
         meds.push(medPersist)
-        AsyncStorage.setItem(storageKeys.MED_SEQUENCE, medSequence.toString())
         AsyncStorage.setItem(storageKeys.MEDS, JSON.stringify(meds))
 
         props.navigation.goBack()

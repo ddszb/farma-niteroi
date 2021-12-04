@@ -58,17 +58,15 @@ export default props =>{
             var doses = [...doseHoursItems]
             var index = selectedDose
             var dose = doses[index]
-            doses.forEach( d =>{
-                // Para evitar duas doses no mesmo horário
-                if(d.time.getHours() == date.getHours() && d.time.getMinutes() == date.getMinutes()){
-                    ToastAndroid.showWithGravityAndOffset("Você já marcou uma dose para este horário.",
+            // Para evitar duas doses no mesmo horário
+            var sameTime = doses.filter( d => d.time.getHours() == date.getHours() && d.time.getMinutes() == date.getMinutes()).length > 0
+            if(sameTime){
+                ToastAndroid.showWithGravityAndOffset("Você já marcou uma dose para este horário.",
                     ToastAndroid.SHORT,
                     ToastAndroid.BOTTOM, 0 , 90)                
-                    setShowPicker(false)
-                    return
-                }
-            })
-
+                setShowPicker(false)
+                return
+            }
             dose.time = new Date(date)
             
             // Atualizando lista
@@ -77,6 +75,7 @@ export default props =>{
             if(index == 0){
                 doses = __shiftDoseTimes(doses)
             }
+            doses = doses.sort((a,b) => a.time - b.time)
             // Atualizando estado
             setShowPicker(false)
             setDoseHoursItems(doses)

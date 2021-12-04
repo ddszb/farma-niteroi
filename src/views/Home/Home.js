@@ -98,8 +98,7 @@ export default props =>{
      * Navega para a tela de Adicionar Dose.
      */
     const navigateToNew = () =>{
-        var medsList = meds.filter(m => m.status == medStatus.ATIVO && !m.scheduledDoses)
-        props.navigation.navigate('Adicionar Dose', {screen: 'Adicionar Dose', meds: medsList})
+        props.navigation.navigate('Adicionar Dose', {screen: 'Adicionar Dose', meds: meds})
     }
 
     /**
@@ -183,7 +182,7 @@ export default props =>{
         var medList = [...meds]
         var updatedMed = medList.filter(m => m.id == dose.medId && m.status == medStatus.ATIVO )[0]
         if( updatedMed.doses){
-            var updatedDose = updatedMed.doses.filter(d => dose.medId == d.medId && d.id == dose.id )[0]
+            var updatedDose = updatedMed.doses.filter(d => d.id == dose.id )[0]
         }else{
             var updatedDose = dose
             updatedMed.doses = [updateDose]
