@@ -3,16 +3,17 @@ import { TouchableOpacity, ToastAndroid, Alert }  from 'react-native'
 
 import moment from 'moment'
 import 'moment/locale/pt-br'
-import { AmountInput, AmountText, ButtonText, ButtonView, CancelButton, CenteredView, ConfirmButton, Form, FormFieldLabel, HourText, LeftPadding, LightText, PickerView, RowView } from './styles'
+import { AmountInput, AmountText, ButtonText, ButtonView, CancelButton, CenteredView, ConfirmButton, Form, FormFieldLabel, HourText, LightText, RowView } from './styles'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import doseStatus from '../../constants/doseStatus'
 import storageKeys from '../../constants/storageKeys'
 import MedPicker from '../../components/DropdownPicker'
-import * as Calculate from '../../util/UtilitarioCalculo'
+import {generateId}  from '../../util/UtilitarioCalculo'
 import colors from '../../styles/colors'
 import medStatus from '../../constants/medStatus'
+import { scheduleDoseNotification } from '../../util/Notifications'
 
 export default props =>{
     
@@ -63,23 +64,26 @@ export default props =>{
             status: taken ? doseStatus.TOMADA : doseStatus.NAO_TOMADA,
             icon: selectedMed.icon,
             iconColor: selectedMed.iconColor,
+            id: generateId(),
             index: selectedMed.doses.length,
             sporadic: true
         }
-        med = {...selectedMed}
-        let newStock = Calculate.newStockAfterDose(med, dose)
-        med.doses.push(dose)
-        med.stock.amount = newStock
-        if(newStock <= 0){
-            let msg = "Seu estoque atual para o medicamento acabou, lembre-se de atualizar o estoque depois. Confirmar dose?"
-            Alert.alert('Aviso de estoque', msg,
-            [{ text: 'Não', onPress(){ return }}, 
-             { text:'Sim', onPress() { saveMed(med)}}])
-            return
+        let med = {...selectedMed}
+        if(taken){
+            let newStock = Calculate.newStockAfterDose(med, dose)
+            med.stock.amount = newStock
+            if(newStock <= 0){
+                let msg = "Seu estoque atual para o medicamento acabou, lembre-se de atualizar o estoque depois. Confirmar dose?"
+                Alert.alert('Aviso de estoque', msg,
+                [{ text: 'Não', onPress(){ return }}, 
+                 { text:'Sim', onPress() { saveMed(med)}}])
+                return
+            }
         }else{
-            saveMed(med)
+            scheduleDoseNotification(dose)
         }
-
+        med.doses.push(dose)
+        saveMed(med)
     }
 
     const onSelectMed = med =>{
@@ -104,6 +108,7 @@ export default props =>{
     const changeTime = (event, date) =>{
         setShowTimePicker(false)
         if(event.type === "set"){
+            date.setSeconds(0)
             setTime(date)
         }
     }
