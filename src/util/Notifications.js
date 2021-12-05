@@ -34,6 +34,7 @@ const createNotification = async (params) =>{
         largeIcon: "",
         vibration: 300,
         playSound: true,
+        soundName: "bottleshake",
         repeatTime: 1
     })
 }
