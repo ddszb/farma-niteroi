@@ -12,7 +12,6 @@ import iconColors from '../../constants/iconColors'
 import medStatus from '../../constants/medStatus'
 import doseUnits from '../../constants/doseUnits'
 //Components
-import FieldExpireDate from './components/FieldExpireDate'
 import FieldStock from './components/FieldStock'
 import FieldName from './components/FieldName'
 import FieldNotes from './components/FieldNotes'
@@ -32,7 +31,6 @@ export default ({navigation, route}) => {
         weekdays: { 0:1, 1:1, 2:1, 3:1, 4:1, 5:1, 6:1},
         totalDays: 7,
         startDate: new Date(),
-        expireDate: new Date(),
         scheduledDoses: false,
         icon: medicons[0],
         iconColor: iconColors[0],
@@ -64,9 +62,6 @@ export default ({navigation, route}) => {
             <ScrollView keyboardShouldPersistTaps={'handled'}>
                 {medPicked &&
                 <>
-                <FieldExpireDate
-                    expireDate={med.expireDate}
-                    onChange={(date) => setMed({...med, expireDate: date})}/>
                 <FieldStock
                     med={med}
                     onChangeDoseUnit={doseUnit => setMed({...med, doseUnit})}
