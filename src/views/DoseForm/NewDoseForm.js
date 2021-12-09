@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import doseStatus from '../../constants/doseStatus'
 import storageKeys from '../../constants/storageKeys'
 import MedPicker from '../../components/DropdownPicker'
-import {generateId}  from '../../util/UtilitarioCalculo'
+import {generateId, newStockAfterDose}  from '../../util/UtilitarioCalculo'
 import colors from '../../styles/colors'
 import medStatus from '../../constants/medStatus'
 import { scheduleDoseNotification } from '../../util/Notifications'
@@ -70,7 +70,7 @@ export default props =>{
         }
         let med = {...selectedMed}
         if(taken){
-            let newStock = Calculate.newStockAfterDose(med, dose)
+            let newStock = newStockAfterDose(med, dose)
             med.stock.amount = newStock
             if(newStock <= 0){
                 let msg = "Seu estoque atual para o medicamento acabou, lembre-se de atualizar o estoque depois. Confirmar dose?"

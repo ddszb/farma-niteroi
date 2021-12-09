@@ -10,10 +10,10 @@ import { generateId } from "../../../util/UtilitarioCalculo";
 
 export default props =>{
 
-    const __createDayDoses = (medPersist, doses, day, currentTime) =>{
+    const __createDayDoses = (medPersist, doses, day, currentTime, totalIntakes) =>{
         medPersist.doseHours.forEach( doseTime =>{
             day.setHours(doseTime.time.getHours(), doseTime.time.getMinutes())
-            if(day > currentTime){
+            if(day > currentTime && doses.length < totalIntakes){
                 let doseId = generateId()
                 var doseDate = new Date(day)
                 doseDate.setSeconds(0)
@@ -49,7 +49,7 @@ export default props =>{
             var doses = []
             while(doses.length < totalIntakes){
                 if(daysArray[doseDay.getDay()] == 1){
-                    __createDayDoses(medPersist, doses, doseDay, currentTime)
+                    __createDayDoses(medPersist, doses, doseDay, currentTime, totalIntakes)
                 }
                 doseDay.setDate(doseDay.getDate() + 1)
             }
@@ -83,7 +83,11 @@ export default props =>{
         meds.push(medPersist)
         AsyncStorage.setItem(storageKeys.MEDS, JSON.stringify(meds))
 
-        props.navigation.goBack()
+        props.navigation.reset({
+            index: 0,
+            routes: [{name: "Medicamentos"}]
+
+        })
     }
 
     const validateMed = async () =>{
