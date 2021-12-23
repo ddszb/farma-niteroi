@@ -17,7 +17,6 @@ const scheduleDoseNotification = (dose) =>{
         subText: `${moment(dose.date).format("HH:mm")}`,
         tag: dose.medName,
         date: dose.date,
-        userInfo: dose,
     }
     createNotification(params)
 }
@@ -34,13 +33,10 @@ const createNotification = async (params) =>{
         vibrate: true,
         largeIcon: "",
         vibration: 300,
-        playSound: false, //todo ativar
+        playSound: true,
+        soundName: "bottleshake",
         repeatTime: 1
     })
-
-    // PushNotification.getScheduledLocalNotifications((notifications) => {
-    //     console.log(notifications.slice(-1)[0] )      
-    // })
 }
 
 /**

@@ -101,3 +101,22 @@ android/app/src/main/res/raw/src_selection.json
 
 android/app/google-services.json
 android/app/farmaapp.keystore
+android/app/src/main/res/drawable-hdpi/node_modules_reactnavigation_drawer_src_views_assets_toggledrawericon.png
+android/app/src/main/res/drawable-hdpi/node_modules_reactnavigation_elements_src_assets_backicon.png
+android/app/src/main/res/drawable-mdpi/node_modules_reactnavigation_drawer_src_views_assets_toggledrawericon.png
+android/app/src/main/res/drawable-mdpi/node_modules_reactnavigation_elements_src_assets_backicon.png
+android/app/src/main/res/drawable-mdpi/node_modules_reactnavigation_elements_src_assets_backiconmask.png
+android/app/src/main/res/drawable-mdpi/src_views_tutorial_1.gif
+android/app/src/main/res/drawable-mdpi/src_views_tutorial_2.gif
+android/app/src/main/res/drawable-mdpi/src_views_tutorial_3.gif
+android/app/src/main/res/drawable-mdpi/src_views_tutorial_4.gif
+android/app/src/main/res/drawable-mdpi/src_views_tutorial_5.gif
+android/app/src/main/res/drawable-mdpi/src_views_tutorial_6.gif
+android/app/src/main/res/drawable-mdpi/src_views_tutorial_7.gif
+android/app/src/main/res/drawable-xhdpi/node_modules_reactnavigation_drawer_src_views_assets_toggledrawericon.png
+android/app/src/main/res/drawable-xhdpi/node_modules_reactnavigation_elements_src_assets_backicon.png
+android/app/src/main/res/drawable-xxhdpi/node_modules_reactnavigation_drawer_src_views_assets_toggledrawericon.png
+android/app/src/main/res/drawable-xxhdpi/node_modules_reactnavigation_elements_src_assets_backicon.png
+android/app/src/main/res/drawable-xxxhdpi/node_modules_reactnavigation_drawer_src_views_assets_toggledrawericon.png
+android/app/src/main/res/drawable-xxxhdpi/node_modules_reactnavigation_elements_src_assets_backicon.png
+android/java_pid12308.hprof

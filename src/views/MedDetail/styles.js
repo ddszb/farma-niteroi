@@ -64,9 +64,7 @@ export const ButtonView = styled.View`
 `
 
 export const Button = styled.View`
-    border-width: 1px;
-    border-color: ${colors.grey12};
-    background-color: ${colors.primary};
+    background-color: ${colors.alert};
     border-radius: 6px;
     padding-left: 15px;
     padding-right: 15px;
@@ -77,7 +75,7 @@ export const Button = styled.View`
     margin-left: 10px;
     margin-right: 10px;
 `
-export const ButtonPurpleText = styled.Text`
+export const ButtonText = styled.Text`
     color: ${colors.white};
     font-size: 16px;
     font-weight: bold;

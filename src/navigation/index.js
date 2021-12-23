@@ -64,6 +64,8 @@ PushNotification.configure({
   PushNotification.createChannel({
       channelId: "dose-alert-channel",
       channelName: "Dose Alerts",
+      playSound: true,
+      soundName: "bottleshake"
   },
   (created) => console.log(`CREATED CHANNEL RETURNED: '${created}'`))
 

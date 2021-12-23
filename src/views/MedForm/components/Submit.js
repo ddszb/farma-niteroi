@@ -6,14 +6,15 @@ import storageKeys from "../../../constants/storageKeys";
 import { Button, ButtonText } from "../styles";
 import * as UtilitarioFormatacao from '../../../util/UtilitarioFormatacao';
 import { scheduleDoseNotification } from "../../../util/Notifications";
+import { generateId } from "../../../util/UtilitarioCalculo";
 
 export default props =>{
 
-    const __createDayDoses = (medPersist, doses, day, currentTime) =>{
+    const __createDayDoses = (medPersist, doses, day, currentTime, totalIntakes) =>{
         medPersist.doseHours.forEach( doseTime =>{
             day.setHours(doseTime.time.getHours(), doseTime.time.getMinutes())
-            if(day > currentTime){
-                let doseId = Math.random().toString().substring(2)
+            if(day > currentTime && doses.length < totalIntakes){
+                let doseId = generateId()
                 var doseDate = new Date(day)
                 doseDate.setSeconds(0)
                 let dose = {
@@ -48,7 +49,7 @@ export default props =>{
             var doses = []
             while(doses.length < totalIntakes){
                 if(daysArray[doseDay.getDay()] == 1){
-                    __createDayDoses(medPersist, doses, doseDay, currentTime)
+                    __createDayDoses(medPersist, doses, doseDay, currentTime, totalIntakes)
                 }
                 doseDay.setDate(doseDay.getDate() + 1)
             }
@@ -74,7 +75,7 @@ export default props =>{
 
     const saveMed = async () =>{
         var medPersist = {...props.med}
-        medPersist.id = Math.random().toString().substring(2)
+        medPersist.id = generateId()
         medPersist = __fillMedInfo(medPersist)
         const medsString = await AsyncStorage.getItem(storageKeys.MEDS)
         const meds = medsString !== null ? JSON.parse(medsString) : []
@@ -82,7 +83,11 @@ export default props =>{
         meds.push(medPersist)
         AsyncStorage.setItem(storageKeys.MEDS, JSON.stringify(meds))
 
-        props.navigation.goBack()
+        props.navigation.reset({
+            index: 0,
+            routes: [{name: "Medicamentos"}]
+
+        })
     }
 
     const validateMed = async () =>{

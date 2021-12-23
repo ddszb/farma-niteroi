@@ -18,12 +18,14 @@ export default props =>{
     const [dialogAmount, setDialogAmount] = useState(props.dose.amount ? '' + props.dose.amount : '1')
     const [showPicker, setShowPicker] = useState(false)
     const [onEdit, setOnEdit] = useState(props.dose.status == doseStatus.TOMADA)
+    
     const changeTime = (event, date) =>{
         if(date === undefined){
             setShowPicker(false)
             return
         }
         if(event.type === "set"){
+            date.setSeconds(0)
             setShowPicker(false)
             setDialogTime(date)
         }

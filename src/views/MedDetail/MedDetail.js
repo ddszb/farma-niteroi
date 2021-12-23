@@ -7,7 +7,7 @@ import iconMoonConfig from '../../selection.json'
 import { cancelNotification } from '../../util/Notifications'
 import {Container, RowView, MedName, HPadding,
     VPadding, InfoTitle, InfoText, Bottom, ButtonView,
-    ButtonPurpleText, Button, StockInput} from './styles'
+    Button, StockInput, ButtonText} from './styles'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import moment from 'moment'
 import 'moment/locale/pt-br'
@@ -298,9 +298,9 @@ export default props =>{
                         <TouchableOpacity
                             onPress={__onPressEndTreatment}>
                             <Button>
-                                <ButtonPurpleText>
+                                <ButtonText>
                                     Encerrar Tratamento
-                                </ButtonPurpleText>
+                                </ButtonText>
                             </Button>
                         </TouchableOpacity>}
                     </ButtonView>

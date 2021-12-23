@@ -57,7 +57,7 @@ export function DrawerContent(props){
                         onPress={() => props.navigation.navigate("Informação")}/>
                         <DrawerItem 
                         icon={({color, size}) =>( <Ionicons name="link" color={colors.primary} size={size}/>)}
-                        label="Site Oficial"
+                        label="Site Oficial da Prefeitura"
                         onPress={() => Linking.openURL(URL_PREFEITURA)}/>
                     </Drawer.Section>
                     <Drawer.Section style={styles.drawerSection} title="Outros">
