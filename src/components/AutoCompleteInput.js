@@ -8,13 +8,13 @@ import {
     TouchableOpacity,
     Keyboard
 }  from 'react-native'
+import HttpService from '../services/HttpService'
 import colors from '../styles/colors'
 
 
 export default props =>{
     
-    const [data, setData] = useState(props.data)
-    const [filteredOptions, setFilteredOptions] = useState(data)
+    const [data, setData] = useState([])
     const [text, setText] = useState('')
     const [showList, setShowList] = useState(false)
 
@@ -36,30 +36,48 @@ export default props =>{
     }, [])
 
     const onChangeText = (text) =>{
-        setShowList(text.length > 2)
         setText(text)
-        filterData(text)
         props.onChange(text)
+        if(text.length >= 3){
+            searchMedsByName(text)
+        }else{
+            setShowList(false)
+        }
     }
 
-    const onSelect = (opt) =>{
-        setText(opt.value)
+
+    const searchMedsByName = async (query) =>{
+        const response = await HttpService.get(`/medicamentos/anvisa/busca?nome=${query}`);
+        if(response.data){
+            setData(response.data)
+            setShowList(true)
+        }
+    }
+
+    const onSelectMed = (med) =>{
+        let newName = getMedDisplayName(med)
+        setText(newName)
         setShowList(false)
-        props.onChange(opt.value)
+        props.onChange(newName)
     }
 
-    const filterData = (term)=>{
-        let newOptions = data.filter( opt => opt.value.toLowerCase().includes(term.toLowerCase()))
-        setFilteredOptions(newOptions)
+    const getMedDisplayName = (med) =>{
+        let displayName = med.nomePopular;
+        if(med.farmaco.toLowerCase().startsWith(text)){
+            displayName = med.farmaco;
+        }
+        return `${displayName} ${med.concentracao}` 
     }
 
-    const renderItem = ({item : opt}) =>{
+
+    const renderItem = ({item : med}) =>{
+
         return(
             <TouchableOpacity
                 style={styles.listItem}
-                onPress={() => onSelect(opt)}>
+                onPress={() => onSelectMed(med)}>
                 <Text style={styles.text}>
-                    {opt.value}
+                    {getMedDisplayName(med)}
                 </Text>
             </TouchableOpacity>
         )
@@ -75,13 +93,15 @@ export default props =>{
                 value={props.value != null ? props.value: text}    
             />
 
-        {(showList && keyboardVisible) &&
-            <FlatList
-                keyboardShouldPersistTaps={'handled'}
-                data={filteredOptions}
-                renderItem={renderItem}
-                keyExtractor={(item, index) => index.toString()}
-            />} 
+        {showList &&
+            <View style={styles.listContainer}>
+                <FlatList
+                    keyboardShouldPersistTaps={'handled'}
+                    data={data}
+                    renderItem={renderItem}
+                    keyExtractor={(item, index) => index.toString()}
+                />
+            </View>} 
         </View>
 
     )
@@ -96,11 +116,12 @@ const styles = StyleSheet.create({
         borderColor: colors.grey8,
         color: colors.grey4,
         borderRadius: 5,
-        borderBottomRightRadius: 0,
-        borderBottomLeftRadius: 0,
         borderWidth: 1,
         marginTop: 5,
         padding: 10,
+    },
+    listContainer:{
+        maxHeight: 200
     },
     listItem:{
         borderBottomWidth: 1,

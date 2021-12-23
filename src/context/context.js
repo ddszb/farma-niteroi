@@ -1,6 +1,4 @@
 import React, {createContext, useReducer} from 'react'
-import polis from '../data/polis'
-import medsNiteroi from '../data/meds_niteroi'
 
 {/*
     Context API (Hook): Compartilhar informações dentro de toda a árvore de componentes
@@ -11,7 +9,7 @@ import medsNiteroi from '../data/meds_niteroi'
     UseReducer (Hook): Gerenciamento do contexto, para evoluir o contexto
 
 */}
-const initialState = {polis, medsNiteroi }
+const initialState = {}
 
 const AppContext = createContext({})
 

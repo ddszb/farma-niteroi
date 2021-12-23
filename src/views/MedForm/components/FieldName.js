@@ -2,7 +2,6 @@ import React from "react";
 import { Alert, Dimensions, TouchableOpacity, ToastAndroid } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AutoCompleteInput from "../../../components/AutoCompleteInput";
-import meds_niteroi from "../../../data/meds_niteroi";
 import { Button, ButtonText, CardBox, CardContent, FormFieldLabel, ResetButton, ViewFlexRow } from "../styles";
 import { Icon } from 'react-native-elements/dist/icons/Icon'
 import colors from "../../../styles/colors";
@@ -16,9 +15,6 @@ export default props =>{
     
 
     const windowWidth = Dimensions.get('window').width;
-
-    const autoCompleteOptions = meds_niteroi.map((med, index )=> ({key: index, value: med.nome + " " + med.dosagem}))
-    .sort((a, b) => a.value.toLowerCase() > b.value.toLowerCase() ? 1 : -1)
 
     /**
      * Verifica se o nome do medicamento foi preenchido. 
@@ -58,15 +54,14 @@ export default props =>{
                 <ViewFlexRow>
                 <AutoCompleteInput
                     editable={!props.medPicked}
-                    data={autoCompleteOptions}
                     onChange={props.onChangeName}
                     placeholder="Nome do medicamento"
                     value={props.med.name}
-                    styles={{width: windowWidth * 0.75}}
+                    styles={{width: "100%"}}
                 />
                 {props.medPicked &&
                 <ResetButton onPress={onPressReset}>
-                    <Icon name={"eraser"} type={"font-awesome-5"} size={25} color={colors.primary}/>
+                    <Icon name={"eraser"} type={"font-awesome-5"} size={25} color={colors.alert}/>
                 </ResetButton>}
                 </ViewFlexRow>
             </CardContent>

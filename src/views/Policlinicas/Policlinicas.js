@@ -1,9 +1,10 @@
-import React, {useContext} from 'react'
+import React, {useState, useEffect} from 'react'
 import { TouchableOpacity, Linking } from 'react-native'
 import { Platform } from 'react-native'
-import {FlatList, View} from 'react-native'
+import {FlatList} from 'react-native'
 import { Icon } from 'react-native-elements/dist/icons/Icon'
-import AppContext from '../../context/context'
+import LoadingData from '../../components/LoadingData'
+import HttpService from '../../services/HttpService'
 import colors from '../../styles/colors'
 import { CardBox, CardContent, Container, Name, LightText,
     Text, Phones, VPadding, HPadding, InfoSide, IconSide,
@@ -12,7 +13,23 @@ import { CardBox, CardContent, Container, Name, LightText,
 
 export default props =>{
     
-    const {state, dispatch} = useContext(AppContext)
+    const [isLoading, setIsLoading] = useState(true)
+    const [policlinicas, setPoliclinicas] = useState(null)
+
+    useEffect(() =>{
+        const fetchPolis = async () =>{
+            HttpService.get(`/policlinicas`)
+            .then(response => {
+                console.log(JSON.stringify(response,0, 2))
+                if(response.data){
+                    setPoliclinicas(response.data)
+                }
+                setIsLoading(false)
+            })
+            
+        };
+        fetchPolis()
+    }, []);
 
     const __dialCall = (phone) =>{        
         var number = phone.replace('-','')
@@ -26,6 +43,8 @@ export default props =>{
         })
         Linking.openURL(url)
     }
+
+
 
     const __getPhoneNumber = (poli) =>{
         return poli.telefones.map( p =>{
@@ -44,13 +63,15 @@ export default props =>{
 
 
     const __getPoliItem = ({item : poli}) =>{
+
+        let rua = `${poli.endereco.logradouro}${poli.endereco.numero ? ", " + poli.endereco.numero : ""}`
         return (
             <CardBox>
                 <CardContent>
                     <InfoSide>
                         <Name>{poli.nome}</Name>
-                        <LightText>{poli.endereco},</LightText>
-                        <Text>{poli.bairro}</Text>
+                        <LightText>{rua}</LightText>
+                        <Text>{poli.endereco.bairro}</Text>
                         <VPadding>
                             <Text>Tel.:</Text>
                             <Phones>
@@ -73,11 +94,13 @@ export default props =>{
 
     return(
         <Container>
+            <LoadingData visible={isLoading}/>
             <FlatList
-            keyExtractor={user => user.id.toString()}
-            data={state.polis}
-            renderItem={__getPoliItem}
+                keyExtractor={user => user.id.toString()}
+                data={policlinicas}
+                renderItem={__getPoliItem}
             />
+
         </Container>
 
     )

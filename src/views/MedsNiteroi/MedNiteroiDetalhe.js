@@ -1,7 +1,7 @@
 import React from 'react'
 import PrimaryButton from '../../components/PrimaryButton'
 
-import {DetailContainer, MedNameTitle, RowView, InfoText, Description, BottomView} from './styles'
+import {DetailContainer, MedNameTitle, RowView, InfoText, Description} from './styles'
 
 export default props =>{
     
@@ -13,10 +13,10 @@ export default props =>{
     return(
         <DetailContainer>
             <RowView>
-                <MedNameTitle>{med.nome}</MedNameTitle>
+                <MedNameTitle>{med.farmaco}</MedNameTitle>
             </RowView>
             <RowView>
-                <InfoText>{med.dosagem.toLowerCase()}</InfoText>
+                <InfoText>{med.concentracao.toLowerCase()}</InfoText>
                 <InfoText>{med.apresentacao.toLowerCase()}</InfoText>
             </RowView>
             <Description>

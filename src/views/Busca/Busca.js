@@ -22,7 +22,7 @@ export default props =>{
             onPressLeft={() => props.navigation.toggleDrawer()}/>
         <Container>
             <Text>
-                Veja a relação de medicamentos oferecidos gratuitamente pela prefeitura de niterói
+                Veja a relação de medicamentos oferecidos gratuitamente pela Prefeitura de Niterói
             </Text>
             <TouchableOpacity
                 onPress={navigateToMeds}>

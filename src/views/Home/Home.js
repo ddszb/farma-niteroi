@@ -115,13 +115,20 @@ export default props =>{
     const filterDoses = () =>{
         var allDoses = [].concat.apply([], meds.map( m => m.doses)) // Concatena todas as doses de todos os medicamentos
         let visible = allDoses.filter( d => (moment(d.date).isSame(filterDay, 'day') || moment(d.dateTaken).isSame(filterDay, 'day')) && d.status !== doseStatus.ENCERRADA)
-        visible = visible.sort((a,b) => a.dateTaken ? a.dateTaken : a.date  - b.dateTaken ? b.dateTaken : b.date)
         
         if(filterOption == filterOptions.TAKEN){
             visible = visible.filter( d => d.status == doseStatus.TOMADA )
         }else if(filterOption == filterOptions.NOT_TAKEN){
             visible = visible.filter( d => d.status == doseStatus.NAO_TOMADA)
         }
+        
+        console.log(visible, "\n\n___")
+        visible = visible.sort((a,b) =>{
+            let dateA = a.dateTaken ? a.dateTaken : a.date
+            let dateB = b.dateTaken ? b.dateTaken : b.date
+            return new Date(dateA) - new Date(dateB)
+        })
+        console.log(visible)
         setVisibleDoses(visible)
     }
 

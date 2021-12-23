@@ -113,6 +113,7 @@ export const BorderInputText = styled.TextInput`
 
 export const ResetButton = styled.TouchableOpacity`
     margin-right: ${windowWidth * 0.02}px;
+    marginLeft: 10px;
     margin-top: 7px;
 `
 
