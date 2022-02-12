@@ -251,9 +251,9 @@ export default props => {
 				visible={showFilter}
 				options={getFilterOptions()}
 				title="Filtrar Doses"
-				storageKey={storageKeys.HOME_FILTER}
+				storageKey="homeFilter"
 				onClose={() => setShowFilter(false)}
-				value="1"
+				value={filterOption}
 				onChangeValue={onChangeDoseFilterValue}
 			/>
 			<Header

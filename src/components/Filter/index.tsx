@@ -1,9 +1,9 @@
 import React, {useCallback, useEffect} from 'react';
 import {View} from 'react-native';
-import {RadioButton, Title} from 'react-native-paper';
+import {RadioButton} from 'react-native-paper';
 import {SwipeablePanel} from 'rn-swipeable-panel';
 import colors from '../../assets/colors';
-import {Button, OptionText} from './styles';
+import {Button, OptionText, Title} from './styles';
 import {StorageService} from '../../services';
 import {StorageKeys} from '../../services/StorageService';
 
@@ -36,18 +36,19 @@ const Filter: React.FC<FilterProps> = ({
 	 * Busca no local storage a última opção salva.
 	 */
 	const getSavedFilter = async (): Promise<void> => {
-		const value = await StorageService.retrieve(storageKey);
-		let filter = value != null ? value : '0';
+		const selected = await StorageService.retrieve(storageKey);
+		let filter = selected != null ? selected : '0';
 		onChangeValue(filter);
 	};
 
 	/**
 	 * Salva a opção selecionado no local storage e chama o método do pai.
-	 * @param {String} value O valor selecionado
+	 * @param {String} selected O valor selecionado
 	 */
-	const changeValue = useCallback(async (value: string): Promise<void> => {
-		await StorageService.save(storageKey, value);
-		onChangeValue(value);
+	const changeValue = useCallback(async (selected: string): Promise<void> => {
+		console.log('valor>', selected);
+		await StorageService.save(storageKey, selected);
+		onChangeValue(selected);
 	}, []);
 
 	/**
@@ -55,12 +56,12 @@ const Filter: React.FC<FilterProps> = ({
 	 * @returns O JSX para renderização
 	 */
 	const getOptions = (): JSX.Element[] => {
-		return options.map((option, value) => {
+		return options.map((option, index) => {
 			return (
 				<Button
-					key={value.toString()}
-					onPress={() => changeValue(value.toString())}>
-					<RadioButton value={value.toString()} color={colors.primary} />
+					key={index.toString()}
+					onPress={() => changeValue(index.toString())}>
+					<RadioButton value={index.toString()} color={colors.primary} />
 					<OptionText>{option}</OptionText>
 				</Button>
 			);
