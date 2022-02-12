@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 
 import doseTimes from '../../../constants/doseTimesSelection';
-import Picker from '../../../components/Picker';
+import TreatmentSpinner from '../../../components/Spinner';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AmountModal from './AmountModal';
 import moment from 'moment';
@@ -251,7 +251,7 @@ export default props => {
 	return (
 		<>
 			<View style={style.pickers}>
-				<Picker items={doseTimes} onChangeValue={__createDoseTimes} />
+				<TreatmentSpinner items={doseTimes} onChangeValue={__createDoseTimes} />
 			</View>
 			<View style={style.list}>{__doseHoursItemList()}</View>
 			{showPicker && (
