@@ -1,79 +1,123 @@
-import React from "react";
-import { Alert, Dimensions, TouchableOpacity, ToastAndroid } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import AutoCompleteInput from "../../../components/AutoCompleteInput";
-import { Button, ButtonText, CardBox, CardContent, FormFieldLabel, ResetButton, ViewFlexRow } from "../styles";
-import { Icon } from 'react-native-elements/dist/icons/Icon'
-import colors from "../../../styles/colors";
-import storageKeys from "../../../constants/storageKeys";
-import medStatus from "../../../constants/medStatus";
+import React from 'react';
+import {
+	Alert,
+	Dimensions,
+	TouchableOpacity,
+	ToastAndroid,
+	TextInput,
+} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import AutoCompleteInput from '../../../components/AutoCompleteInput';
+import {
+	Button,
+	ButtonText,
+	CardBox,
+	CardContent,
+	FormFieldLabel,
+	ResetButton,
+	ViewFlexRow,
+} from '../styles';
+import {Icon} from 'react-native-elements/dist/icons/Icon';
+import colors from '../../../styles/colors';
+import storageKeys from '../../../constants/storageKeys';
+import medStatus from '../../../constants/medStatus';
 
 /**
  * Componente para nome do medicamento no cadastro de medicamentos.
  */
-export default props =>{
-    
+export default props => {
+	const windowWidth = Dimensions.get('window').width;
 
-    const windowWidth = Dimensions.get('window').width;
+	/**
+	 * Verifica se o nome do medicamento foi preenchido.
+	 * Se sim, exibirá os próximos campos
+	 */
+	const onConfirm = async () => {
+		if (props.med.name) {
+			const medsString = await AsyncStorage.getItem(storageKeys.MEDS);
+			const meds = medsString !== null ? JSON.parse(medsString) : [];
+			if (
+				meds.filter(
+					m =>
+						m.name.toLowerCase() == props.med.name.toLowerCase() &&
+						m.status == medStatus.ATIVO,
+				).length > 0
+			) {
+				ToastAndroid.showWithGravityAndOffset(
+					'Você já iniciou um tratamento com este medicamento.',
+					ToastAndroid.SHORT,
+					ToastAndroid.BOTTOM,
+					0,
+					90,
+				);
+				return;
+			}
+			props.onConfirm();
+		}
+	};
 
-    /**
-     * Verifica se o nome do medicamento foi preenchido. 
-     * Se sim, exibirá os próximos campos
-     */
-    const onConfirm = async () =>{
-        if(props.med.name){
-            const medsString = await AsyncStorage.getItem(storageKeys.MEDS)
-            const meds = medsString !== null ? JSON.parse(medsString) : []
-            if(meds.filter( m => m.name.toLowerCase() == props.med.name.toLowerCase() && m.status == medStatus.ATIVO).length > 0){  
-                ToastAndroid.showWithGravityAndOffset("Você já iniciou um tratamento com este medicamento.",
-                    ToastAndroid.SHORT,
-                    ToastAndroid.BOTTOM, 0 , 90)
-                return
-            } 
-            props.onConfirm()
-        }
-    }
+	/**
+	 * Exibe um alerta de confirmação ao pressionar o botão de limpar o formulário.
+	 */
+	const onPressReset = () => {
+		Alert.alert('Limpar dados', 'Deseja limpar as informações preenchidas?', [
+			{text: 'Não'},
+			{
+				text: 'Sim',
+				onPress() {
+					props.onReset();
+				},
+			},
+		]);
+	};
 
-    /**
-     * Exibe um alerta de confirmação ao pressionar o botão de limpar o formulário.
-     */
-    const onPressReset = () =>{
-        Alert.alert('Limpar dados', 'Deseja limpar as informações preenchidas?',
-        [{text: 'Não'},
-        {text:'Sim',
-         onPress(){
-             props.onReset()
-        }}])
-    }
-
-    return(
-        <>
-        <CardBox>
-            <CardContent>
-                <FormFieldLabel>Nome</FormFieldLabel>
-                <ViewFlexRow>
-                <AutoCompleteInput
+	return (
+		<>
+			<CardBox>
+				<CardContent>
+					<FormFieldLabel>Nome</FormFieldLabel>
+					<ViewFlexRow>
+						{/* // ! todo alterar para autocomplete */}
+						<TextInput
+							style={{
+								height: 40,
+								borderColor: colors.grey8,
+								color: colors.grey4,
+								borderRadius: 5,
+								borderWidth: 1,
+								marginTop: 5,
+								padding: 10,
+							}}
+							value={props.med.name}
+							onChange={props.onChangeName}
+						/>
+						{/* <AutoCompleteInput
                     editable={!props.medPicked}
                     onChange={props.onChangeName}
                     placeholder="Nome do medicamento"
                     value={props.med.name}
                     styles={{width: "100%"}}
-                />
-                {props.medPicked &&
-                <ResetButton onPress={onPressReset}>
-                    <Icon name={"eraser"} type={"font-awesome-5"} size={25} color={colors.alert}/>
-                </ResetButton>}
-                </ViewFlexRow>
-            </CardContent>
-        </CardBox>
-        {!props.medPicked &&
-        <TouchableOpacity onPress={onConfirm}>
-            <Button>
-                <ButtonText>
-                    Próximo
-                </ButtonText>
-            </Button>
-        </TouchableOpacity>}
-        </>
-    )
-}
+                /> */}
+						{props.medPicked && (
+							<ResetButton onPress={onPressReset}>
+								<Icon
+									name={'eraser'}
+									type={'font-awesome-5'}
+									size={25}
+									color={colors.alert}
+								/>
+							</ResetButton>
+						)}
+					</ViewFlexRow>
+				</CardContent>
+			</CardBox>
+			{!props.medPicked && (
+				<TouchableOpacity onPress={onConfirm}>
+					<Button>
+						<ButtonText>Próximo</ButtonText>
+					</Button>
+				</TouchableOpacity>
+			)}
+		</>
+	);
+};
