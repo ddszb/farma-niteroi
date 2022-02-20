@@ -13,8 +13,8 @@ export default props => {
 	const {med, screen} = props.route.params;
 
 	const navigateToNew = () => {
-		props.navigation.navigate('Adicionar Medicamento', {
-			screen: 'Adicionar Medicamento',
+		props.navigation.navigate('AddMeds', {
+			screen: 'AddMeds',
 			med: med.nome,
 		});
 	};

@@ -7,7 +7,6 @@ import {
 	TextInput,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import AutoCompleteInput from '../../../components/AutoCompleteInput';
 import {
 	Button,
 	ButtonText,
@@ -81,6 +80,7 @@ export default props => {
 						<TextInput
 							style={{
 								height: 40,
+								width: '100%',
 								borderColor: colors.grey8,
 								color: colors.grey4,
 								borderRadius: 5,

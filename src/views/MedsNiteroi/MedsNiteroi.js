@@ -18,7 +18,6 @@ export default props => {
 	useEffect(() => {
 		const fetchMeds = async () => {
 			HttpService.get(`/medicamentos/niteroi`).then(response => {
-				console.log(JSON.stringify(response, 0, 2));
 				if (response.data) {
 					setMedsNiteroi(response.data);
 				}
@@ -31,8 +30,8 @@ export default props => {
     Clique em um medicamento para ver mais opções`;
 
 	const __navigateToOptions = med => {
-		props.navigation.navigate('Medicamento Niteroi Detalhe', {
-			screen: 'Medicamento Niteroi Detalhe',
+		props.navigation.navigate('NiteroiMedDetail', {
+			screen: 'NiteroiMedDetail',
 			med: med,
 		});
 	};

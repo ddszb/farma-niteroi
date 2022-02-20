@@ -1,23 +1,26 @@
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
-
+import {useNavigation} from '@react-navigation/native';
 import {Button, ButtonText, Container, Text} from './styles';
 import Header from '../../components/Header';
-export default props => {
+
+interface NavigationProps {}
+
+const Search: React.FC = () => {
+	const navigation = useNavigation();
 	function navigateToMeds() {
-		props.navigation.navigate('NiteroiMeds', {screen: 'AddMeds'});
+		navigation.navigate('NiteroiMeds', {
+			screen: 'AddMeds',
+		});
 	}
 
 	function navigateToPoli() {
-		props.navigation.navigate('HealthCenters', {screen: 'HealthCenters'});
+		navigation.navigate('HealthCenters', {screen: 'HealthCenters'});
 	}
 
 	return (
 		<>
-			<Header
-				title="Procurar"
-				onPressLeft={() => props.navigation.toggleDrawer()}
-			/>
+			<Header title="Procurar" onPressLeft={() => navigation.toggleDrawer()} />
 			<Container>
 				<Text>
 					Veja a relação de medicamentos oferecidos gratuitamente pela

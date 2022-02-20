@@ -95,11 +95,11 @@ export default props => {
 	}, [meds, filterDay, filterOption]);
 
 	/**
-	 * Navega para a tela de Adicionar Dose.
+	 * Navega para a tela de AddDose.
 	 */
 	const navigateToNew = () => {
-		props.navigation.navigate('Adicionar Dose', {
-			screen: 'Adicionar Dose',
+		props.navigation.navigate('AddDose', {
+			screen: 'AddDose',
 			meds: meds,
 		});
 	};
@@ -133,13 +133,11 @@ export default props => {
 			visible = visible.filter(d => d.status == doseStatus.NAO_TOMADA);
 		}
 
-		console.log(visible, '\n\n___');
 		visible = visible.sort((a, b) => {
 			let dateA = a.dateTaken ? a.dateTaken : a.date;
 			let dateB = b.dateTaken ? b.dateTaken : b.date;
 			return new Date(dateA) - new Date(dateB);
 		});
-		console.log(visible);
 		setVisibleDoses(visible);
 	};
 

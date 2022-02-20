@@ -73,8 +73,8 @@ export default props => {
 	 * Navega para a tela de cadastro de novo medicamento.
 	 */
 	function navigateToNew() {
-		props.navigation.navigate('Adicionar Medicamento', {
-			screen: 'Adicionar Medicamento',
+		props.navigation.navigate('AddMeds', {
+			screen: 'AddMeds',
 		});
 	}
 
@@ -83,8 +83,8 @@ export default props => {
 	 * @param {*} med O medicamento
 	 */
 	function navigateToView(med) {
-		props.navigation.navigate('Meu Medicamento', {
-			screen: 'Meu Medicamento',
+		props.navigation.navigate('MedDetail', {
+			screen: 'MedDetail',
 			med: med,
 		});
 	}

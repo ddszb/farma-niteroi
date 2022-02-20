@@ -26,7 +26,6 @@ export default props => {
 	useEffect(() => {
 		const fetchPolis = async () => {
 			HttpService.get(`/policlinicas`).then(response => {
-				console.log(JSON.stringify(response, 0, 2));
 				if (response.data) {
 					setPoliclinicas(response.data);
 				}
