@@ -5,7 +5,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 //Navigator
 import DrawerMenu from './DrawerMenu';
 import TabNavigator from './TabNavigator';
-import Tutorial from '../views/Tutorial/Tutorial';
+import Tutorial from '../views/Tutorial';
 import About from '../views/About/About';
 import colors from '../styles/colors';
 

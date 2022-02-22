@@ -1,8 +1,7 @@
-export default{
-    MEDS: "medsList",
-    FIRST_LOGIN: "firstLogin",
-    
-    HOME_FILTER: "homeFilter",
-    MEDS_FILTER: "medsFilter",
-    
-}
+export default {
+	MEDS: 'medsList',
+	LAST_ACCESS: 'lastAccess',
+
+	HOME_FILTER: 'homeFilter',
+	MEDS_FILTER: 'medsFilter',
+};

@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export type StorageKeys =
 	| 'medsList'
-	| 'firstLogin'
+	| 'lastAccess'
 	| 'homeFilter'
 	| 'medsFilter';
 

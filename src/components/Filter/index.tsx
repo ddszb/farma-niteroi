@@ -46,7 +46,6 @@ const Filter: React.FC<FilterProps> = ({
 	 * @param {String} selected O valor selecionado
 	 */
 	const changeValue = useCallback(async (selected: string): Promise<void> => {
-		console.log('valor>', selected);
 		await StorageService.save(storageKey, selected);
 		onChangeValue(selected);
 	}, []);

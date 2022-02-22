@@ -59,7 +59,7 @@ export default props => {
 	 * Se sim, direciona para a tela de tutorial.
 	 */
 	const checkFirstTime = async () => {
-		const hideTutorial = await AsyncStorage.getItem(storageKeys.FIRST_LOGIN);
+		const hideTutorial = await AsyncStorage.getItem(storageKeys.LAST_ACCESS);
 		if (!hideTutorial) {
 			props.navigation.navigate('Tutorial');
 		}

@@ -11,7 +11,7 @@ import MedsNiteroi from '../views/MedsNiteroi/MedsNiteroi';
 import Policlinicas from '../views/Policlinicas/Policlinicas';
 import MedNiteroiDetalhe from '../views/MedsNiteroi/MedNiteroiDetalhe';
 import NewDoseForm from '../views/DoseForm/NewDoseForm';
-import Tutorial from '../views/Tutorial/Tutorial';
+import Tutorial from '../views/Tutorial';
 
 const Stack = createStackNavigator();
 
