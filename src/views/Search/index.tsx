@@ -1,22 +1,22 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Button, ButtonText, Container, Text} from './styles';
 import Header from '../../components/Header';
-
-interface NavigationProps {}
+import {DrawerNavigationProp} from '@react-navigation/drawer';
+import {DrawerNavigatorParamList} from '../../navigation/DrawerNavigator';
 
 const Search: React.FC = () => {
-	const navigation = useNavigation();
-	function navigateToMeds() {
-		navigation.navigate('NiteroiMeds', {
-			screen: 'AddMeds',
-		});
-	}
+	const navigation =
+		useNavigation<DrawerNavigationProp<DrawerNavigatorParamList>>();
 
-	function navigateToPoli() {
-		navigation.navigate('HealthCenters', {screen: 'HealthCenters'});
-	}
+	const navigateToMeds = useCallback(() => {
+		navigation.navigate('NiteroiMeds');
+	}, [navigation]);
+
+	const navigateToPoli = useCallback(() {
+		navigation.navigate('HealthCenters');
+	}, [navigation]);
 
 	return (
 		<>
@@ -43,3 +43,5 @@ const Search: React.FC = () => {
 		</>
 	);
 };
+
+export default Search;

@@ -8,6 +8,10 @@ import TabNavigator from './TabNavigator';
 import Tutorial from '../views/Tutorial';
 import About from '../views/About/About';
 import colors from '../styles/colors';
+import MedNiteroiDetalhe from '../views/MedsNiteroi/MedNiteroiDetalhe';
+import MedsNiteroi from '../views/MedsNiteroi/MedsNiteroi';
+import Search from '../views/Search';
+import Policlinicas from '../views/Policlinicas/Policlinicas';
 
 const Drawer = createDrawerNavigator();
 
@@ -17,6 +21,8 @@ export type DrawerNavigatorParamList = {
 	About: undefined;
 	Doses: undefined;
 	MedsList: undefined;
+	NiteroiMeds: undefined;
+	HealthCenters: undefined;
 	Search: undefined;
 	Info: undefined;
 };
@@ -54,6 +60,21 @@ const DrawerNavigator: React.FC = () => {
 					title: 'Sobre',
 				}}
 				component={About}
+			/>
+			<Drawer.Screen
+				options={{headerShown: false}}
+				name="SearchStack"
+				component={Search}
+			/>
+			<Drawer.Screen
+				options={{headerTitle: 'Medicamentos da Prefeitura'}}
+				name="NiteroiMeds"
+				component={MedsNiteroi}
+			/>
+			<Drawer.Screen
+				options={{headerTitle: 'Policlínicas'}}
+				name="Policlinicas"
+				component={Policlinicas}
 			/>
 		</Drawer.Navigator>
 	);
