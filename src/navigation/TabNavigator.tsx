@@ -1,14 +1,10 @@
 import React from 'react';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {
-	BottomTabNavigationOptions,
-	createBottomTabNavigator,
-} from '@react-navigation/bottom-tabs';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {
 	getFocusedRouteNameFromRoute,
 	ParamListBase,
-	Route,
 	RouteProp,
 } from '@react-navigation/core';
 

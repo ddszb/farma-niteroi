@@ -8,10 +8,10 @@ import TabNavigator from './TabNavigator';
 import Tutorial from '../views/Tutorial';
 import About from '../views/About/About';
 import colors from '../styles/colors';
-import MedNiteroiDetalhe from '../views/MedsNiteroi/MedNiteroiDetalhe';
 import MedsNiteroi from '../views/MedsNiteroi/MedsNiteroi';
 import Search from '../views/Search';
 import HealthCenters from '../views/HealthCenters';
+import Med from '../Models/Med';
 
 const Drawer = createDrawerNavigator();
 
@@ -25,6 +25,7 @@ export type DrawerNavigatorParamList = {
 	HealthCenters: undefined;
 	Search: undefined;
 	Info: undefined;
+	MedDetail: {med: Med};
 };
 /**
  * Drawer Navigator para o app.

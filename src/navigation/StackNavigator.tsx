@@ -5,7 +5,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Home from '../views/Home/Home';
 import ListaMeds from '../views/ListaMeds/MyMeds';
 import MedForm from '../views/MedForm/MedForm';
-import MedDetail from '../views/MedDetail/MedDetail';
+import MedDetail from '../views/MedDetail';
 import Search from '../views/Search';
 import MedsNiteroi from '../views/MedsNiteroi/MedsNiteroi';
 import HealthCenters from '../views/HealthCenters';

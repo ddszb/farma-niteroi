@@ -1,3 +1,4 @@
+import {Weekdays} from './Med';
 import Dose from './Dose';
 
 export type DoseUnit = {
@@ -6,6 +7,7 @@ export type DoseUnit = {
 	key: number;
 	liquid: boolean;
 };
+export type WeekdaysKeys = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 export type Weekdays = {
 	0: number;
@@ -32,6 +34,7 @@ export type Stock = {
 export default class Med {
 	id: string;
 	name: string;
+	expireDate?: Date;
 	weekdays: Weekdays;
 	totalDays: number;
 	startDate: Date;
