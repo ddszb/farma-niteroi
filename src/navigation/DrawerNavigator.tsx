@@ -11,7 +11,7 @@ import colors from '../styles/colors';
 import MedNiteroiDetalhe from '../views/MedsNiteroi/MedNiteroiDetalhe';
 import MedsNiteroi from '../views/MedsNiteroi/MedsNiteroi';
 import Search from '../views/Search';
-import Policlinicas from '../views/Policlinicas/Policlinicas';
+import HealthCenters from '../views/HealthCenters';
 
 const Drawer = createDrawerNavigator();
 
@@ -73,8 +73,8 @@ const DrawerNavigator: React.FC = () => {
 			/>
 			<Drawer.Screen
 				options={{headerTitle: 'Policlínicas'}}
-				name="Policlinicas"
-				component={Policlinicas}
+				name="HealthCenters"
+				component={HealthCenters}
 			/>
 		</Drawer.Navigator>
 	);

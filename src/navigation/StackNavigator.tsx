@@ -6,9 +6,9 @@ import Home from '../views/Home/Home';
 import ListaMeds from '../views/ListaMeds/MyMeds';
 import MedForm from '../views/MedForm/MedForm';
 import MedDetail from '../views/MedDetail/MedDetail';
-import Search from '../views/Busca/Busca';
+import Search from '../views/Search';
 import MedsNiteroi from '../views/MedsNiteroi/MedsNiteroi';
-import Policlinicas from '../views/Policlinicas/Policlinicas';
+import HealthCenters from '../views/HealthCenters';
 import MedNiteroiDetalhe from '../views/MedsNiteroi/MedNiteroiDetalhe';
 import NewDoseForm from '../views/DoseForm/NewDoseForm';
 import Tutorial from '../views/Tutorial';
@@ -77,7 +77,11 @@ const SearchStackNavigator: React.FC = (): JSX.Element => {
 				name="NiteroiMeds"
 				component={MedsNiteroi}
 			/>
-			<Stack.Screen name="HealthCenters" component={Policlinicas} />
+			<Stack.Screen
+				options={{headerTitle: 'Policlínicas'}}
+				name="HealthCenters"
+				component={HealthCenters}
+			/>
 			<Stack.Screen name="AddMeds" component={MedForm} />
 		</Stack.Navigator>
 	);

@@ -10,11 +10,11 @@ const Search: React.FC = () => {
 	const navigation =
 		useNavigation<DrawerNavigationProp<DrawerNavigatorParamList>>();
 
-	const navigateToMeds = useCallback(() => {
+	const navigateToMeds = useCallback((): void => {
 		navigation.navigate('NiteroiMeds');
 	}, [navigation]);
 
-	const navigateToPoli = useCallback(() {
+	const navigateToPoli = useCallback((): void => {
 		navigation.navigate('HealthCenters');
 	}, [navigation]);
 
