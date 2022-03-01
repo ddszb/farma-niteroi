@@ -9,7 +9,7 @@
     </style>
 
     <style name="DialogDatePicker.Theme" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorAccent">#63488c</item>
+        <item name="colorAccent">#272E47</item>
         <item name="android:textColor">#444</item>
         <item name="android:textColorPrimary">#444</item>
     </style>

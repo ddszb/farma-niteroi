@@ -14,7 +14,7 @@ import {
 	SearchStackNavigator,
 } from './StackNavigator';
 
-import Info from '../views/Info/Info';
+import Info from '../views/Info';
 
 import colors from '../assets/colors';
 import {DrawerNavigatorParamList} from './DrawerNavigator';

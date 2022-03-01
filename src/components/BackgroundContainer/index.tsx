@@ -35,18 +35,18 @@ const BackgroundContainer: React.FC<BackgroundContainerProps> = ({
 		<SafeArea>
 			<KeyboardAvoidingView style={{flex: 1}} enabled={keyboardAvoidingView}>
 				<Container>
+					{header && (
+						<Header
+							title={title}
+							rightButton={headerRight}
+							onPressLeft={onHeaderPressLeft}
+							onPressRight={onHeaderPressRight}
+						/>
+					)}
 					<ScrollView
 						contentContainerStyle={{flexGrow: 1}}
 						nestedScrollEnabled
 						keyboardShouldPersistTaps="handled">
-						{header && (
-							<Header
-								title={title}
-								rightButton={headerRight}
-								onPressLeft={onHeaderPressLeft}
-								onPressRight={onHeaderPressRight}
-							/>
-						)}
 						{children}
 					</ScrollView>
 				</Container>
