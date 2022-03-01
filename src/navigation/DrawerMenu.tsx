@@ -64,7 +64,7 @@ const DrawerMenu: React.FC<DrawerContentComponentProps> = props => {
 					<Drawer.Section style={styles.drawerSection}>
 						<Text style={styles.section}>Meus dados</Text>
 						<Item
-							icon="home"
+							icon="home-outline"
 							label="Doses do Dia"
 							onPress={() => {
 								navigation.reset({index: 0, routes: [{name: 'Home'}]});
@@ -72,7 +72,7 @@ const DrawerMenu: React.FC<DrawerContentComponentProps> = props => {
 							}}
 						/>
 						<Item
-							icon="medkit"
+							icon="medkit-outline"
 							label="Meus Medicamentos"
 							onPress={() => {
 								navigation.reset({index: 0, routes: [{name: 'MedsList'}]});
@@ -83,7 +83,7 @@ const DrawerMenu: React.FC<DrawerContentComponentProps> = props => {
 					<Drawer.Section style={styles.drawerSection}>
 						<Text style={styles.section}>Prefeitura de Niterói</Text>
 						<Item
-							icon="search"
+							icon="search-outline"
 							label="Procurar Medicamentos"
 							onPress={() => {
 								navigation.reset({index: 0, routes: [{name: 'Search'}]});
@@ -91,7 +91,7 @@ const DrawerMenu: React.FC<DrawerContentComponentProps> = props => {
 							}}
 						/>
 						<Item
-							icon="md-book"
+							icon="md-book-outline"
 							label="Dicas de Saúde"
 							onPress={() => {
 								navigation.reset({index: 0, routes: [{name: 'Info'}]});
@@ -107,14 +107,14 @@ const DrawerMenu: React.FC<DrawerContentComponentProps> = props => {
 					<Drawer.Section style={styles.drawerSection}>
 						<Text style={styles.section}>Outros</Text>
 						<Item
-							icon="document-text"
+							icon="document-text-outline"
 							label="Tutorial"
 							onPress={() =>
 								navigation.navigate('Tutorial', {hideWelcome: true})
 							}
 						/>
 						<Item
-							icon="information-circle"
+							icon="information-circle-outline"
 							label="Sobre"
 							onPress={() => {
 								navigation.reset({index: 0, routes: [{name: 'About'}]});
