@@ -1,6 +1,13 @@
 import React, {useCallback} from 'react';
 
-import {View, StyleSheet, Alert, BackHandler, Linking} from 'react-native';
+import {
+	View,
+	StyleSheet,
+	Alert,
+	BackHandler,
+	Linking,
+	Text,
+} from 'react-native';
 import {Avatar, Title, Caption, Drawer} from 'react-native-paper';
 import {
 	DrawerContentComponentProps,
@@ -8,7 +15,7 @@ import {
 	DrawerItem,
 	DrawerNavigationProp,
 } from '@react-navigation/drawer';
-import colors from '../styles/colors';
+import colors from '../assets/colors';
 import {Icon} from 'react-native-elements/dist/icons/Icon';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
@@ -39,7 +46,7 @@ const DrawerMenu: React.FC<DrawerContentComponentProps> = props => {
 	}, []);
 
 	return (
-		<View style={{flex: 1}}>
+		<View style={{flex: 1, backgroundColor: colors.background}}>
 			<DrawerContentScrollView {...props}>
 				<View style={styles.drawerContent}>
 					<View style={styles.userInfoSection}>
@@ -54,21 +61,18 @@ const DrawerMenu: React.FC<DrawerContentComponentProps> = props => {
 							</View>
 						</View>
 					</View>
-					<Drawer.Section style={styles.drawerSection} title="Meus dados">
-						<DrawerItem
-							icon={({color, size}) => (
-								<Ionicons name="home" color={colors.primary} size={size} />
-							)}
+					<Drawer.Section style={styles.drawerSection}>
+						<Text style={styles.section}>Meus dados</Text>
+						<Item
+							icon="home"
 							label="Doses do Dia"
 							onPress={() => {
-								navigation.reset({index: 0, routes: [{name: 'Doses'}]});
+								navigation.reset({index: 0, routes: [{name: 'Home'}]});
 								props.navigation.closeDrawer();
 							}}
 						/>
-						<DrawerItem
-							icon={({color, size}) => (
-								<Ionicons name="medkit" color={colors.primary} size={size} />
-							)}
+						<Item
+							icon="medkit"
 							label="Meus Medicamentos"
 							onPress={() => {
 								navigation.reset({index: 0, routes: [{name: 'MedsList'}]});
@@ -76,59 +80,41 @@ const DrawerMenu: React.FC<DrawerContentComponentProps> = props => {
 							}}
 						/>
 					</Drawer.Section>
-					<Drawer.Section
-						style={styles.drawerSection}
-						title="Prefeitura de Niterói">
-						<DrawerItem
-							icon={({color, size}) => (
-								<Ionicons name="search" color={colors.primary} size={size} />
-							)}
+					<Drawer.Section style={styles.drawerSection}>
+						<Text style={styles.section}>Prefeitura de Niterói</Text>
+						<Item
+							icon="search"
 							label="Procurar Medicamentos"
 							onPress={() => {
 								navigation.reset({index: 0, routes: [{name: 'Search'}]});
 								props.navigation.closeDrawer();
 							}}
 						/>
-						<DrawerItem
-							icon={({color, size}) => (
-								<Ionicons name="md-book" color={colors.primary} size={size} />
-							)}
+						<Item
+							icon="md-book"
 							label="Dicas de Saúde"
 							onPress={() => {
 								navigation.reset({index: 0, routes: [{name: 'Info'}]});
 								props.navigation.closeDrawer();
 							}}
 						/>
-						<DrawerItem
-							icon={({color, size}) => (
-								<Ionicons name="link" color={colors.primary} size={size} />
-							)}
+						<Item
+							icon="link"
 							label="Site Oficial da Prefeitura"
 							onPress={() => Linking.openURL(URL_PREFEITURA)}
 						/>
 					</Drawer.Section>
-					<Drawer.Section style={styles.drawerSection} title="Outros">
-						<DrawerItem
-							icon={({color, size}) => (
-								<Ionicons
-									name="document-text"
-									color={colors.primary}
-									size={size}
-								/>
-							)}
+					<Drawer.Section style={styles.drawerSection}>
+						<Text style={styles.section}>Outros</Text>
+						<Item
+							icon="document-text"
 							label="Tutorial"
 							onPress={() =>
 								navigation.navigate('Tutorial', {hideWelcome: true})
 							}
 						/>
-						<DrawerItem
-							icon={({color, size}) => (
-								<Ionicons
-									name="information-circle"
-									color={colors.primary}
-									size={size}
-								/>
-							)}
+						<Item
+							icon="information-circle"
 							label="Sobre"
 							onPress={() => {
 								navigation.reset({index: 0, routes: [{name: 'About'}]});
@@ -141,11 +127,12 @@ const DrawerMenu: React.FC<DrawerContentComponentProps> = props => {
 							<Icon
 								name="exit-to-app"
 								type="material-community"
-								color={colors.grey6}
+								color={colors.alert}
 								size={size}
 							/>
 						)}
 						label="Sair"
+						labelStyle={{color: colors.grey12}}
 						onPress={onPressExit}
 					/>
 				</View>
@@ -156,22 +143,41 @@ const DrawerMenu: React.FC<DrawerContentComponentProps> = props => {
 
 export default DrawerMenu;
 
+interface ItemProps {
+	icon: string;
+	label: string;
+	onPress(): void;
+}
+const Item: React.FC<ItemProps> = ({icon, label, onPress}) => {
+	return (
+		<DrawerItem
+			icon={({color, size}) => (
+				<Ionicons name={icon} color={colors.grey12} size={size} />
+			)}
+			label={label}
+			labelStyle={{color: colors.grey12}}
+			onPress={onPress}
+		/>
+	);
+};
+
 const styles = StyleSheet.create({
 	drawerContent: {
 		flex: 1,
+		backgroundColor: colors.background,
 	},
 	userInfoSection: {
 		paddingLeft: 6,
 	},
 	title: {
 		fontSize: 16,
-		color: colors.primary,
+		color: colors.accent,
 		fontWeight: 'bold',
 	},
 	caption: {
 		fontSize: 14,
 		lineHeight: 14,
-		color: colors.primary,
+		color: colors.grey12,
 	},
 	row: {
 		marginTop: 20,
@@ -179,9 +185,10 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	section: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		marginRight: 15,
+		color: colors.accent,
+		fontSize: 18,
+		marginLeft: 15,
+		marginVertical: 15,
 	},
 	paragraph: {
 		fontWeight: 'bold',

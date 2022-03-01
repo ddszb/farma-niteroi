@@ -12,6 +12,7 @@ import MedsNiteroi from '../views/MedsNiteroi/MedsNiteroi';
 import Search from '../views/Search';
 import HealthCenters from '../views/HealthCenters';
 import Med from '../Models/Med';
+import {DosesStackNavigator} from './StackNavigator';
 
 const Drawer = createDrawerNavigator();
 
@@ -21,6 +22,7 @@ export type DrawerNavigatorParamList = {
 	About: undefined;
 	Home: undefined;
 	MedsList: undefined;
+	DosesList: undefined;
 	NiteroiMeds: undefined;
 	HealthCenters: undefined;
 	Search: undefined;
@@ -46,6 +48,11 @@ const DrawerNavigator: React.FC = () => {
 					title: 'Doses do Dia',
 				}}
 				component={TabNavigator}
+			/>
+			<Drawer.Screen
+				name="DosesList"
+				options={{headerShown: false, drawerLabel: 'DosesList'}}
+				component={DosesStackNavigator}
 			/>
 			<Drawer.Screen
 				name="Tutorial"
