@@ -1,10 +1,9 @@
 import React, {useCallback} from 'react';
-import {TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {Button, ButtonText, Container, Text} from './styles';
-import Header from '../../components/Header';
+import {Container, Text} from './styles';
 import {DrawerNavigationProp} from '@react-navigation/drawer';
 import {DrawerNavigatorParamList} from '../../navigation/DrawerNavigator';
+import {ActionButton, BackgroundContainer} from '../../components';
 
 const Search: React.FC = () => {
 	const navigation =
@@ -19,28 +18,16 @@ const Search: React.FC = () => {
 	}, [navigation]);
 
 	return (
-		<>
-			<Header title="Procurar" onPressLeft={() => navigation.toggleDrawer()} />
+		<BackgroundContainer header title="Procurar">
 			<Container>
 				<Text>
 					Veja a relação de medicamentos oferecidos gratuitamente pela
-					Prefeitura de Niterói
+					Prefeitura de Niterói e em quais policlínicas encontrar
 				</Text>
-				<TouchableOpacity onPress={navigateToMeds}>
-					<Button>
-						<ButtonText> Medicamentos</ButtonText>
-					</Button>
-				</TouchableOpacity>
-				<Text>
-					Veja a relação de policlínicas que oferecem medicamentos gratuitamente
-				</Text>
-				<TouchableOpacity onPress={navigateToPoli}>
-					<Button>
-						<ButtonText> Policlínicas</ButtonText>
-					</Button>
-				</TouchableOpacity>
+				<ActionButton visible label="Medicamentos" onClick={navigateToMeds} />
+				<ActionButton visible label="Policlínicas" onClick={navigateToPoli} />
 			</Container>
-		</>
+		</BackgroundContainer>
 	);
 };
 

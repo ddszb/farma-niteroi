@@ -2,7 +2,7 @@ const colors = {
 	//Main
 	primary: '#272E47',
 	secondary: '#2a324f',
-	accent: '#FD7042',
+	accent: '#db6c48',
 	purple: '#63488c',
 	purpleBright: '#a163ff',
 	background: '#15192A',

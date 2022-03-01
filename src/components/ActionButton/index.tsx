@@ -34,7 +34,7 @@ const ActionButton: React.FC<ButtonProps> = ({
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 0.1,
+		width: '100%',
 	},
 	bottom: {
 		width: '100%',
