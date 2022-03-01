@@ -7,6 +7,8 @@ export const Container = styled.View`
 	align-items: center;
 	border-bottom-width: 1px;
 	border-color: ${colors.grey13};
+	min-height: 60px;
+	background-color: ${colors.primary};
 `;
 
 export const Title = styled.Text`
@@ -15,7 +17,7 @@ export const Title = styled.Text`
 	text-align: center;
 	margin-top: 7px;
 	margin-bottom: 7px;
-	color: ${colors.primary};
+	color: ${colors.white};
 `;
 
 export const LeftButton = styled.TouchableOpacity`

@@ -3,7 +3,7 @@ import {SafeAreaView} from 'react-native';
 
 import {NavigationContainer} from '@react-navigation/native';
 import DrawerNavigator from './DrawerNavigator';
-import {AppProvider} from '../context/context';
+import {AppProvider} from '../hooks/context';
 
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import PushNotification from 'react-native-push-notification';

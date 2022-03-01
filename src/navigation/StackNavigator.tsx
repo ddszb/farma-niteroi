@@ -2,7 +2,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
 // Screens
-import Home from '../views/Home/Home';
+import Home from '../views/Home';
 import ListaMeds from '../views/ListaMeds/MyMeds';
 import MedForm from '../views/MedForm/MedForm';
 import MedDetail from '../views/MedDetail';
@@ -12,7 +12,6 @@ import HealthCenters from '../views/HealthCenters';
 import MedNiteroiDetalhe from '../views/MedsNiteroi/MedNiteroiDetalhe';
 import NewDoseForm from '../views/DoseForm/NewDoseForm';
 import Tutorial from '../views/Tutorial';
-
 const Stack = createStackNavigator();
 
 /**

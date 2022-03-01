@@ -16,7 +16,7 @@ import {
 
 import Info from '../views/Info/Info';
 
-import colors from '../styles/colors';
+import colors from '../assets/colors';
 import {DrawerNavigatorParamList} from './DrawerNavigator';
 const Tab = createBottomTabNavigator();
 
@@ -41,10 +41,11 @@ const TabNavigator: React.FC<{
 	<Tab.Navigator
 		screenOptions={({route}) => ({
 			headerShown: false,
-			tabBarActiveTintColor: colors.primary,
-			tabBarInactiveTintColor: colors.grey6,
-			tabBarShowLabel: true,
-			tabBarLabelStyle: {fontSize: 12},
+			tabBarActiveTintColor: colors.white,
+			tabBarInactiveTintColor: colors.grey8,
+			tabBarActiveBackgroundColor: colors.tabBackground,
+			tabBarInactiveBackgroundColor: colors.tabBackground,
+			tabBarShowLabel: false,
 			tabBarStyle: {height: 50},
 			tabBarIcon: ({focused, color, size}) => {
 				let iconName = '';
@@ -63,7 +64,7 @@ const TabNavigator: React.FC<{
 						break;
 				}
 
-				return <Ionicons name={iconName} size={size} color={color} />;
+				return <Ionicons name={iconName} size={30} color={color} />;
 			},
 		})}
 		initialRouteName="Doses">

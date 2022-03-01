@@ -4,7 +4,8 @@ export type StorageKeys =
 	| 'medsList'
 	| 'lastAccess'
 	| 'homeFilter'
-	| 'medsFilter';
+	| 'medsFilter'
+	| 'darkMode';
 
 export const save = (key: StorageKeys, value: string): Promise<void> => {
 	return AsyncStorage.setItem(`${key}`, value);

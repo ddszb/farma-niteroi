@@ -7,7 +7,7 @@ import DrawerMenu from './DrawerMenu';
 import TabNavigator from './TabNavigator';
 import Tutorial from '../views/Tutorial';
 import About from '../views/About/About';
-import colors from '../styles/colors';
+import colors from '../assets/colors';
 import MedsNiteroi from '../views/MedsNiteroi/MedsNiteroi';
 import Search from '../views/Search';
 import HealthCenters from '../views/HealthCenters';
@@ -19,13 +19,14 @@ export type DrawerNavigatorParamList = {
 	DosesDrawer: undefined;
 	Tutorial: {hideWelcome?: boolean};
 	About: undefined;
-	Doses: undefined;
+	Home: undefined;
 	MedsList: undefined;
 	NiteroiMeds: undefined;
 	HealthCenters: undefined;
 	Search: undefined;
 	Info: undefined;
 	MedDetail: {med: Med};
+	AddDose: undefined;
 };
 /**
  * Drawer Navigator para o app.
@@ -36,9 +37,9 @@ const DrawerNavigator: React.FC = () => {
 	return (
 		<Drawer.Navigator
 			drawerContent={props => <DrawerMenu {...props} />}
-			initialRouteName="Drawer">
+			initialRouteName="Home">
 			<Drawer.Screen
-				name="Drawer"
+				name="Home"
 				options={{
 					headerShown: false,
 					drawerLabel: 'Doses do Dia',

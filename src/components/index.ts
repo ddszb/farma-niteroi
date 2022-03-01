@@ -4,7 +4,9 @@ import Header from './Header';
 import Picker from './Picker';
 import DropdownPicker from './DropdownPicker';
 import MedAutoCompleteInput from './MedAutoCompleteInput';
-
+import BackgroundContainer from './BackgroundContainer';
+import DosesFilter from './DosesFilter';
+import DateFilter from './DateFilter';
 export {
 	ActionButton,
 	DropdownPicker,
@@ -12,4 +14,7 @@ export {
 	Header,
 	MedAutoCompleteInput,
 	Picker,
+	BackgroundContainer,
+	DosesFilter,
+	DateFilter,
 };

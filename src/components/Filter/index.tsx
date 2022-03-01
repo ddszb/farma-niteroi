@@ -60,7 +60,7 @@ const Filter: React.FC<FilterProps> = ({
 				<Button
 					key={index.toString()}
 					onPress={() => changeValue(index.toString())}>
-					<RadioButton value={index.toString()} color={colors.primary} />
+					<RadioButton value={index.toString()} color={colors.accent} />
 					<OptionText>{option}</OptionText>
 				</Button>
 			);
@@ -71,8 +71,8 @@ const Filter: React.FC<FilterProps> = ({
 		<SwipeablePanel
 			isActive={visible}
 			onClose={onClose}
-			showCloseButton={true}
 			noBar
+			style={{backgroundColor: colors.primary}}
 			closeOnTouchOutside={true}>
 			<View>
 				<Title>{title}</Title>

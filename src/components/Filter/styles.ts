@@ -8,7 +8,7 @@ export const Container = styled.View`
 export const Title = styled.Text`
 	font-weight: bold;
 	font-size: 26px;
-	color: ${colors.primary};
+	color: ${colors.white};
 	text-align: center;
 	margin-top: 10px;
 	margin-bottom: 10px;
@@ -16,7 +16,7 @@ export const Title = styled.Text`
 
 export const OptionText = styled.Text`
 	font-size: 22px;
-	color: ${colors.grey6};
+	color: ${colors.white};
 `;
 
 export const Button = styled.TouchableOpacity`

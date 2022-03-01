@@ -24,7 +24,7 @@ const Header: React.FC<HeaderProps> = ({
 	return (
 		<Container>
 			<LeftButton onPress={onPressLeft}>
-				<Icon name="menu" type="entypo" color={colors.primary} size={32} />
+				<Icon name="menu" type="entypo" color={colors.white} size={32} />
 			</LeftButton>
 			<Title>{title}</Title>
 			{rightButton ? (
@@ -32,7 +32,7 @@ const Header: React.FC<HeaderProps> = ({
 					<Icon
 						name={rightButton}
 						type="material-community"
-						color={colors.primary}
+						color={colors.white}
 						size={32}
 					/>
 				</RightButton>
