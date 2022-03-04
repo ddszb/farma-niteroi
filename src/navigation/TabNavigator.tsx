@@ -46,7 +46,6 @@ const TabNavigator: React.FC<{
 			tabBarActiveBackgroundColor: colors.tabBackground,
 			tabBarInactiveBackgroundColor: colors.tabBackground,
 			tabBarShowLabel: false,
-			tabBarStyle: {height: 50},
 			tabBarIcon: ({focused, color, size}) => {
 				let iconName = '';
 				switch (route.name) {

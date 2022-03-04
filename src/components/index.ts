@@ -7,6 +7,7 @@ import MedAutoCompleteInput from './MedAutoCompleteInput';
 import BackgroundContainer from './BackgroundContainer';
 import DosesFilter from './DosesFilter';
 import DateFilter from './DateFilter';
+import MedsFilter from './MedsFilter';
 export {
 	ActionButton,
 	DropdownPicker,
@@ -17,4 +18,5 @@ export {
 	BackgroundContainer,
 	DosesFilter,
 	DateFilter,
+	MedsFilter,
 };

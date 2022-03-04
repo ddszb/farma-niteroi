@@ -1,5 +1,9 @@
-import {Weekdays} from './Med';
 import Dose from './Dose';
+
+export enum MedStatus {
+	INACTIVE = 0,
+	ACTIVE = 1,
+}
 
 export type DoseUnit = {
 	value: string;
@@ -58,7 +62,7 @@ export default class Med {
 		this.icon = 'med_caps';
 		this.iconColor = '#2196F3';
 		this.notes = '';
-		this.status = MedStatus.ATIVO;
+		this.status = MedStatus.ACTIVE;
 		this.doseUnit = {
 			value: 'COMPRIMIDO',
 			label: 'Comprimido',

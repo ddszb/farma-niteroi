@@ -12,6 +12,7 @@ import HealthCenters from '../views/HealthCenters';
 import MedNiteroiDetalhe from '../views/MedsNiteroi/MedNiteroiDetalhe';
 import NewDoseForm from '../views/DoseForm/NewDoseForm';
 import Tutorial from '../views/Tutorial';
+import MedList from '../views/MedList';
 const Stack = createStackNavigator();
 
 /**
@@ -46,7 +47,7 @@ const MedStackNavigator: React.FC = (): JSX.Element => {
 			<Stack.Screen
 				options={{headerShown: false}}
 				name="MyMeds"
-				component={ListaMeds}
+				component={MedList}
 			/>
 			<Stack.Screen name="AddMeds" component={MedForm} />
 			<Stack.Screen name="MedDetail" component={MedDetail} />

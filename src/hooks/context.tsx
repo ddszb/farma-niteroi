@@ -25,6 +25,8 @@ interface ContextData {
 	medsFilter: MedsFilter;
 	saveMed(med: Med): Promise<void>;
 	toggleDarkMode(): Promise<void>;
+	saveDosesFilter(value: string): Promise<void>;
+	saveMedsFilter(value: string): Promise<void>;
 }
 
 const MyContext = createContext<ContextData>({} as ContextData);
@@ -68,6 +70,16 @@ const ContextProvider: React.FC = ({children}) => {
 		[meds],
 	);
 
+	const saveDosesFilter = useCallback(async (value: string): Promise<void> => {
+		setDosesFilter(value as DosesFilter);
+		await StorageService.save('homeFilter', value);
+	}, []);
+
+	const saveMedsFilter = useCallback(async (value: string): Promise<void> => {
+		setMedsFilter(value as MedsFilter);
+		await StorageService.save('medsFilter', value);
+	}, []);
+
 	const toggleDarkMode = useCallback(async (): Promise<void> => {
 		setDarkMode(!darkMode);
 		console.log('DARKMODE:', !darkMode);
@@ -83,6 +95,8 @@ const ContextProvider: React.FC = ({children}) => {
 				darkMode,
 				saveMed,
 				toggleDarkMode,
+				saveDosesFilter,
+				saveMedsFilter,
 			}}>
 			{children}
 		</MyContext.Provider>
