@@ -7,6 +7,7 @@ import {AppProvider} from '../hooks/context';
 
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import PushNotification from 'react-native-push-notification';
+import {AlertProvider} from '../hooks/alert';
 
 // Must be outside of any component LifeCycle (such as `componentDidMount`).
 PushNotification.configure({
@@ -71,10 +72,12 @@ PushNotification.createChannel(
 
 export default () => (
 	<SafeAreaView style={{flex: 1}}>
-		<AppProvider>
-			<NavigationContainer>
-				<DrawerNavigator />
-			</NavigationContainer>
-		</AppProvider>
+		<AlertProvider>
+			<AppProvider>
+				<NavigationContainer>
+					<DrawerNavigator />
+				</NavigationContainer>
+			</AppProvider>
+		</AlertProvider>
 	</SafeAreaView>
 );

@@ -8,6 +8,7 @@ import BackgroundContainer from './BackgroundContainer';
 import DosesFilter from './DosesFilter';
 import DateFilter from './DateFilter';
 import MedsFilter from './MedsFilter';
+import MessageModal from './MessageModal';
 export {
 	ActionButton,
 	DropdownPicker,
@@ -19,4 +20,5 @@ export {
 	DosesFilter,
 	DateFilter,
 	MedsFilter,
+	MessageModal,
 };
