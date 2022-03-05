@@ -8,9 +8,12 @@ import BackgroundContainer from './BackgroundContainer';
 import DosesFilter from './DosesFilter';
 import DateFilter from './DateFilter';
 import MedsFilter from './MedsFilter';
+import CardContainer from './CardContainer';
+import MainInput from './MainInput';
 import MessageModal from './MessageModal';
 export {
 	ActionButton,
+	CardContainer,
 	DropdownPicker,
 	Filter,
 	Header,
@@ -20,5 +23,6 @@ export {
 	DosesFilter,
 	DateFilter,
 	MedsFilter,
+	MainInput,
 	MessageModal,
 };

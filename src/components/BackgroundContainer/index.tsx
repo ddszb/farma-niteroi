@@ -16,11 +16,14 @@ interface BackgroundContainerProps {
 	title: string;
 	keyboardAvoidingView?: boolean;
 	onHeaderPressRight?(): void;
+	onHeaderPressLeft?(): void;
 }
 const BackgroundContainer: React.FC<BackgroundContainerProps> = ({
 	header,
+	headerLeft,
 	headerRight,
 	onHeaderPressRight,
+	onHeaderPressLeft,
 	title,
 	keyboardAvoidingView,
 	children,
@@ -28,8 +31,12 @@ const BackgroundContainer: React.FC<BackgroundContainerProps> = ({
 	const navigation =
 		useNavigation<DrawerNavigationProp<DrawerNavigatorParamList>>();
 
-	const onHeaderPressLeft = useCallback((): void => {
-		navigation.toggleDrawer();
+	const onPressLeft = useCallback((): void => {
+		if (onHeaderPressLeft) {
+			onHeaderPressLeft();
+		} else {
+			navigation.toggleDrawer();
+		}
 	}, [navigation]);
 	return (
 		<SafeArea>
@@ -38,8 +45,9 @@ const BackgroundContainer: React.FC<BackgroundContainerProps> = ({
 					{header && (
 						<Header
 							title={title}
+							leftButton={headerLeft ? headerLeft : 'menu'}
 							rightButton={headerRight}
-							onPressLeft={onHeaderPressLeft}
+							onPressLeft={onPressLeft}
 							onPressRight={onHeaderPressRight}
 						/>
 					)}

@@ -8,6 +8,7 @@ const colors = {
 	background: '#15192A',
 	tabBackground: '#1D2237',
 	filterBackground: '#231636',
+	input: '#0e101c',
 
 	ok: '#40a843',
 	alert: '#fc5352',

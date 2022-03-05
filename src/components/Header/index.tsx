@@ -11,12 +11,14 @@ import {
 
 interface HeaderProps {
 	title: string;
+	leftButton: string;
 	onPressLeft(): void;
 	rightButton?: string;
 	onPressRight?(): void;
 }
 const Header: React.FC<HeaderProps> = ({
 	title,
+	leftButton,
 	onPressLeft,
 	rightButton,
 	onPressRight,
@@ -24,7 +26,7 @@ const Header: React.FC<HeaderProps> = ({
 	return (
 		<Container>
 			<LeftButton onPress={onPressLeft}>
-				<Icon name="menu" type="entypo" color={colors.white} size={32} />
+				<Icon name={leftButton} type="entypo" color={colors.white} size={32} />
 			</LeftButton>
 			<Title>{title}</Title>
 			{rightButton ? (
